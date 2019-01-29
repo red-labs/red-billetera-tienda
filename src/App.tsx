@@ -16,6 +16,9 @@ import Web3 from "web3";
 import { Account } from "web3-eth-accounts";
 import { randomHex } from "./randomHex";
 import Advanced from "./Advanced";
+import { ImmortalDB } from "immortal-db";
+//@ts-ignore
+import baseEmoji from "base-emoji";
 
 enum Route {
   Main,
@@ -25,20 +28,10 @@ enum Route {
   Advanced
 }
 
-function getOrGeneratePK() {
-  let pk = localStorage.getItem("efectivoPrivateKey");
-
-  if (pk === null) {
-    pk = "0x583031d1113ad414f02576bd6afabfb302140225"; // TODO: generate private key
-  }
-
-  return pk;
-}
-
 interface Props {}
 
 interface State {
-  account: Account;
+  account?: Account;
   route: Route;
   web3: Web3;
 }
@@ -49,23 +42,49 @@ class App extends Component<Props, State> {
     const web3 = new Web3("http://localhost:8546");
 
     this.state = {
-      account: web3.eth.accounts.create(randomHex(32)),
+      account: undefined,
       route: Route.Main,
       web3
     };
   }
 
+  async componentDidMount() {
+    let privateKey = await ImmortalDB.get("efectivoPrivateKey");
+
+    if (privateKey === null) {
+      privateKey = this.state.web3.eth.accounts.create(randomHex(32))
+        .privateKey;
+      await ImmortalDB.set("efectivoPrivateKey", privateKey);
+    }
+
+    this.setState({
+      account: this.state.web3.eth.accounts.privateKeyToAccount(privateKey)
+    });
+  }
+
+  addressToEmoji = (address: string) => {
+    const hash = this.state.web3.utils.sha3(address);
+    const last2bytes = hash.slice(-4);
+    const buf = new Buffer(last2bytes, "hex");
+    return baseEmoji.toUnicode(buf);
+  };
+
   render() {
-    return (
+    return this.state.account ? (
       <div style={{ textAlign: "center" }}>
         <div
           style={{
             display: "flex",
             flexDirection: "column",
-            justifyContent: "space-around",
+            justifyContent: "space-between",
             height: "100vh"
           }}
         >
+          <h1>
+            {this.state.account &&
+              this.addressToEmoji(this.state.account.address)}{" "}
+            Efectivo
+          </h1>
           <h1>$3.00</h1>
           <div
             style={{
@@ -138,6 +157,8 @@ class App extends Component<Props, State> {
           open={this.state.route === Route.Advanced}
         />
       </div>
+    ) : (
+      <div />
     );
   }
 }
