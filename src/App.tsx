@@ -33,6 +33,7 @@ interface State {
   account?: Account;
   route: Route;
   web3: Web3;
+  balance?: number;
 }
 
 class App extends Component<Props, State> {
@@ -43,6 +44,7 @@ class App extends Component<Props, State> {
     this.state = {
       account: undefined,
       route: Route.Main,
+      balance: undefined,
       web3
     };
   }
@@ -55,10 +57,17 @@ class App extends Component<Props, State> {
         .privateKey;
       await ImmortalDB.set("efectivoPrivateKey", privateKey);
     }
-
+    let account = this.state.web3.eth.accounts.privateKeyToAccount(privateKey)
+    let balance = await this.getBalance(account.address)
     this.setState({
-      account: this.state.web3.eth.accounts.privateKeyToAccount(privateKey)
+      account,
+      balance
     });
+  }
+
+  async getBalance(address: string) {
+    let balance = this.state.web3.utils.fromWei(await this.state.web3.eth.getBalance(address))
+    return Number(balance)
   }
 
   addressToEmoji = (address: string) => {
@@ -69,6 +78,7 @@ class App extends Component<Props, State> {
   };
 
   render() {
+    let balance = this.state.balance ? '$' + this.state.balance: "loading..."
     return this.state.account ? (
       <div style={{ textAlign: "center" }}>
         <div
@@ -84,7 +94,7 @@ class App extends Component<Props, State> {
               this.addressToEmoji(this.state.account.address)}{" "}
             Efectivo
           </h1>
-          <h1>$3.00</h1>
+          <h1>{balance}</h1>
           <div
             style={{
               display: "flex",
