@@ -18,6 +18,7 @@ import Advanced from "./Advanced";
 import { ImmortalDB } from "immortal-db";
 //@ts-ignore
 import baseEmoji from "base-emoji";
+import { translate } from "react-i18next";
 
 enum Route {
   Main,
@@ -27,7 +28,9 @@ enum Route {
   Advanced
 }
 
-interface Props {}
+interface Props {
+  t: Function
+}
 
 interface State {
   account?: Account;
@@ -79,6 +82,8 @@ class App extends Component<Props, State> {
 
   render() {
     let balance = this.state.balance ? '$' + this.state.balance: "loading..."
+    let { t } = this.props
+
     return this.state.account ? (
       <div style={{ textAlign: "center" }}>
         <div
@@ -92,7 +97,7 @@ class App extends Component<Props, State> {
           <h1>
             {this.state.account &&
               this.addressToEmoji(this.state.account.address)}{" "}
-            Efectivo
+              {t('efectivo')}
           </h1>
           <h1>{balance}</h1>
           <div
@@ -106,7 +111,7 @@ class App extends Component<Props, State> {
               style={{ flex: "1 1 0", maxWidth: 200, margin: 5 }}
               size="lg"
             >
-              Send
+              {t('send')}
             </Button>
             <Button
               onClick={() => this.setState({ route: Route.Receive })}
@@ -174,4 +179,4 @@ class App extends Component<Props, State> {
   }
 }
 
-export default App;
+export default translate()(App as any);
