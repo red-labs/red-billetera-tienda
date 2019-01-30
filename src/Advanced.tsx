@@ -22,13 +22,26 @@ import daiImg from "./images/dai.jpg";
 import xdaiImg from "./images/xdai.jpg";
 import ethImg from "./images/ethereum.png";
 
+import { Currency } from "./types";
+import Send from "./Send";
+import Convert from "./Convert";
+import Web3 from "web3";
+
 interface Props {
   open: boolean;
   toggle: () => void;
+  web3: Web3;
 }
 
 interface State {
   alertOpen: boolean;
+  sendModal?: {
+    currency: Currency;
+  };
+  convertModal?: {
+    currency: Currency;
+    convertTo: Currency;
+  };
 }
 
 const exchangeItemStyle = {
@@ -68,9 +81,23 @@ const buttonStyle2 = {
   marginTop: 5
 };
 
+function getSendModalCurrency(state: State): Currency | undefined {
+  return state.sendModal ? state.sendModal.currency : undefined;
+}
+
+function getConvertModalCurrency(state: State): Currency | undefined {
+  return state.convertModal ? state.convertModal.currency : undefined;
+}
+
+function getConvertModalConvertTo(state: State): Currency | undefined {
+  return state.convertModal ? state.convertModal.convertTo : undefined;
+}
+
 class Advanced extends Component<Props, State> {
   state = {
-    alertOpen: false
+    alertOpen: false,
+    sendModal: undefined,
+    convertModal: undefined
   };
 
   render() {
@@ -91,19 +118,48 @@ class Advanced extends Component<Props, State> {
             <div style={balanceBarStyle}>
               <img width={30} src={xdaiImg} />
               <h5 style={balanceTextStyle}>$3.00</h5>
-              <Button size="lg" outline style={buttonStyle2}>
+              <Button
+                onClick={() =>
+                  this.setState({ sendModal: { currency: Currency.XDAI } })
+                }
+                size="lg"
+                outline
+                style={buttonStyle2}
+              >
                 <small style={buttonTextStyle}>
                   Send xDAI {rightArrow("#6c757d", 20, 20)}
                 </small>
               </Button>
             </div>
             <div style={buttonBarStyle}>
-              <Button style={buttonStyle} size="lg">
+              <Button
+                onClick={() =>
+                  this.setState({
+                    convertModal: {
+                      currency: Currency.XDAI,
+                      convertTo: Currency.DAI
+                    }
+                  })
+                }
+                style={buttonStyle}
+                size="lg"
+              >
                 <small style={buttonTextStyle}>
                   {downArrow("#fff", 20, 20)} xDAI to DAI
                 </small>
               </Button>
-              <Button style={buttonStyle} size="lg">
+              <Button
+                onClick={() =>
+                  this.setState({
+                    convertModal: {
+                      currency: Currency.DAI,
+                      convertTo: Currency.XDAI
+                    }
+                  })
+                }
+                style={buttonStyle}
+                size="lg"
+              >
                 <small style={buttonTextStyle}>
                   {upArrow("#fff", 20, 20)} DAI to xDAI
                 </small>
@@ -112,55 +168,86 @@ class Advanced extends Component<Props, State> {
             <div style={balanceBarStyle}>
               <img width={30} src={daiImg} />
               <h5 style={balanceTextStyle}>$3.00</h5>
-              <Button size="lg" outline style={buttonStyle2}>
+              <Button
+                onClick={() =>
+                  this.setState({ sendModal: { currency: Currency.DAI } })
+                }
+                size="lg"
+                outline
+                style={buttonStyle2}
+              >
                 <small style={buttonTextStyle}>
                   Send DAI {rightArrow("#6c757d", 20, 20)}
                 </small>
               </Button>
             </div>
             <div style={buttonBarStyle}>
-              <Button style={buttonStyle} size="lg">
+              <Button
+                onClick={() =>
+                  this.setState({
+                    convertModal: {
+                      currency: Currency.DAI,
+                      convertTo: Currency.ETH
+                    }
+                  })
+                }
+                style={buttonStyle}
+                size="lg"
+              >
                 <small style={buttonTextStyle}>
-                  {downArrow("#fff", 20, 20)} DAI to ETH
+                  {downArrow("#fff", 20, 20)} DAI to Eth
                 </small>
               </Button>
-              <Button style={buttonStyle} size="lg">
+              <Button
+                onClick={() =>
+                  this.setState({
+                    convertModal: {
+                      currency: Currency.ETH,
+                      convertTo: Currency.DAI
+                    }
+                  })
+                }
+                style={buttonStyle}
+                size="lg"
+              >
                 <small style={buttonTextStyle}>
-                  {upArrow("#fff", 20, 20)} ETH to DAI
+                  {upArrow("#fff", 20, 20)} Eth to DAI
                 </small>
               </Button>
             </div>
             <div style={balanceBarStyle}>
               <img width={30} src={ethImg} />
               <h5 style={balanceTextStyle}>$3.00</h5>
-              <Button size="lg" outline style={buttonStyle2}>
+              <Button
+                onClick={() =>
+                  this.setState({ sendModal: { currency: Currency.ETH } })
+                }
+                size="lg"
+                outline
+                style={buttonStyle2}
+              >
                 <small style={buttonTextStyle}>
-                  Send ETH {rightArrow("#6c757d", 20, 20)}
+                  Send Eth {rightArrow("#6c757d", 20, 20)}
                 </small>
               </Button>
             </div>
           </div>
+          <hr />
         </ModalBody>
-        <div
-          style={{
-            position: "fixed",
-            bottom: 10,
-            left: 10,
-            right: 10,
-            display: "flex",
-            justifyContent: "center",
-            textAlign: "center"
-          }}
-        >
-          <Alert
-            style={{ width: "100%" }}
-            isOpen={this.state.alertOpen}
-            color="success"
-            toggle={() => this.setState({ alertOpen: false })}
-          >
-            Address copied to clipboard
-          </Alert>
-        </div>
+
+        <Convert
+          toggle={() => this.setState({ convertModal: undefined })}
+          open={this.state.convertModal !== undefined}
+          currency={getConvertModalCurrency(this.state)}
+          convertTo={getConvertModalConvertTo(this.state)}
+          web3={this.props.web3}
+        />
+        <Send
+          toggle={() => this.setState({ sendModal: undefined })}
+          open={this.state.sendModal !== undefined}
+          currency={getSendModalCurrency(this.state)}
+          web3={this.props.web3}
+        />
       </Modal>
     );
   }

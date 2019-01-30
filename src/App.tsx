@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import logo from "./logo.svg";
-import "./App.css";
 import Send from "./Send";
 import Receive from "./Receive";
 import Save from "./Save";
@@ -141,6 +140,7 @@ class App extends Component<Props, State> {
         <Send
           toggle={() => this.setState({ route: Route.Main })}
           open={this.state.route === Route.Send}
+          web3={this.state.web3}
         />
         <Receive
           address={this.state.account.address}
@@ -155,6 +155,7 @@ class App extends Component<Props, State> {
         <Advanced
           toggle={() => this.setState({ route: Route.Main })}
           open={this.state.route === Route.Advanced}
+          web3={this.state.web3}
         />
       </div>
     ) : (
