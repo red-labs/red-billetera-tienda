@@ -29,6 +29,7 @@ enum Route {
 }
 
 interface Props {
+  i18n: any
   t: Function
 }
 
@@ -72,7 +73,7 @@ class App extends Component<Props, State> {
   };
 
   render() {
-    let { t } = this.props
+    let { i18n, t } = this.props
 
     return this.state.account ? (
       <div style={{ textAlign: "center" }}>
@@ -90,6 +91,10 @@ class App extends Component<Props, State> {
               {t('efectivo')}
           </h1>
           <h1>$3.00</h1>
+<div className="d-flex w-100 text-center justify-content-center">
+          <button onClick={() => i18n.changeLanguage("en")}>English</button>
+          <button onClick={() => i18n.changeLanguage("es")}>Spanish</button>
+</div>
           <div
             style={{
               display: "flex",
