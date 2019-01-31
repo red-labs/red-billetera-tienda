@@ -170,39 +170,20 @@ class Send extends Component<Props, State> {
     amount: 0
   };
 
-  sendTx = () => {
-    this.props.web3.eth
-      .sendTransaction({
+  sendTx = async () => {
+    console.log('ACCOUNT', this.props.account)
+    let await = this.props.web3.eth
+      .signTransaction({
         from: this.props.account.address,
         to: this.state.toAddress,
-        value: this.state.amount
+        value: this.props.web3.utils.toWei(this.state.amount.toString()),
+        gas: 0
+      }, this.props.account.privateKey)
+      .then(txn => {
+        console.log('TXNN', txn)
+        this.props.web3.eth.sendSignedTransaction(txn.raw, console.log)
       })
-      .on("transactionHash", () => {
-        this.setState({
-          txSendingAlert: {
-            toAddress: this.state.toAddress,
-            amount: this.state.amount
-          }
-        });
-      })
-      .on("error", err => {
-        this.setState({
-          txSendingAlert: undefined,
-          txErrorAlert: {
-            toAddress: this.state.toAddress,
-            amount: this.state.amount
-          }
-        });
-      })
-      .on("receipt", err => {
-        this.setState({
-          txSendingAlert: undefined,
-          txSuccessAlert: {
-            toAddress: this.state.toAddress,
-            amount: this.state.amount
-          }
-        });
-      });
+    this.props.toggle()
   };
 
   render() {

@@ -39,7 +39,7 @@ interface State {
 class App extends Component<Props, State> {
   constructor(props: any) {
     super(props);
-    const web3 = new Web3("http://localhost:8545");
+    const web3 = new Web3("http://localhost:3000");
 
     this.state = {
       account: undefined,
@@ -58,6 +58,7 @@ class App extends Component<Props, State> {
       await ImmortalDB.set("efectivoPrivateKey", privateKey);
     }
     let account = this.state.web3.eth.accounts.privateKeyToAccount(privateKey);
+
     let balance = await this.getBalance(account.address);
     this.setState({
       account,
@@ -167,6 +168,7 @@ class App extends Component<Props, State> {
         />
         <Advanced
           toggle={() => this.setState({ route: Route.Main })}
+          account={this.state.account}
           open={this.state.route === Route.Advanced}
           web3={this.state.web3}
         />

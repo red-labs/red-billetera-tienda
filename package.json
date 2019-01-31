@@ -48,5 +48,6 @@
     "@typescript-eslint/eslint-plugin": "^1.1.1",
     "@typescript-eslint/parser": "^1.1.1",
     "eslint": "^5.12.1"
-  }
+  },
+  "proxy": "https://dai.poa.network"
 }
