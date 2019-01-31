@@ -43,7 +43,7 @@ interface State {
 class App extends Component<Props, State> {
   constructor(props: any) {
     super(props);
-    const web3 = new Web3("http://localhost:8546");
+    const web3 = new Web3("http://localhost:8545");
 
     this.state = {
       account: undefined,
@@ -83,7 +83,7 @@ class App extends Component<Props, State> {
 
   render() {
     let { i18n, t } = this.props
-    let balance = this.state.balance ? '$' + this.state.balance: "loading..."
+    let balance = !isNaN(Number(this.state.balance)) ? '$' + this.state.balance : "loading..."
     return this.state.account ? (
       <div style={{ textAlign: "center" }}>
         <div
