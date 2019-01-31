@@ -10,5 +10,8 @@
   "cancel": "Cancelar",
   "copyAddress": "Copiar dirección",
   "copyPrivateKey": "Copiar clave privada",
-  "restorePrivateKey": "Restaurar clave privada"
+  "restorePrivateKey": "Restaurar clave privada",
+  "addressCopied": "Dirección copiada al portapapeles",
+  "confirm": "Confirmar",
+  "to": "a"
 }

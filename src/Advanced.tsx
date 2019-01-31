@@ -26,11 +26,13 @@ import { Currency } from "./types";
 import Send from "./Send";
 import Convert from "./Convert";
 import Web3 from "web3";
+import { translate } from "react-i18next";
 
 interface Props {
   open: boolean;
   toggle: () => void;
   web3: Web3;
+  t: Function;
 }
 
 interface State {
@@ -101,12 +103,13 @@ class Advanced extends Component<Props, State> {
   };
 
   render() {
+    const { t } = this.props
     if (!this.props.open) {
       this.state.alertOpen = false;
     }
     return (
       <Modal isOpen={this.props.open} toggle={this.props.toggle}>
-        <ModalHeader toggle={this.props.toggle}>Advanced</ModalHeader>
+        <ModalHeader toggle={this.props.toggle}>{t('advanced')}</ModalHeader>
         <ModalBody>
           <div
             style={{
@@ -127,7 +130,7 @@ class Advanced extends Component<Props, State> {
                 style={buttonStyle2}
               >
                 <small style={buttonTextStyle}>
-                  Send xDAI {rightArrow("#6c757d", 20, 20)}
+                  {t('send')} xDAI {rightArrow("#6c757d", 20, 20)}
                 </small>
               </Button>
             </div>
@@ -145,7 +148,7 @@ class Advanced extends Component<Props, State> {
                 size="lg"
               >
                 <small style={buttonTextStyle}>
-                  {downArrow("#fff", 20, 20)} xDAI to DAI
+                  {downArrow("#fff", 20, 20)} xDAI {t('to')} DAI
                 </small>
               </Button>
               <Button
@@ -161,7 +164,7 @@ class Advanced extends Component<Props, State> {
                 size="lg"
               >
                 <small style={buttonTextStyle}>
-                  {upArrow("#fff", 20, 20)} DAI to xDAI
+                  {upArrow("#fff", 20, 20)} DAI {t('to')} xDAI
                 </small>
               </Button>
             </div>
@@ -177,7 +180,7 @@ class Advanced extends Component<Props, State> {
                 style={buttonStyle2}
               >
                 <small style={buttonTextStyle}>
-                  Send DAI {rightArrow("#6c757d", 20, 20)}
+                  {t('send')} DAI {rightArrow("#6c757d", 20, 20)}
                 </small>
               </Button>
             </div>
@@ -195,7 +198,7 @@ class Advanced extends Component<Props, State> {
                 size="lg"
               >
                 <small style={buttonTextStyle}>
-                  {downArrow("#fff", 20, 20)} DAI to Eth
+                  {downArrow("#fff", 20, 20)} DAI {t('to')} Eth
                 </small>
               </Button>
               <Button
@@ -211,7 +214,7 @@ class Advanced extends Component<Props, State> {
                 size="lg"
               >
                 <small style={buttonTextStyle}>
-                  {upArrow("#fff", 20, 20)} Eth to DAI
+                  {upArrow("#fff", 20, 20)} Eth {t('to')} DAI
                 </small>
               </Button>
             </div>
@@ -227,7 +230,7 @@ class Advanced extends Component<Props, State> {
                 style={buttonStyle2}
               >
                 <small style={buttonTextStyle}>
-                  Send Eth {rightArrow("#6c757d", 20, 20)}
+                  {t('send')} Eth {rightArrow("#6c757d", 20, 20)}
                 </small>
               </Button>
             </div>
@@ -253,4 +256,4 @@ class Advanced extends Component<Props, State> {
   }
 }
 
-export default Advanced;
+export default translate()(Advanced as any) as any;

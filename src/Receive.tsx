@@ -50,7 +50,7 @@ class Receive extends Component<Props, State> {
     }
     return (
       <Modal isOpen={this.props.open} toggle={this.props.toggle}>
-        <ModalHeader toggle={this.props.toggle}>t{('receive')}</ModalHeader>
+        <ModalHeader toggle={this.props.toggle}>{t('receive')}</ModalHeader>
         <ModalBody>
           <div
             style={{
@@ -92,7 +92,7 @@ class Receive extends Component<Props, State> {
             color="success"
             toggle={() => this.setState({ alertOpen: false })}
           >
-            Address copied to clipboard
+            {t('addressCopied')}
           </Alert>
         </div>
       </Modal>

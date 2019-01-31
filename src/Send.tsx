@@ -44,11 +44,11 @@ class Send extends Component<Props, State> {
     return (
       <Modal isOpen={this.props.open} toggle={this.props.toggle}>
         <ModalHeader toggle={this.props.toggle}>
-          Send {currencyToName(this.props.currency)}
+          {t('send')} {currencyToName(this.props.currency)}
         </ModalHeader>
         <ModalBody>
           <FormGroup>
-            <Label for="sendToAddress">Send to address</Label>
+            <Label for="sendToAddress">{t('sendToAddress')}</Label>
             <div
               style={{
                 display: "flex",
@@ -82,7 +82,7 @@ class Send extends Component<Props, State> {
             </div>
           </FormGroup>
           <FormGroup>
-            <Label for="amountToSend">Send amount</Label>
+            <Label for="amountToSend">{t('sendAmount')}</Label>
             <InputGroup>
               {this.props.currency !== Currency.ETH && (
                 <InputGroupAddon addonType="prepend">

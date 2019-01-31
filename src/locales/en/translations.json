@@ -10,5 +10,8 @@
   "cancel": "Cancel",
   "copyAddress": "Copy address",
   "copyPrivateKey": "Copy private key",
-  "restorePrivateKey": "Restore private key"
+  "restorePrivateKey": "Restore private key",
+  "addressCopied": "Address copied to clipboard",
+  "confirm": "Confirm",
+  "to": "To"
 }
