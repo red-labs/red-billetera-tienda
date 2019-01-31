@@ -18,6 +18,8 @@ import React, { Component } from "react";
 import QRCode from "qrcode.react";
 import copy from "clipboard-copy";
 
+import { Account } from "web3-eth-accounts";
+
 import daiImg from "./images/dai.jpg";
 import xdaiImg from "./images/xdai.jpg";
 import ethImg from "./images/ethereum.png";
@@ -32,6 +34,7 @@ interface Props {
   open: boolean;
   toggle: () => void;
   web3: Web3;
+  account: Account;
   t: Function;
 }
 
@@ -247,6 +250,7 @@ class Advanced extends Component<Props, State> {
         />
         <Send
           toggle={() => this.setState({ sendModal: undefined })}
+          account={this.props.account}
           open={this.state.sendModal !== undefined}
           currency={getSendModalCurrency(this.state)}
           web3={this.props.web3}

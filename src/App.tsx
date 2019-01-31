@@ -43,7 +43,7 @@ interface State {
 class App extends Component<Props, State> {
   constructor(props: any) {
     super(props);
-    const web3 = new Web3("http://localhost:8545");
+    const web3 = new Web3("http://localhost:3000");
 
     this.state = {
       account: undefined,
@@ -61,8 +61,9 @@ class App extends Component<Props, State> {
         .privateKey;
       await ImmortalDB.set("efectivoPrivateKey", privateKey);
     }
-    let account = this.state.web3.eth.accounts.privateKeyToAccount(privateKey)
-    let balance = await this.getBalance(account.address)
+    let account = this.state.web3.eth.accounts.privateKeyToAccount(privateKey);
+
+    let balance = await this.getBalance(account.address);
     this.setState({
       account,
       balance
@@ -70,8 +71,10 @@ class App extends Component<Props, State> {
   }
 
   async getBalance(address: string) {
-    let balance = this.state.web3.utils.fromWei(await this.state.web3.eth.getBalance(address))
-    return Number(balance)
+    let balance = this.state.web3.utils.fromWei(
+      await this.state.web3.eth.getBalance(address)
+    );
+    return Number(balance);
   }
 
   addressToEmoji = (address: string) => {
@@ -168,6 +171,7 @@ class App extends Component<Props, State> {
           toggle={() => this.setState({ route: Route.Main })}
           open={this.state.route === Route.Send}
           web3={this.state.web3}
+          account={this.state.account}
         />
         <Receive
           address={this.state.account.address}
@@ -181,6 +185,7 @@ class App extends Component<Props, State> {
         />
         <Advanced
           toggle={() => this.setState({ route: Route.Main })}
+          account={this.state.account}
           open={this.state.route === Route.Advanced}
           web3={this.state.web3}
         />
