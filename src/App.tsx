@@ -108,7 +108,7 @@ class App extends Component<Props, State> {
               style={{ flex: "1 1 0", maxWidth: 200, margin: 5 }}
               size="lg"
             >
-              Receive
+              {t('receive')}
             </Button>
           </div>
 
@@ -123,7 +123,7 @@ class App extends Component<Props, State> {
               style={{ flex: "1 1 0", maxWidth: 410, margin: 5 }}
               size="lg"
             >
-              Save / Restore
+              {t('saveRestore')}
             </Button>
           </div>
           <div
@@ -138,7 +138,7 @@ class App extends Component<Props, State> {
               style={{ flex: "1 1 0", maxWidth: 410, margin: 5 }}
               size="sm"
             >
-              Advanced
+              {t('advanced')}
             </Button>
           </div>
         </div>

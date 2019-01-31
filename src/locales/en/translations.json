@@ -1,3 +1,14 @@
 {
-  
+  "efectivo": "Efectivo",
+  "send": "Send",
+  "receive": "Receive",
+  "saveRestore": "Save / Restore",
+  "advanced": "Advanced",
+  "sendX": "Send {{symbol}}",
+  "sendToAddress": "Send to address",
+  "sendAmount": "Send amount",
+  "cancel": "Cancel",
+  "copyAddress": "Copy address",
+  "copyPrivateKey": "Copy private key",
+  "restorePrivateKey": "Restore private key"
 }
