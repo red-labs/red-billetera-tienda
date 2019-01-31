@@ -17,11 +17,13 @@ import { copy as copyIcon } from "./icons";
 import React, { Component } from "react";
 import QRCode from "qrcode.react";
 import copy from "clipboard-copy";
+import { translate } from "react-i18next";
 
 interface Props {
   open: boolean;
   toggle: () => void;
   address: string;
+  t: Function;
 }
 
 interface State {
@@ -42,12 +44,13 @@ class Receive extends Component<Props, State> {
   };
 
   render() {
+    const { t } = this.props
     if (!this.props.open) {
       this.state.alertOpen = false;
     }
     return (
       <Modal isOpen={this.props.open} toggle={this.props.toggle}>
-        <ModalHeader toggle={this.props.toggle}>Receive</ModalHeader>
+        <ModalHeader toggle={this.props.toggle}>{t('receive')}</ModalHeader>
         <ModalBody>
           <div
             style={{
@@ -68,7 +71,7 @@ class Receive extends Component<Props, State> {
               style={{ maxWidth: 240, margin: 5 }}
               size="lg"
             >
-              {copyIcon("#fff")} Copy address
+              {copyIcon("#fff")} {t('copyAddress')}
             </Button>
           </div>
         </ModalBody>
@@ -89,7 +92,7 @@ class Receive extends Component<Props, State> {
             color="success"
             toggle={() => this.setState({ alertOpen: false })}
           >
-            Address copied to clipboard
+            {t('addressCopied')}
           </Alert>
         </div>
       </Modal>
@@ -97,4 +100,4 @@ class Receive extends Component<Props, State> {
   }
 }
 
-export default Receive;
+export default (translate()(Receive as any)) as any;

@@ -18,6 +18,7 @@ import Advanced from "./Advanced";
 import { ImmortalDB } from "immortal-db";
 //@ts-ignore
 import baseEmoji from "base-emoji";
+import { translate } from "react-i18next";
 
 enum Route {
   Main,
@@ -27,7 +28,10 @@ enum Route {
   Advanced
 }
 
-interface Props {}
+interface Props {
+  i18n: any
+  t: Function
+}
 
 interface State {
   account?: Account;
@@ -39,7 +43,7 @@ interface State {
 class App extends Component<Props, State> {
   constructor(props: any) {
     super(props);
-    const web3 = new Web3("http://localhost:8546");
+    const web3 = new Web3("http://localhost:8545");
 
     this.state = {
       account: undefined,
@@ -78,7 +82,8 @@ class App extends Component<Props, State> {
   };
 
   render() {
-    let balance = this.state.balance ? '$' + this.state.balance: "loading..."
+    let { i18n, t } = this.props
+    let balance = !isNaN(Number(this.state.balance)) ? '$' + this.state.balance : t('loading')
     return this.state.account ? (
       <div style={{ textAlign: "center" }}>
         <div
@@ -92,9 +97,21 @@ class App extends Component<Props, State> {
           <h1>
             {this.state.account &&
               this.addressToEmoji(this.state.account.address)}{" "}
-            Efectivo
+              {t('efectivo')}
           </h1>
           <h1>{balance}</h1>
+          <div className="d-flex w-100 text-center justify-content-center">
+            <Button 
+              onClick={() => i18n.changeLanguage("en")}
+              style={{ flex: "1 1 0", maxWidth: 200, margin: 5 }}
+              size="lg"
+            >English</Button>
+            <Button 
+              onClick={() => i18n.changeLanguage("es")}
+              style={{ flex: "1 1 0", maxWidth: 200, margin: 5 }}
+              size="lg"
+            >Español</Button>
+          </div>
           <div
             style={{
               display: "flex",
@@ -106,14 +123,14 @@ class App extends Component<Props, State> {
               style={{ flex: "1 1 0", maxWidth: 200, margin: 5 }}
               size="lg"
             >
-              Send
+              {t('send')}
             </Button>
             <Button
               onClick={() => this.setState({ route: Route.Receive })}
               style={{ flex: "1 1 0", maxWidth: 200, margin: 5 }}
               size="lg"
             >
-              Receive
+              {t('receive')}
             </Button>
           </div>
 
@@ -128,7 +145,7 @@ class App extends Component<Props, State> {
               style={{ flex: "1 1 0", maxWidth: 410, margin: 5 }}
               size="lg"
             >
-              Save / Restore
+              {t('saveRestore')}
             </Button>
           </div>
           <div
@@ -143,7 +160,7 @@ class App extends Component<Props, State> {
               style={{ flex: "1 1 0", maxWidth: 410, margin: 5 }}
               size="sm"
             >
-              Advanced
+              {t('advanced')}
             </Button>
           </div>
         </div>
@@ -174,4 +191,4 @@ class App extends Component<Props, State> {
   }
 }
 
-export default App;
+export default translate()(App as any);

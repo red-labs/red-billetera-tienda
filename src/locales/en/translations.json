@@ -1,0 +1,22 @@
+{
+  "addressCopied": "Address copied to clipboard",
+  "advanced": "Advanced",
+  "cancel": "Cancel",
+  "confirm": "Confirm",
+  "convert": "Convert",
+  "copyAddress": "Copy address",
+  "copyPrivateKey": "Copy private key",
+  "efectivo": "Efectivo",
+  "loading": "Loading...",
+  "privateKeyCopied": "Private key copied to clipboard",
+  "privateKeyRestored": "Private key restored",
+  "receive": "Receive",
+  "restorePrivateKey": "Restore private key",
+  "saveRestore": "Save / Restore",
+  "scanAddress": "Dirección de escaneo",
+  "send": "Send",
+  "sendAmount": "Send amount",
+  "sendToAddress": "Send to address",
+  "sendX": "Send {{symbol}}",
+  "to": "to"
+}

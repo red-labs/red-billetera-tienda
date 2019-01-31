@@ -16,6 +16,7 @@ import { qr, camera } from "./icons";
 import React, { Component } from "react";
 import { Currency, currencyToName, currencyToSymbol } from "./types";
 import Web3 from "web3";
+import { translate } from "react-i18next";
 
 interface Props {
   open: boolean;
@@ -23,6 +24,7 @@ interface Props {
   currency: Currency;
   convertTo: Currency;
   web3: Web3;
+  t: Function;
 }
 
 interface State {}
@@ -34,15 +36,17 @@ class Convert extends Component<Props, State> {
   };
 
   render() {
+    const { t } = this.props
+
     return (
       <Modal isOpen={this.props.open} toggle={this.props.toggle}>
         <ModalHeader toggle={this.props.toggle}>
-          Convert {currencyToName(this.props.currency)} to{" "}
+          {t('convert')} {currencyToName(this.props.currency)} {t('to')}
           {currencyToName(this.props.convertTo)}
         </ModalHeader>
         <ModalBody>
           <FormGroup>
-            <Label for="amountToSend">Convert</Label>
+            <Label for="amountToSend">{t('convert')}</Label>
             <InputGroup>
               {this.props.currency !== Currency.ETH && (
                 <InputGroupAddon addonType="prepend">
@@ -55,16 +59,16 @@ class Convert extends Component<Props, State> {
               </InputGroupAddon>
             </InputGroup>
             <Label style={{ marginTop: 8 }}>
-              to {currencyToName(this.props.convertTo)}
+              {t('to')} {currencyToName(this.props.convertTo)}
             </Label>
           </FormGroup>
         </ModalBody>
         <ModalFooter>
           <Button color="primary" onClick={this.props.toggle}>
-            Convert
+            {t('convert')} 
           </Button>{" "}
           <Button color="secondary" onClick={this.props.toggle}>
-            Cancel
+            {t('cancel')} 
           </Button>
         </ModalFooter>
       </Modal>
@@ -72,4 +76,4 @@ class Convert extends Component<Props, State> {
   }
 }
 
-export default Convert;
+export default translate()(Convert as any) as any;

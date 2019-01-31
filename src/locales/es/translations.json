@@ -1,0 +1,22 @@
+{
+  "addressCopied": "Copiado",
+  "advanced": "Modo avanzado",
+  "cancel": "Cancelar",
+  "confirm": "Confirmar",
+  "convert": "Convertir",
+  "copyAddress": "Copiar cuenta",
+  "copyPrivateKey": "Copiar clave privada",
+  "efectivo": "Efectivo",
+  "loading": "Cargando...",
+  "privateKeyCopied": "Clave privada copiada al portapapeles",
+  "privateKeyRestored": "Clave privada restaurada",
+  "receive": "Recibir",
+  "restorePrivateKey": "Restaurar cuenta",
+  "saveRestore": "Guardar / Restaurar",
+  "scanAddress": "Escanear cuenta",
+  "send": "Enviar",
+  "sendAmount": "Enviar cantidad",
+  "sendToAddress": "Enviar dinero a cuenta",
+  "sendX": "Enviar {{symbol}}",
+  "to": "a"
+}
