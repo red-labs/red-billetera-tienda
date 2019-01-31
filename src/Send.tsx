@@ -19,6 +19,8 @@ import { Currency, currencyToName, currencyToSymbol } from "./types";
 import QrReader from "./QrReader";
 import Web3 from "web3";
 import { Accounts, Account } from "web3-eth-accounts/types";
+import { translate } from "react-i18next";
+
 
 interface Props {
   open: boolean;
@@ -26,6 +28,7 @@ interface Props {
   currency: Currency;
   web3: Web3;
   account: Account;
+  t: Function;
 }
 
 interface State {
@@ -171,14 +174,16 @@ class Send extends Component<Props, State> {
   };
 
   render() {
+    const { t } = this.props
+
     return (
       <Modal isOpen={this.props.open} toggle={this.props.toggle}>
         <ModalHeader toggle={this.props.toggle}>
-          Send {currencyToName(this.props.currency)}
+          {t('send')} {currencyToName(this.props.currency)}
         </ModalHeader>
         <ModalBody>
           <FormGroup>
-            <Label for="sendToAddress">Send to address</Label>
+            <Label for="sendToAddress">{t('sendToAddress')}</Label>
             <div
               style={{
                 display: "flex",
@@ -212,7 +217,7 @@ class Send extends Component<Props, State> {
             </div>
           </FormGroup>
           <FormGroup>
-            <Label for="amountToSend">Send amount</Label>
+            <Label for="amountToSend">{t('sendAmount')}</Label>
             <InputGroup>
               {this.props.currency !== Currency.ETH && (
                 <InputGroupAddon addonType="prepend">
@@ -238,16 +243,16 @@ class Send extends Component<Props, State> {
         </ModalBody>
         <ModalFooter>
           <Button color="primary" onClick={this.props.toggle}>
-            Send
+            {t('send')}
           </Button>{" "}
           <Button color="secondary" onClick={this.props.toggle}>
-            Cancel
+            {t('cancel')}
           </Button>
         </ModalFooter>
         <QrReader
           toggle={() => this.setState({ qrReading: false })}
           open={this.state.qrReading}
-          onScan={scanned => {
+          onScan={(scanned: string) => {
             if (scanned && this.props.web3.utils.isAddress(scanned)) {
               this.setState({ qrReading: false, toAddress: scanned });
             }
@@ -273,4 +278,4 @@ class Send extends Component<Props, State> {
   }
 }
 
-export default Send;
+export default (translate()(Send as any) as any);

@@ -17,11 +17,13 @@ import { copy as copyIcon } from "./icons";
 import React, { Component } from "react";
 import QRCode from "qrcode.react";
 import copy from "clipboard-copy";
+import { translate } from "react-i18next";
 
 interface Props {
   open: boolean;
   toggle: () => void;
   privateKey: string;
+  t: Function;
 }
 
 interface State {
@@ -44,13 +46,14 @@ class Save extends Component<Props, State> {
   };
 
   render() {
+    const { t } = this.props
     if (!this.props.open) {
       this.state.saveAlertOpen = false;
       this.state.restoreAlertOpen = false;
     }
     return (
       <Modal isOpen={this.props.open} toggle={this.props.toggle}>
-        <ModalHeader toggle={this.props.toggle}>Save / Restore</ModalHeader>
+        <ModalHeader toggle={this.props.toggle}>{t('saveRestore')}</ModalHeader>
         <ModalBody>
           <div
             style={{
@@ -69,7 +72,7 @@ class Save extends Component<Props, State> {
               style={{ maxWidth: 240, margin: 5 }}
               size="lg"
             >
-              {copyIcon("#fff")} Copy private key
+              {copyIcon("#fff")} {t('copyPrivateKey')}
             </Button>
           </div>
           <div
@@ -84,7 +87,7 @@ class Save extends Component<Props, State> {
               placeholder={"0x..."}
             />
             <Button block style={{ maxWidth: 240, margin: 5 }} size="lg">
-              Restore private key
+              {t('restorePrivateKey')}
             </Button>
           </div>
         </ModalBody>
@@ -105,7 +108,7 @@ class Save extends Component<Props, State> {
             color="success"
             toggle={() => this.setState({ saveAlertOpen: false })}
           >
-            Private key copied to clipboard
+            {t('privateKeyCopied')}
           </Alert>
         </div>
         <div
@@ -125,7 +128,7 @@ class Save extends Component<Props, State> {
             color="success"
             toggle={() => this.setState({ restoreAlertOpen: false })}
           >
-            Private key restored
+            {t('privateKeyRestored')}
           </Alert>
         </div>
       </Modal>
@@ -133,4 +136,4 @@ class Save extends Component<Props, State> {
   }
 }
 
-export default Save;
+export default translate()(Save as any) as any;
