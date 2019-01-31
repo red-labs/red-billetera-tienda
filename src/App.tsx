@@ -91,10 +91,18 @@ class App extends Component<Props, State> {
               {t('efectivo')}
           </h1>
           <h1>$3.00</h1>
-<div className="d-flex w-100 text-center justify-content-center">
-          <button onClick={() => i18n.changeLanguage("en")}>English</button>
-          <button onClick={() => i18n.changeLanguage("es")}>Spanish</button>
-</div>
+          <div className="d-flex w-100 text-center justify-content-center">
+            <Button 
+              onClick={() => i18n.changeLanguage("en")}
+              style={{ flex: "1 1 0", maxWidth: 200, margin: 5 }}
+              size="lg"
+            >English</Button>
+            <Button 
+              onClick={() => i18n.changeLanguage("es")}
+              style={{ flex: "1 1 0", maxWidth: 200, margin: 5 }}
+              size="lg"
+            >Español</Button>
+          </div>
           <div
             style={{
               display: "flex",
