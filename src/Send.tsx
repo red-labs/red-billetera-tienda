@@ -170,22 +170,6 @@ class Send extends Component<Props, State> {
     amount: 0
   };
 
-  sendTx = async () => {
-    console.log('ACCOUNT', this.props.account)
-    let await = this.props.web3.eth
-      .signTransaction({
-        from: this.props.account.address,
-        to: this.state.toAddress,
-        value: this.props.web3.utils.toWei(this.state.amount.toString()),
-        gas: 0
-      }, this.props.account.privateKey)
-      .then(txn => {
-        console.log('TXNN', txn)
-        this.props.web3.eth.sendSignedTransaction(txn.raw, console.log)
-      })
-    this.props.toggle()
-  };
-
   render() {
     return (
       <Modal isOpen={this.props.open} toggle={this.props.toggle}>
@@ -253,7 +237,7 @@ class Send extends Component<Props, State> {
           </FormGroup>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={this.sendTx}>
+          <Button color="primary" onClick={this.props.toggle}>
             Send
           </Button>{" "}
           <Button color="secondary" onClick={this.props.toggle}>
