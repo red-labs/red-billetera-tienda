@@ -108,7 +108,7 @@ class Save extends Component<Props, State> {
             color="success"
             toggle={() => this.setState({ saveAlertOpen: false })}
           >
-            Private key copied to clipboard
+            {t('privateKeyCopied')}
           </Alert>
         </div>
         <div
@@ -128,7 +128,7 @@ class Save extends Component<Props, State> {
             color="success"
             toggle={() => this.setState({ restoreAlertOpen: false })}
           >
-            Private key restored
+            {t('privateKeyRestored')}
           </Alert>
         </div>
       </Modal>

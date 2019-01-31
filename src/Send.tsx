@@ -107,7 +107,7 @@ class Send extends Component<Props, State> {
         <QrReader
           toggle={() => this.setState({ qrReading: false })}
           open={this.state.qrReading}
-          onScan={scanned => {
+          onScan={(scanned: string) => {
             if (scanned && this.props.web3.utils.isAddress(scanned)) {
               this.setState({ qrReading: false, address: scanned });
             }

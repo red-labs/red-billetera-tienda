@@ -1,20 +1,24 @@
 import QrReader from "react-qr-reader";
 import { Modal, ModalBody, ModalHeader } from "reactstrap";
 import React, { Component } from "react";
+import { translate } from "react-i18next";
 
 interface Props {
   open: boolean;
   toggle: () => void;
   onScan: (scanned: string | null) => void;
+  t: Function;
 }
 
 interface State {}
 
 class Send extends Component<Props, State> {
   render() {
+    const { t } = this.props
+
     return (
       <Modal isOpen={this.props.open} toggle={this.props.toggle}>
-        <ModalHeader toggle={this.props.toggle}>Scan address</ModalHeader>
+        <ModalHeader toggle={this.props.toggle}>{t('scanAddress')}</ModalHeader>
         <ModalBody>
           <QrReader
             onScan={this.props.onScan}
@@ -26,4 +30,4 @@ class Send extends Component<Props, State> {
   }
 }
 
-export default Send;
+export default translate()(Send as any) as any;

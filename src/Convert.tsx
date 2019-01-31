@@ -46,7 +46,7 @@ class Convert extends Component<Props, State> {
         </ModalHeader>
         <ModalBody>
           <FormGroup>
-            <Label for="amountToSend">Convert</Label>
+            <Label for="amountToSend">{t('convert')}</Label>
             <InputGroup>
               {this.props.currency !== Currency.ETH && (
                 <InputGroupAddon addonType="prepend">

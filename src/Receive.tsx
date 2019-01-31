@@ -71,7 +71,7 @@ class Receive extends Component<Props, State> {
               style={{ maxWidth: 240, margin: 5 }}
               size="lg"
             >
-              {copyIcon("#fff")} Copy address
+              {copyIcon("#fff")} {t('copyAddress')}
             </Button>
           </div>
         </ModalBody>
