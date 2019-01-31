@@ -83,7 +83,7 @@ class App extends Component<Props, State> {
 
   render() {
     let { i18n, t } = this.props
-    let balance = !isNaN(Number(this.state.balance)) ? '$' + this.state.balance : "loading..."
+    let balance = !isNaN(Number(this.state.balance)) ? '$' + this.state.balance : t('loading')
     return this.state.account ? (
       <div style={{ textAlign: "center" }}>
         <div

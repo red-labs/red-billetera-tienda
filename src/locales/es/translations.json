@@ -7,6 +7,7 @@
   "copyAddress": "Copiar dirección",
   "copyPrivateKey": "Copiar clave privada",
   "efectivo": "Efectivo",
+  "loading": "Cargando...",
   "privateKeyCopied": "Clave privada copiada al portapapeles",
   "privateKeyRestored": "Clave privada restaurada",
   "receive": "Recibir",

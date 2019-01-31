@@ -7,6 +7,7 @@
   "copyAddress": "Copy address",
   "copyPrivateKey": "Copy private key",
   "efectivo": "Efectivo",
+  "loading": "Loading...",
   "privateKeyCopied": "Private key copied to clipboard",
   "privateKeyRestored": "Private key restored",
   "receive": "Receive",
