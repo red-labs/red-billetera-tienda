@@ -12,9 +12,9 @@ import {
   FormGroup,
   Label
 } from "reactstrap";
-import { qr, camera } from "./icons";
+import { qr, camera } from "../icons";
 import React, { Component } from "react";
-import { Currency, currencyToName, currencyToSymbol } from "./types";
+import { Currency, currencyToName, currencyToSymbol } from "../types";
 import Web3 from "web3";
 import { translate } from "react-i18next";
 
