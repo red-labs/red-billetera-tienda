@@ -13,9 +13,9 @@ import {
   Label,
   Alert
 } from "reactstrap";
-import { qr, camera } from "./icons";
+import { qr, camera } from "../icons";
 import React, { Component } from "react";
-import { Currency, currencyToName, currencyToSymbol } from "./types";
+import { Currency, currencyToName, currencyToSymbol } from "../types";
 import QrReader from "./QrReader";
 import Web3 from "web3";
 import { Accounts, Account } from "web3-eth-accounts/types";

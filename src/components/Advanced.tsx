@@ -13,7 +13,7 @@ import {
   FormGroup,
   Label
 } from "reactstrap";
-import { upArrow, downArrow, rightArrow } from "./icons";
+import { upArrow, downArrow, rightArrow } from "../icons";
 import React, { Component } from "react";
 import QRCode from "qrcode.react";
 import copy from "clipboard-copy";
@@ -24,9 +24,9 @@ import daiImg from "./images/dai.jpg";
 import xdaiImg from "./images/xdai.jpg";
 import ethImg from "./images/ethereum.png";
 
-import { Currency } from "./types";
+import { Currency } from "../types";
 import Send from "./Send";
-import Convert from "./Convert";
+import Convert from "../Convert";
 import Web3 from "web3";
 import { translate } from "react-i18next";
 

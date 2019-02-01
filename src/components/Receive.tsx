@@ -13,7 +13,7 @@ import {
   FormGroup,
   Label
 } from "reactstrap";
-import { copy as copyIcon } from "./icons";
+import { copy as copyIcon } from "../icons";
 import React, { Component } from "react";
 import QRCode from "qrcode.react";
 import copy from "clipboard-copy";

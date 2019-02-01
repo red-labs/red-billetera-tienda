@@ -13,7 +13,7 @@ import {
 } from "reactstrap";
 import Web3 from "web3";
 import { Account } from "web3-eth-accounts";
-import { randomHex } from "./randomHex";
+import { randomHex } from "../randomHex";
 import Advanced from "./Advanced";
 import { ImmortalDB } from "immortal-db";
 //@ts-ignore
