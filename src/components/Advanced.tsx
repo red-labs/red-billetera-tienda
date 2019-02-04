@@ -1,28 +1,12 @@
-import {
-  Button,
-  ButtonGroup,
-  Modal,
-  ModalBody,
-  ModalHeader,
-  ModalFooter,
-  Input,
-  Alert,
-  InputGroup,
-  InputGroupText,
-  InputGroupAddon,
-  FormGroup,
-  Label
-} from "reactstrap";
+import { Button, Modal, ModalBody, ModalHeader } from "reactstrap";
 import { upArrow, downArrow, rightArrow } from "../icons";
 import React, { Component } from "react";
-import QRCode from "qrcode.react";
-import copy from "clipboard-copy";
 
 import { Account } from "web3-eth-accounts";
 
-import daiImg from "./images/dai.jpg";
-import xdaiImg from "./images/xdai.jpg";
-import ethImg from "./images/ethereum.png";
+import daiImg from "../images/dai.jpg";
+import xdaiImg from "../images/xdai.jpg";
+import ethImg from "../images/ethereum.png";
 
 import { Currency } from "../types";
 import Send from "./Send";
@@ -85,10 +69,6 @@ const buttonStyle2 = {
   maxWidth: 140,
   marginTop: 5
 };
-
-function getSendModalCurrency(state: State): Currency | undefined {
-  return state.sendModal ? state.sendModal.currency : undefined;
-}
 
 function getConvertModalCurrency(state: State): Currency | undefined {
   return state.convertModal ? state.convertModal.currency : undefined;
@@ -250,10 +230,8 @@ class Advanced extends Component<Props, State> {
         />
         <Send
           toggle={() => this.setState({ sendModal: undefined })}
-          account={this.props.account}
           open={this.state.sendModal !== undefined}
-          currency={getSendModalCurrency(this.state)}
-          web3={this.props.web3}
+          currency={Currency.XDAI}
         />
       </Modal>
     );

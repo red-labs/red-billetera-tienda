@@ -1,21 +1,17 @@
 import {
   Button,
-  ButtonGroup,
   Modal,
   ModalBody,
   ModalHeader,
   ModalFooter,
   Input,
   InputGroup,
-  InputGroupText,
   InputGroupAddon,
   FormGroup,
   Label
 } from "reactstrap";
-import { qr, camera } from "../icons";
 import React, { Component } from "react";
 import { Currency, currencyToName, currencyToSymbol } from "../types";
-import Web3 from "web3";
 import { translate } from "react-i18next";
 
 interface Props {
@@ -23,7 +19,6 @@ interface Props {
   toggle: () => void;
   currency: Currency;
   convertTo: Currency;
-  web3: Web3;
   t: Function;
 }
 
@@ -36,17 +31,17 @@ class Convert extends Component<Props, State> {
   };
 
   render() {
-    const { t } = this.props
+    const { t } = this.props;
 
     return (
       <Modal isOpen={this.props.open} toggle={this.props.toggle}>
         <ModalHeader toggle={this.props.toggle}>
-          {t('convert')} {currencyToName(this.props.currency)} {t('to')}
+          {t("convert")} {currencyToName(this.props.currency)} {t("to")}
           {currencyToName(this.props.convertTo)}
         </ModalHeader>
         <ModalBody>
           <FormGroup>
-            <Label for="amountToSend">{t('convert')}</Label>
+            <Label for="amountToSend">{t("convert")}</Label>
             <InputGroup>
               {this.props.currency !== Currency.ETH && (
                 <InputGroupAddon addonType="prepend">
@@ -59,16 +54,16 @@ class Convert extends Component<Props, State> {
               </InputGroupAddon>
             </InputGroup>
             <Label style={{ marginTop: 8 }}>
-              {t('to')} {currencyToName(this.props.convertTo)}
+              {t("to")} {currencyToName(this.props.convertTo)}
             </Label>
           </FormGroup>
         </ModalBody>
         <ModalFooter>
           <Button color="primary" onClick={this.props.toggle}>
-            {t('convert')} 
+            {t("convert")}
           </Button>{" "}
           <Button color="secondary" onClick={this.props.toggle}>
-            {t('cancel')} 
+            {t("cancel")}
           </Button>
         </ModalFooter>
       </Modal>

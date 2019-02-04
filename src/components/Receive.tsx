@@ -1,17 +1,10 @@
 import {
   Button,
-  ButtonGroup,
   Modal,
   ModalBody,
   ModalHeader,
-  ModalFooter,
   Input,
-  Alert,
-  InputGroup,
-  InputGroupText,
-  InputGroupAddon,
-  FormGroup,
-  Label
+  Alert
 } from "reactstrap";
 import { copy as copyIcon } from "../icons";
 import React, { Component } from "react";
@@ -44,13 +37,13 @@ class Receive extends Component<Props, State> {
   };
 
   render() {
-    const { t } = this.props
+    const { t } = this.props;
     if (!this.props.open) {
       this.state.alertOpen = false;
     }
     return (
       <Modal isOpen={this.props.open} toggle={this.props.toggle}>
-        <ModalHeader toggle={this.props.toggle}>{t('receive')}</ModalHeader>
+        <ModalHeader toggle={this.props.toggle}>{t("receive")}</ModalHeader>
         <ModalBody>
           <div
             style={{
@@ -71,7 +64,7 @@ class Receive extends Component<Props, State> {
               style={{ maxWidth: 240, margin: 5 }}
               size="lg"
             >
-              {copyIcon("#fff")} {t('copyAddress')}
+              {copyIcon("#fff")} {t("copyAddress")}
             </Button>
           </div>
         </ModalBody>
@@ -92,7 +85,7 @@ class Receive extends Component<Props, State> {
             color="success"
             toggle={() => this.setState({ alertOpen: false })}
           >
-            {t('addressCopied')}
+            {t("addressCopied")}
           </Alert>
         </div>
       </Modal>
@@ -100,4 +93,4 @@ class Receive extends Component<Props, State> {
   }
 }
 
-export default (translate()(Receive as any)) as any;
+export default translate()(Receive as any) as any;
