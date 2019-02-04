@@ -90,6 +90,9 @@ class Save extends Component<Props, State> {
               {t("restorePrivateKey")}
             </Button>
           </div>
+          <div>
+            Paste your private key here if you want to restore your wallet.
+          </div>
         </ModalBody>
         <div
           style={{
@@ -131,7 +134,6 @@ class Save extends Component<Props, State> {
             {t("privateKeyRestored")}
           </Alert>
         </div>
-        <div>Paste your private key here to restore your wallet.</div>
       </Modal>
     );
   }
