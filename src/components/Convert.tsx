@@ -12,7 +12,7 @@ import {
 } from "reactstrap";
 import React, { Component } from "react";
 import { Currency, currencyToName, currencyToSymbol } from "../types";
-import { translate } from "react-i18next";
+import { withI18n } from "react-i18next";
 
 interface Props {
   open: boolean;
@@ -71,4 +71,4 @@ class Convert extends Component<Props, State> {
   }
 }
 
-export default translate()(Convert as any) as any;
+export default withI18n()(Convert);

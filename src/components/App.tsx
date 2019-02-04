@@ -6,10 +6,10 @@ import { Button } from "reactstrap";
 import Advanced from "./Advanced";
 //@ts-ignore
 import baseEmoji from "base-emoji";
-import { translate } from "react-i18next";
+import { withI18n } from "react-i18next";
 import { ethers } from "ethers";
 import { Currency } from "../types";
-import { AppContainer } from "../Provider";
+import { AppContainer } from "../store";
 import { Subscribe } from "unstated";
 
 enum Route {
@@ -145,11 +145,9 @@ function App(props: Props) {
             open={context.state.route === Route.Advanced}
           />
         </div>
-      )
-      // )
-      }
+      )}
     </Subscribe>
   );
 }
 
-export default translate()(App);
+export default withI18n()(App);

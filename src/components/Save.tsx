@@ -6,10 +6,10 @@ import {
   Input,
   Alert
 } from "reactstrap";
-import { copy as copyIcon } from "../icons";
+import { copy as copyIcon } from "../utils/icons";
 import React, { Component } from "react";
 import copy from "clipboard-copy";
-import { translate } from "react-i18next";
+import { withI18n } from "react-i18next";
 
 interface Props {
   open: boolean;
@@ -128,4 +128,4 @@ class Save extends Component<Props, State> {
   }
 }
 
-export default translate()(Save as any) as any;
+export default withI18n()(Save);

@@ -9,8 +9,8 @@ i18n
     fallbackLng: "en",
 
     resources: {
-      en: { translations: require("./locales/en/translations.json") },
-      es: { translations: require("./locales/es/translations.json") }
+      en: { translations: require("../locales/en/translations.json") },
+      es: { translations: require("../locales/es/translations.json") }
     },
 
     ns: ["translations"],

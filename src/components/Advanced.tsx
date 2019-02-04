@@ -1,5 +1,5 @@
 import { Button, Modal, ModalBody, ModalHeader } from "reactstrap";
-import { upArrow, downArrow, rightArrow } from "../icons";
+import { upArrow, downArrow, rightArrow } from "../utils/icons";
 import React, { Component } from "react";
 
 import { Account } from "web3-eth-accounts";
@@ -12,22 +12,22 @@ import { Currency } from "../types";
 import Send from "./Send";
 import Convert from "./Convert";
 import Web3 from "web3";
-import { translate } from "react-i18next";
+import { withI18n } from "react-i18next";
 
 interface Props {
   open: boolean;
   toggle: () => void;
-  web3: Web3;
-  account: Account;
   t: Function;
 }
 
 interface State {
   alertOpen: boolean;
-  sendModal?: {
+  sendModal: {
+    open: boolean;
     currency: Currency;
   };
-  convertModal?: {
+  convertModal: {
+    open: boolean;
     currency: Currency;
     convertTo: Currency;
   };
@@ -81,8 +81,15 @@ function getConvertModalConvertTo(state: State): Currency | undefined {
 class Advanced extends Component<Props, State> {
   state = {
     alertOpen: false,
-    sendModal: undefined,
-    convertModal: undefined
+    sendModal: {
+      open: false,
+      currency: Currency.XDAI
+    },
+    convertModal: {
+      open: false,
+      currency: Currency.XDAI,
+      convertTo: Currency.XDAI
+    }
   };
 
   render() {
@@ -106,7 +113,12 @@ class Advanced extends Component<Props, State> {
               <h5 style={balanceTextStyle}>$3.00</h5>
               <Button
                 onClick={() =>
-                  this.setState({ sendModal: { currency: Currency.XDAI } })
+                  this.setState({
+                    sendModal: {
+                      open: true,
+                      currency: Currency.XDAI
+                    }
+                  })
                 }
                 size="lg"
                 outline
@@ -122,6 +134,7 @@ class Advanced extends Component<Props, State> {
                 onClick={() =>
                   this.setState({
                     convertModal: {
+                      open: true,
                       currency: Currency.XDAI,
                       convertTo: Currency.DAI
                     }
@@ -138,6 +151,7 @@ class Advanced extends Component<Props, State> {
                 onClick={() =>
                   this.setState({
                     convertModal: {
+                      open: true,
                       currency: Currency.DAI,
                       convertTo: Currency.XDAI
                     }
@@ -156,7 +170,9 @@ class Advanced extends Component<Props, State> {
               <h5 style={balanceTextStyle}>$3.00</h5>
               <Button
                 onClick={() =>
-                  this.setState({ sendModal: { currency: Currency.DAI } })
+                  this.setState({
+                    sendModal: { open: true, currency: Currency.DAI }
+                  })
                 }
                 size="lg"
                 outline
@@ -172,6 +188,7 @@ class Advanced extends Component<Props, State> {
                 onClick={() =>
                   this.setState({
                     convertModal: {
+                      open: true,
                       currency: Currency.DAI,
                       convertTo: Currency.ETH
                     }
@@ -188,6 +205,7 @@ class Advanced extends Component<Props, State> {
                 onClick={() =>
                   this.setState({
                     convertModal: {
+                      open: true,
                       currency: Currency.ETH,
                       convertTo: Currency.DAI
                     }
@@ -206,7 +224,9 @@ class Advanced extends Component<Props, State> {
               <h5 style={balanceTextStyle}>$3.00</h5>
               <Button
                 onClick={() =>
-                  this.setState({ sendModal: { currency: Currency.ETH } })
+                  this.setState({
+                    sendModal: { open: true, currency: Currency.ETH }
+                  })
                 }
                 size="lg"
                 outline
@@ -221,16 +241,28 @@ class Advanced extends Component<Props, State> {
           <hr />
         </ModalBody>
 
-        <Convert
-          toggle={() => this.setState({ convertModal: undefined })}
-          open={this.state.convertModal !== undefined}
-          currency={getConvertModalCurrency(this.state)}
-          convertTo={getConvertModalConvertTo(this.state)}
-          web3={this.props.web3}
-        />
+        {this.state.convertModal !== undefined && (
+          <Convert
+            toggle={() =>
+              this.setState({
+                convertModal: { ...this.state.convertModal, open: false }
+              })
+            }
+            open={this.state.convertModal.open}
+            currency={this.state.convertModal.currency}
+            convertTo={this.state.convertModal.convertTo}
+          />
+        )}
         <Send
-          toggle={() => this.setState({ sendModal: undefined })}
-          open={this.state.sendModal !== undefined}
+          toggle={() =>
+            this.setState({
+              sendModal: {
+                ...this.state.sendModal,
+                open: false
+              }
+            })
+          }
+          open={this.state.sendModal.open}
           currency={Currency.XDAI}
         />
       </Modal>
@@ -238,4 +270,4 @@ class Advanced extends Component<Props, State> {
   }
 }
 
-export default translate()(Advanced as any) as any;
+export default withI18n()(Advanced);

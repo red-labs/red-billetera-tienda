@@ -1,11 +1,10 @@
-import React, { Component } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
 import App from "./components/App";
 import * as serviceWorker from "./serviceWorker";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./i18n";
-import { Provider, Subscribe, Container } from "unstated";
+import "./utils/i18n";
+import { Provider } from "unstated";
 // import { ethers } from "ethers";
 // import { ImmortalDB } from "immortal-db";
 // import { Currency } from "./types";

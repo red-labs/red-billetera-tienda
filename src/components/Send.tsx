@@ -8,16 +8,15 @@ import {
   InputGroup,
   InputGroupAddon,
   FormGroup,
-  Label,
-  Alert
+  Label
 } from "reactstrap";
-import { qr, camera } from "../icons";
+import { qr, camera } from "../utils/icons";
 import React, { Component } from "react";
 import { Currency, currencyToName, currencyToSymbol } from "../types";
 import QrReader from "./QrReader";
 import { withI18n } from "react-i18next";
-import { isAddress } from "../isAddress";
-import { AppContainer } from "../Provider";
+import { isAddress } from "../utils/isAddress";
+import { AppContainer } from "../store";
 import { Subscribe } from "unstated";
 import { ethers } from "ethers";
 
@@ -32,18 +31,6 @@ interface State {
   qrReading: boolean;
   toAddress: string;
   amount: ethers.utils.BigNumber;
-  txSendingAlert?: {
-    toAddress: string;
-    amount: number;
-  };
-  txErrorAlert?: {
-    toAddress: string;
-    amount: number;
-  };
-  txSuccessAlert?: {
-    toAddress: string;
-    amount: number;
-  };
 }
 
 class Send extends Component<Props, State> {
@@ -151,27 +138,12 @@ class Send extends Component<Props, State> {
             <QrReader
               toggle={() => this.setState({ qrReading: false })}
               open={this.state.qrReading}
-              onScan={(scanned: string) => {
+              onScan={(scanned: string | null) => {
                 if (scanned && isAddress(scanned)) {
                   this.setState({ qrReading: false, toAddress: scanned });
                 }
               }}
             />
-            {/* <TxSendingAlert
-            toggle={() => this.setState({ txSendingAlert: undefined })}
-            isOpen={this.state.txSendingAlert !== undefined}
-            txSendingAlert={this.state.txSendingAlert}
-          />
-          <TxSuccessAlert
-            toggle={() => this.setState({ txSuccessAlert: undefined })}
-            isOpen={this.state.txSuccessAlert !== undefined}
-            txSuccessAlert={this.state.txSuccessAlert}
-          />
-          <TxErrorAlert
-            toggle={() => this.setState({ txErrorAlert: undefined })}
-            isOpen={this.state.txErrorAlert !== undefined}
-            txErrorAlert={this.state.txErrorAlert}
-          /> */}
           </Modal>
         )}
       </Subscribe>

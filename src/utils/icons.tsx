@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 
 export function qr(fill = "#fff", width = 24, height = 24) {
   return (

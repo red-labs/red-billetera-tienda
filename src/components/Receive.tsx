@@ -6,11 +6,11 @@ import {
   Input,
   Alert
 } from "reactstrap";
-import { copy as copyIcon } from "../icons";
+import { copy as copyIcon } from "../utils/icons";
 import React, { Component } from "react";
 import QRCode from "qrcode.react";
 import copy from "clipboard-copy";
-import { translate } from "react-i18next";
+import { withI18n } from "react-i18next";
 
 interface Props {
   open: boolean;
@@ -93,4 +93,4 @@ class Receive extends Component<Props, State> {
   }
 }
 
-export default translate()(Receive as any) as any;
+export default withI18n()(Receive);
