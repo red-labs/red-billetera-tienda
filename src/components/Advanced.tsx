@@ -2,8 +2,6 @@ import { Button, Modal, ModalBody, ModalHeader } from "reactstrap";
 import { upArrow, downArrow, rightArrow } from "../utils/icons";
 import React, { Component } from "react";
 
-import { Account } from "web3-eth-accounts";
-
 import daiImg from "../images/dai.jpg";
 import xdaiImg from "../images/xdai.jpg";
 import ethImg from "../images/ethereum.png";
@@ -11,7 +9,6 @@ import ethImg from "../images/ethereum.png";
 import { Currency } from "../types";
 import Send from "./Send";
 import Convert from "./Convert";
-import Web3 from "web3";
 import { withI18n } from "react-i18next";
 
 interface Props {
