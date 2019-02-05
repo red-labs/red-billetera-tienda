@@ -86,7 +86,11 @@ class Save extends Component<Props, State> {
               style={{ width: 240, marginTop: 10, marginBottom: 10 }}
               placeholder={"0x..."}
             />
-            <Button block style={{ maxWidth: 240, margin: 5 }} size="lg">
+            <Button
+              block
+              style={{ maxWidth: 240, margin: 5 }}
+              size="lg"
+              >
               {t("restorePrivateKey")}
             </Button>
           </div>

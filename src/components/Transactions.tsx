@@ -24,6 +24,13 @@ class Transactions extends Component<Props, State> {
     api: `https://blockscout.com/poa/dai/api?module=account&action=txlist&address=`,
     txns: [],
   };
+
+  /*
+    check how this is done in the router for polling the txns
+    Modal obejcts don't  reload componentDidMount
+    Move the txns to the store state
+    Right after send tx fetch the txlist to see for pending txs
+  */
   
   componentDidMount() {
     fetch(this.state.api + this.props.address)
@@ -46,6 +53,7 @@ class Transactions extends Component<Props, State> {
               <th>{t("amount")}</th>
               <th>{t("hash")}</th>
               <th>{t("to")}</th>
+              <th>{t("pending")}</th>
             </tr>
           </thead>
           <tbody>
