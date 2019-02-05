@@ -39,18 +39,13 @@ class Transactions extends Component<Props, State> {
     fetch(this.state.api + this.props.address)
     .then(res => res.json())
     .then(response => {
-      console.log("results", response)
       if(response.message === "OK")
-        this.setState({txns: response.result})
-
-      if(response.message === "No transactions found")
-        this.setState({txns: ["No transactions found"]})
+        this.setState({txns: response.result});
     })
   };
 
   render() {
     const { t } = this.props;
-
     return (
       <Modal isOpen={this.props.open} toggle={this.props.toggle}>
         <ModalHeader toggle={this.props.toggle}>{t("transactions")}</ModalHeader>
@@ -62,7 +57,7 @@ class Transactions extends Component<Props, State> {
               flexDirection: "column"
             }}
           >
-            {t("noTransactions")}
+            {this.state.txns.length !== 0 ? this.state.txns : t("noTransactions")}
           </div>
         </ModalBody>
       </Modal>
