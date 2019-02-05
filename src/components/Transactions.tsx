@@ -44,22 +44,22 @@ class Transactions extends Component<Props, State> {
             <tr>
               <th>{t("date")}</th>
               <th>{t("amount")}</th>
-              <th>t{("hash")}</th>
+              <th>{t("hash")}</th>
               <th>{t("to")}</th>
             </tr>
           </thead>
           <tbody>
             {this.state.txns.map((tx, i) => {
               console.log('HEY', tx)
-              // I did object assignment because i couldn't reference 
-              // tx.transactionIndex:
+              // Couldn't reference tx.transactionIndex:
               // Property 'transactionIndex' does not exist on type 'never'. [2339]
+              // tis' the reason why this weird object exists
               let {
-                transactionIndex = 0,
-                timestamp = 0,
-                value = 0,
-                hash = '',
-                to = '',
+                transactionIndex,
+                timestamp,
+                value,
+                hash,
+                to,
               } = tx
               return(
                 <tr key={i}>
