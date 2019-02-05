@@ -18,5 +18,7 @@
   "sendAmount": "Send amount",
   "sendToAddress": "Send to address",
   "sendX": "Send {{symbol}}",
-  "to": "to"
+  "to": "to",
+  "transactions": "Transactions",
+  "noTransactions": "No transactions found"
 }

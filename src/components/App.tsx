@@ -2,6 +2,7 @@ import React from "react";
 import Send from "./Send";
 import Receive from "./Receive";
 import Save from "./Save";
+import Transactions from "./Transactions";
 import { Button } from "reactstrap";
 import Advanced from "./Advanced";
 //@ts-ignore
@@ -11,14 +12,7 @@ import { ethers } from "ethers";
 import { Currency } from "../types";
 import { AppContainer } from "../store";
 import { Subscribe } from "unstated";
-
-enum Route {
-  Main,
-  Send,
-  Receive,
-  Save,
-  Advanced
-}
+import { Route } from "../store/index"
 
 interface Props {
   i18n: any;
@@ -117,6 +111,21 @@ function App(props: Props) {
             >
               <Button
                 outline
+                onClick={() => context.setRoute(Route.Transactions)}
+                style={{ flex: "1 1 0", maxWidth: 410, margin: 5 }}
+                size="sm"
+              >
+                {t("transactions")}
+              </Button>
+            </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center"
+              }}
+            >
+              <Button
+                outline
                 onClick={() => context.setRoute(Route.Advanced)}
                 style={{ flex: "1 1 0", maxWidth: 410, margin: 5 }}
                 size="sm"
@@ -125,6 +134,12 @@ function App(props: Props) {
               </Button>
             </div>
           </div>
+          <Transactions
+            address={context.state.xDaiWallet.address}
+            provider={context.state.xDaiProvider}
+            toggle={() => context.setRoute(Route.Main)}
+            open={context.state.route === Route.Transactions}
+          />
           <Send
             toggle={() => context.setRoute(Route.Main)}
             open={context.state.route === Route.Send}

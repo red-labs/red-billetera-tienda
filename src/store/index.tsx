@@ -7,7 +7,8 @@ export enum Route {
   Send,
   Receive,
   Save,
-  Advanced
+  Advanced,
+  Transactions
 }
 
 export interface RootState {

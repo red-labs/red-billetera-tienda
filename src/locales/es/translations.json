@@ -18,5 +18,7 @@
   "sendAmount": "Enviar cantidad",
   "sendToAddress": "Enviar dinero a cuenta",
   "sendX": "Enviar {{symbol}}",
-  "to": "a"
+  "to": "a",
+  "transactions": "Transacciones",
+  "noTransactions": "No se encontraron transaciones"
 }
