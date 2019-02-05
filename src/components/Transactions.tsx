@@ -62,6 +62,9 @@ class Transactions extends Component<Props, State> {
         <tbody>
           {txns.map((tx, i) => {
             console.log('HEY', tx)
+            // I did object assignment because i couldn't reference 
+            // tx.transactionIndex:
+            // Property 'transactionIndex' does not exist on type 'never'. [2339]
             let {
               transactionIndex = 0,
               timestamp = 0,
