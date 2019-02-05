@@ -42,10 +42,10 @@ class Transactions extends Component<Props, State> {
         <Table>
           <thead>
             <tr>
-              <th>Date</th>
-              <th>Amount</th>
-              <th>Hash</th>
-              <th>To</th>
+              <th>{t("date")}</th>
+              <th>{t("amount")}</th>
+              <th>t{("hash")}</th>
+              <th>{t("to")}</th>
             </tr>
           </thead>
           <tbody>
