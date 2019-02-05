@@ -136,7 +136,6 @@ function App(props: Props) {
           </div>
           <Transactions
             address={context.state.xDaiWallet.address}
-            provider={context.state.xDaiProvider}
             toggle={() => context.setRoute(Route.Main)}
             open={context.state.route === Route.Transactions}
           />

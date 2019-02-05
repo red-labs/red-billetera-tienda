@@ -4,20 +4,19 @@ import {
   ModalBody,
   ModalHeader,
   Input,
-  Alert
+  Alert,
+  Table
 } from "reactstrap";
 import { copy as copyIcon } from "../utils/icons";
 import React, { Component } from "react";
 import copy from "clipboard-copy";
 import { withI18n } from "react-i18next";
-import ethers, { providers } from "ethers";
 
 interface Props {
   open: boolean;
   toggle: () => void;
   address: String;
   t: Function;
-  provider: providers.Provider
 }
 
 interface State {
@@ -44,6 +43,48 @@ class Transactions extends Component<Props, State> {
     })
   };
 
+  renderTable() {
+    const {t} = this.props
+    let { txns } = this.state
+    console.log('TXNS', txns)
+    if (txns.length === 0) return t("noTransactions")
+    return(
+      <div>
+      <Table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Hash</th>
+            <th>To</th>
+          </tr>
+        </thead>
+        <tbody>
+          {txns.map((tx, i) => {
+            console.log('HEY', tx)
+            let {
+              transactionIndex = 0,
+              timestamp = 0,
+              value = 0,
+              hash = '',
+              to = '',
+            } = tx
+            return(
+              <tr key={i}>
+                <th scope="row">{transactionIndex}</th>
+                <td>{timestamp}</td>
+                <td>{value}</td>
+                <td>{hash}</td>
+                <td>{to}</td>
+              </tr>
+            )
+            })
+          }
+        </tbody>
+      </Table>
+      </div>
+    )
+  }
   render() {
     const { t } = this.props;
     return (
@@ -57,7 +98,7 @@ class Transactions extends Component<Props, State> {
               flexDirection: "column"
             }}
           >
-            {this.state.txns.length !== 0 ? this.state.txns : t("noTransactions")}
+            {this.renderTable()}
           </div>
         </ModalBody>
       </Modal>
