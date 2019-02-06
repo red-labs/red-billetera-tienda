@@ -45,11 +45,6 @@ export class AppContainer extends Container<RootState> {
     const ethProvider = ethers.getDefaultProvider();
     const xDaiWallet = new ethers.Wallet(privateKey, xDaiProvider);
     const ethWallet = new ethers.Wallet(privateKey, ethProvider);
-
-    // This initialization is probably not needed or can be avoided
-    // Right now this has a lenght of 1 but when componentDidMount
-    // is called on App.tsx ir sets this state var to an empty
-    // array
     let transactions: Transaction[] = [
     ]
 
