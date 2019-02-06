@@ -36,20 +36,22 @@ class App extends Component<Props> {
 
   determineBalance() {
     let {store, t }  = this.props
+    let symbol = '$'
     let balance: utils.BigNumber = utils.bigNumberify('0');
     switch (store.state.currency) {
       case Currency.DAI:
-        balance = store.state.daiBalance!;
+        balance= store.state.daiBalance!;
         break;
       case Currency.ETH:
         balance = store.state.ethBalance!;
+        symbol = 'ETH'
         break;
       case Currency.XDAI:
         balance = store.state.xDaiBalance!;
         break;
     }
     return !isNaN(Number(balance))
-    ? "$" + utils.formatEther(balance.toString())
+    ? symbol + utils.formatEther(balance)
     : t("loading")
   }
 
