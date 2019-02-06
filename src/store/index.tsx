@@ -4,7 +4,7 @@ import { Container } from "unstated";
 
 // This is a simplified ABI that only has the functions
 // that the app might care about.
-import ERC20Abi from "../utils/ERC20.json"
+import ERC20Abi from "../utils/ERC20.json";
 
 export enum Route {
   Main,
@@ -28,7 +28,7 @@ export interface RootState {
   transactions: Transaction[];
 }
 
-const DAI = "0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359"
+const DAI = "0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359";
 
 export class AppContainer extends Container<RootState> {
   constructor() {
@@ -45,7 +45,7 @@ export class AppContainer extends Container<RootState> {
     const ethProvider = ethers.getDefaultProvider();
     const xDaiWallet = new ethers.Wallet(privateKey, xDaiProvider);
     const ethWallet = new ethers.Wallet(privateKey, ethProvider);
-    let transactions: Transaction[] = []
+    let transactions: Transaction[] = [];
 
     this.state = {
       currency: Currency.XDAI,
@@ -54,7 +54,7 @@ export class AppContainer extends Container<RootState> {
       ethProvider,
       xDaiWallet,
       ethWallet,
-      transactions,
+      transactions
     };
   }
 
@@ -100,36 +100,38 @@ export class AppContainer extends Container<RootState> {
     let url: String = ``;
     switch (this.state.currency) {
       case Currency.DAI:
-        url = `Needs url`
+        url = `Needs url`;
       case Currency.ETH:
-        url = `Needs url`
+        url = `Needs url`;
         break;
       case Currency.XDAI:
-        url = `https://blockscout.com/poa/dai/api?module=account&action=txlist&address=`
+        url = `https://blockscout.com/poa/dai/api?module=account&action=txlist&address=`;
         break;
     }
 
     fetch(url + this.state.xDaiWallet.address)
-    .then(res => res.json())
-    .then(response => {
-      this.setState({
-        transactions: response.message === "OK" ? response.result : []
-      })
-    })
+      .then(res => res.json())
+      .then(response => {
+        this.setState({
+          transactions: response.message === "OK" ? response.result : []
+        });
+      });
   }
 
   async fetchAndSetBalances() {
     let xDaiBalance = await this.state.xDaiWallet.getBalance();
     let ethBalance = await this.state.ethWallet.getBalance();
     let daiContract = new ethers.Contract(
-      DAI, ERC20Abi, this.state.ethProvider
+      DAI,
+      ERC20Abi,
+      this.state.ethProvider
     );
-    let daiBalance = await daiContract.balanceOf(this.state.ethWallet.address)
+    let daiBalance = await daiContract.balanceOf(this.state.ethWallet.address);
 
     await this.setState({
       xDaiBalance,
       ethBalance,
-      daiBalance,
-    })
+      daiBalance
+    });
   }
 }

@@ -5,18 +5,14 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./utils/i18n";
 import { AppContainer } from "./store";
 import { Subscribe, Provider } from "unstated";
-import App from "./components/App"
+import App from "./components/App";
 
 ReactDOM.render(
   <Provider>
     <Subscribe to={[AppContainer]}>
-      {(store: AppContainer) => (
-        <App
-          store={store}
-        />
-      )}
-  </Subscribe>
-</Provider>,
+      {(store: AppContainer) => <App store={store} />}
+    </Subscribe>
+  </Provider>,
   document.getElementById("root")
 );
 

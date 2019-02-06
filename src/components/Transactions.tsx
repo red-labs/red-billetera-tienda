@@ -1,12 +1,7 @@
-import {
-  Modal,
-  ModalBody,
-  ModalHeader,
-  Table
-} from "reactstrap";
+import { Modal, ModalBody, ModalHeader, Table } from "reactstrap";
 import React, { Component } from "react";
 import { withI18n } from "react-i18next";
-import { Transaction } from "../types"
+import { Transaction } from "../types";
 
 interface Props {
   open: boolean;
@@ -15,13 +10,11 @@ interface Props {
   txns: Transaction[];
 }
 
-
 class Transactions extends Component<Props> {
-
   renderTable() {
-    const {t, txns} = this.props
-    if (txns.length === 0) return t("noTransactions")
-    return(
+    const { t, txns } = this.props;
+    if (txns.length === 0) return t("noTransactions");
+    return (
       <div>
         <Table>
           <thead>
@@ -35,7 +28,7 @@ class Transactions extends Component<Props> {
           </thead>
           <tbody>
             {txns.map((tx, i) => {
-              return(
+              return (
                 <tr key={i}>
                   <th scope="row">{tx.transactionIndex}</th>
                   <td>{tx.timestamp}</td>
@@ -44,19 +37,20 @@ class Transactions extends Component<Props> {
                   <td>{tx.to}</td>
                   <td>{tx.txreceipt_status}</td>
                 </tr>
-              )
-              })
-            }
+              );
+            })}
           </tbody>
         </Table>
       </div>
-    )
+    );
   }
   render() {
     const { t } = this.props;
     return (
       <Modal isOpen={this.props.open} toggle={this.props.toggle}>
-        <ModalHeader toggle={this.props.toggle}>{t("transactions")}</ModalHeader>
+        <ModalHeader toggle={this.props.toggle}>
+          {t("transactions")}
+        </ModalHeader>
         <ModalBody>
           <div
             style={{
