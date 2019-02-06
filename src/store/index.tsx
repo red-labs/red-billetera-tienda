@@ -2,6 +2,10 @@ import { ethers } from "ethers";
 import { Currency, Transaction } from "../types";
 import { Container } from "unstated";
 
+// This is a simplified ABI that only has the functions
+// that the app might care about.
+import ERC20Abi from "../utils/ERC20.json"
+
 export enum Route {
   Main,
   Send,
@@ -23,6 +27,8 @@ export interface RootState {
   ethBalance?: ethers.utils.BigNumber;
   transactions: Transaction[];
 }
+
+const DAI = "0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359"
 
 export class AppContainer extends Container<RootState> {
   constructor() {
@@ -115,6 +121,21 @@ export class AppContainer extends Container<RootState> {
       this.setState({
         transactions: response.message === "OK" ? response.result : []
       })
+    })
+  }
+
+  async fetchAndSetBalances() {
+    let xDaiBalance = await this.state.xDaiWallet.getBalance();
+    let ethBalance = await this.state.ethWallet.getBalance();
+    let daiContract = new ethers.Contract(
+      DAI, ERC20Abi, this.state.ethProvider
+    );
+    let daiBalance = await daiContract.balanceOf(this.state.ethWallet.address)
+
+    await this.setState({
+      xDaiBalance,
+      ethBalance,
+      daiBalance,
     })
   }
 }

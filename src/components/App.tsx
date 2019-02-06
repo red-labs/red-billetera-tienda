@@ -31,6 +31,7 @@ class App extends Component<Props> {
 
   componentDidMount () {
     this.props.store.fetchAndSetTxns();
+    this.props.store.fetchAndSetBalances();
   }
   render() {
     let { i18n, t, store } = this.props;
