@@ -45,8 +45,7 @@ export class AppContainer extends Container<RootState> {
     const ethProvider = ethers.getDefaultProvider();
     const xDaiWallet = new ethers.Wallet(privateKey, xDaiProvider);
     const ethWallet = new ethers.Wallet(privateKey, ethProvider);
-    let transactions: Transaction[] = [
-    ]
+    let transactions: Transaction[] = []
 
     this.state = {
       currency: Currency.XDAI,

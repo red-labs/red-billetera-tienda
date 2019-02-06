@@ -52,7 +52,7 @@ class Send extends Component<Props, State> {
 
     return (
       <Subscribe to={[AppContainer]}>
-        {(context: AppContainer) => (
+        {(container: AppContainer) => (
           <Modal isOpen={this.props.open} toggle={this.props.toggle}>
             <ModalHeader toggle={this.props.toggle}>
               {t("send")} {currencyToName(this.props.currency)}
@@ -121,7 +121,7 @@ class Send extends Component<Props, State> {
               <Button
                 color="primary"
                 onClick={() => {
-                  context.sendTx(
+                  container.sendTx(
                     this.props.currency,
                     this.state.toAddress,
                     this.state.amount
