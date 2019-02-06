@@ -51,7 +51,8 @@ class App extends Component<Props> {
           </h1>
           <h1>
             {!isNaN(Number(store.state.xDaiBalance))
-              ? "$" + utils.formatEther(store.state.xDaiBalance!.toString())
+              ? "$" +
+                Number(utils.formatEther(store.state.xDaiBalance!)).toFixed(2)
               : t("loading")}
           </h1>
           <div className="d-flex w-100 text-center justify-content-center">
