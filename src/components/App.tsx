@@ -8,7 +8,7 @@ import Advanced from "./Advanced";
 //@ts-ignore
 import baseEmoji from "base-emoji";
 import { withI18n } from "react-i18next";
-import { ethers } from "ethers";
+import {utils} from "ethers";
 import { Currency } from "../types";
 import { AppContainer } from "../store";
 import { Route } from "../store/index"
@@ -21,7 +21,7 @@ interface Props {
 
 
 function addressToEmoji(address: string) {
-  const hash = ethers.utils.keccak256(address);
+  const hash = utils.keccak256(address);
   const last2bytes = hash.slice(-4);
   const buf = new Buffer(last2bytes, "hex");
   return baseEmoji.toUnicode(buf);
@@ -33,6 +33,26 @@ class App extends Component<Props> {
     this.props.store.fetchAndSetTxns();
     this.props.store.fetchAndSetBalances();
   }
+
+  determineBalance() {
+    let {store, t }  = this.props
+    let balance: utils.BigNumber = utils.bigNumberify('0');
+    switch (store.state.currency) {
+      case Currency.DAI:
+        balance = store.state.daiBalance!;
+        break;
+      case Currency.ETH:
+        balance = store.state.ethBalance!;
+        break;
+      case Currency.XDAI:
+        balance = store.state.xDaiBalance!;
+        break;
+    }
+    return !isNaN(Number(balance))
+    ? "$" + utils.formatEther(balance.toString())
+    : t("loading")
+  }
+
   render() {
     let { i18n, t, store } = this.props;
     return (
@@ -51,9 +71,7 @@ class App extends Component<Props> {
             {t("efectivo")}
           </h1>
           <h1>
-            {!isNaN(Number(store.state.xDaiBalance))
-              ? "$" + store.state.xDaiBalance
-              : t("loading")}
+            {this.determineBalance()}
           </h1>
           <div className="d-flex w-100 text-center justify-content-center">
             <Button

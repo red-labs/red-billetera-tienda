@@ -103,14 +103,14 @@ export class AppContainer extends Container<RootState> {
   };
 
   fetchAndSetTxns() {
-    let url: String;
+    let url: String = ``;
     switch (this.state.currency) {
       case Currency.DAI:
         url = `Needs url`
       case Currency.ETH:
         url = `Needs url`
         break;
-      default:
+      case Currency.XDAI:
         url = `https://blockscout.com/poa/dai/api?module=account&action=txlist&address=`
         break;
     }
