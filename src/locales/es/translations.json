@@ -1,5 +1,5 @@
 {
-  "addressCopied": "Copiado",
+  "addressCopied": "Cuenta fue copiada",
   "advanced": "Modo avanzado",
   "amount": "Cantidad",
   "cancel": "Cancelar",
@@ -11,17 +11,19 @@
   "efectivo": "Efectivo",
   "hash": "ID de transacción",
   "loading": "Cargando...",
-  "privateKeyCopied": "Clave privada copiada al portapapeles",
+  "pastePrivateKey": "Pegue su llave privada aqui si quieres recuperar una cuenta",
+  "privateKeyCopied": "Clave privada copiada",
   "privateKeyRestored": "Clave privada restaurada",
+  "privateKeySecurity": "Tu clave privada es lo que permite a tu cuenta enviar y recibir dinero. Cada cuenta tiene una llave privada diferente. LE RECOMENDAMOS que lo copies y que lo guardes en algún lugar en tu celular, sms, correo electronico hacia tu mismo. No dejes que otra persona vea o tenga accesso a tu llave privada. Si alguien tiene tu llave privada esa pesona tiene accesso completo a tu dinero.",
   "receive": "Recibir",
-  "restorePrivateKey": "Restaurar cuenta",
-  "saveRestore": "Guardar / Restaurar",
+  "restorePrivateKey": "Recuperar cuenta",
+  "noTransactions": "No se encontraron transacciones",
+  "saveRestore": "Guardar / Recuperar ",
   "scanAddress": "Escanear cuenta",
   "send": "Enviar",
   "sendAmount": "Enviar cantidad",
   "sendToAddress": "Enviar dinero a cuenta",
   "sendX": "Enviar {{symbol}}",
   "to": "a",
-  "transactions": "Transacciones",
-  "noTransactions": "No se encontraron transacciones"
+  "transactions": "Transacciones"
 }
