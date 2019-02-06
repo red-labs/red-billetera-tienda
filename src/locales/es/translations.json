@@ -14,7 +14,7 @@
   "pastePrivateKey": "Pegue su llave privada aqui si quieres recuperar una cuenta",
   "privateKeyCopied": "Clave privada copiada",
   "privateKeyRestored": "Clave privada restaurada",
-  "privateKeySecurity": "Tu clave privada es lo que permite a tu cuenta enviar y recibir dinero. Cada cuenta tiene una llave privada diferente. LE RECOMENDAMOS que lo copies y que lo guardes en algún lugar en tu celular, sms, correo electronico hacia tu mismo. No dejes que otra persona vea o tenga accesso a tu llave privada. Si alguien tiene tu llave privada esa pesona tiene accesso completo a tu dinero.",
+  "privateKeySecurity": "Tu clave privada es lo que permite a su cuenta enviar y recibir dinero. Cada cuenta tiene una llave privada diferente. LE RECOMENDAMOS que lo copies y que lo guardes en algún lugar en tu celular, mensaje de texto, correo electrónico hacia ti mismo. No dejes que otra persona vea o tenga acceso a tu llave privada. Si alguien tiene tu llave privada esa persona tiene acceso completo a tu dinero.",
   "receive": "Recibir",
   "restorePrivateKey": "Recuperar cuenta",
   "noTransactions": "No se encontraron transacciones",
