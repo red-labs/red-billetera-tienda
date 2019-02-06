@@ -29,8 +29,8 @@ interface Props {
 
 interface State {
   qrReading: boolean;
-  toAddress: string;
-  amount: ethers.utils.BigNumber;
+  toAddress: String;
+  amount: String;
 }
 
 class Send extends Component<Props, State> {
@@ -44,7 +44,7 @@ class Send extends Component<Props, State> {
     txSendingAlert: undefined,
     txSuccessAlert: undefined,
     txErrorAlert: undefined,
-    amount: ethers.utils.parseEther("0")
+    amount: "0"
   };
 
   render() {
@@ -52,7 +52,7 @@ class Send extends Component<Props, State> {
 
     return (
       <Subscribe to={[AppContainer]}>
-        {(container: AppContainer) => (
+        {(context: AppContainer) => (
           <Modal isOpen={this.props.open} toggle={this.props.toggle}>
             <ModalHeader toggle={this.props.toggle}>
               {t("send")} {currencyToName(this.props.currency)}
@@ -106,10 +106,10 @@ class Send extends Component<Props, State> {
                     placeholder="0.00"
                     onChange={event => {
                       this.setState({
-                        amount: ethers.utils.parseEther(event.target.value)
+                        amount: event.target.value
                       });
                     }}
-                    value={this.state.amount.toString()}
+                    value={this.state.amount}
                   />
                   <InputGroupAddon addonType="append">
                     {currencyToName(this.props.currency)}
@@ -121,10 +121,10 @@ class Send extends Component<Props, State> {
               <Button
                 color="primary"
                 onClick={() => {
-                  container.sendTx(
+                  context.sendTx(
                     this.props.currency,
                     this.state.toAddress,
-                    this.state.amount
+                    ethers.utils.parseEther(this.state.amount)
                   );
                   this.props.toggle();
                 }}
