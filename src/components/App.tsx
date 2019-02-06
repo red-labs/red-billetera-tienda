@@ -32,27 +32,6 @@ class App extends Component<Props> {
     this.props.store.fetchAndSetBalances();
   }
 
-  determineBalance() {
-    let { store, t } = this.props;
-    let symbol = "$";
-    let balance: utils.BigNumber = utils.bigNumberify("0");
-    switch (store.state.currency) {
-      case Currency.DAI:
-        balance = store.state.daiBalance!;
-        break;
-      case Currency.ETH:
-        balance = store.state.ethBalance!;
-        symbol = "ETH";
-        break;
-      case Currency.XDAI:
-        balance = store.state.xDaiBalance!;
-        break;
-    }
-    return !isNaN(Number(balance))
-      ? symbol + utils.formatEther(balance)
-      : t("loading");
-  }
-
   render() {
     let { i18n, t, store } = this.props;
     return (
@@ -70,7 +49,11 @@ class App extends Component<Props> {
               addressToEmoji(store.state.xDaiWallet.address)}{" "}
             {t("efectivo")}
           </h1>
-          <h1>{this.determineBalance()}</h1>
+          <h1>
+            {!isNaN(Number(store.state.xDaiBalance))
+              ? "$" + utils.formatEther(store.state.xDaiBalance!.toString())
+              : t("loading")}
+          </h1>
           <div className="d-flex w-100 text-center justify-content-center">
             <Button
               onClick={() => i18n.changeLanguage("en")}
