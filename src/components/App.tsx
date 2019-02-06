@@ -8,17 +8,16 @@ import Advanced from "./Advanced";
 //@ts-ignore
 import baseEmoji from "base-emoji";
 import { withI18n } from "react-i18next";
-import {utils} from "ethers";
+import { utils } from "ethers";
 import { Currency } from "../types";
 import { AppContainer } from "../store";
-import { Route } from "../store/index"
+import { Route } from "../store/index";
 
 interface Props {
   i18n: any;
   t: Function;
   store: AppContainer;
 }
-
 
 function addressToEmoji(address: string) {
   const hash = utils.keccak256(address);
@@ -28,31 +27,30 @@ function addressToEmoji(address: string) {
 }
 
 class App extends Component<Props> {
-
-  componentDidMount () {
+  componentDidMount() {
     this.props.store.fetchAndSetTxns();
     this.props.store.fetchAndSetBalances();
   }
 
   determineBalance() {
-    let {store, t }  = this.props
-    let symbol = '$'
-    let balance: utils.BigNumber = utils.bigNumberify('0');
+    let { store, t } = this.props;
+    let symbol = "$";
+    let balance: utils.BigNumber = utils.bigNumberify("0");
     switch (store.state.currency) {
       case Currency.DAI:
-        balance= store.state.daiBalance!;
+        balance = store.state.daiBalance!;
         break;
       case Currency.ETH:
         balance = store.state.ethBalance!;
-        symbol = 'ETH'
+        symbol = "ETH";
         break;
       case Currency.XDAI:
         balance = store.state.xDaiBalance!;
         break;
     }
     return !isNaN(Number(balance))
-    ? symbol + utils.formatEther(balance)
-    : t("loading")
+      ? symbol + utils.formatEther(balance)
+      : t("loading");
   }
 
   render() {
@@ -72,9 +70,7 @@ class App extends Component<Props> {
               addressToEmoji(store.state.xDaiWallet.address)}{" "}
             {t("efectivo")}
           </h1>
-          <h1>
-            {this.determineBalance()}
-          </h1>
+          <h1>{this.determineBalance()}</h1>
           <div className="d-flex w-100 text-center justify-content-center">
             <Button
               onClick={() => i18n.changeLanguage("en")}
@@ -182,9 +178,9 @@ class App extends Component<Props> {
           toggle={() => store.setRoute(Route.Main)}
           open={store.state.route === Route.Advanced}
         />
-        </div>
+      </div>
     );
-  };
+  }
 }
 
 export default withI18n()(App);
