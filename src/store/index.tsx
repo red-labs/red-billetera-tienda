@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { Currency } from "../types";
+import { Currency, Transaction } from "../types";
 import { Container } from "unstated";
 
 export enum Route {
@@ -12,6 +12,7 @@ export enum Route {
 }
 
 export interface RootState {
+  currency: Currency;
   route: Route;
   xDaiProvider: ethers.providers.Provider;
   ethProvider: ethers.providers.Provider;
@@ -20,6 +21,7 @@ export interface RootState {
   xDaiBalance?: ethers.utils.BigNumber;
   daiBalance?: ethers.utils.BigNumber;
   ethBalance?: ethers.utils.BigNumber;
+  transactions: Transaction[];
 }
 
 export class AppContainer extends Container<RootState> {
@@ -38,12 +40,21 @@ export class AppContainer extends Container<RootState> {
     const xDaiWallet = new ethers.Wallet(privateKey, xDaiProvider);
     const ethWallet = new ethers.Wallet(privateKey, ethProvider);
 
+    // This initialization is probably not needed or can be avoided
+    // Right now this has a lenght of 1 but when componentDidMount
+    // is called on App.tsx ir sets this state var to an empty
+    // array
+    let transactions: Transaction[] = [
+    ]
+
     this.state = {
+      currency: Currency.XDAI,
       route: Route.Main,
-      xDaiProvider: xDaiProvider,
-      ethProvider: ethProvider,
-      xDaiWallet: xDaiWallet,
-      ethWallet: ethWallet
+      xDaiProvider,
+      ethProvider,
+      xDaiWallet,
+      ethWallet,
+      transactions,
     };
   }
 
@@ -84,4 +95,27 @@ export class AppContainer extends Container<RootState> {
   setDaiBalance = (daiBalance: ethers.utils.BigNumber) => {
     this.setState({ daiBalance });
   };
+
+  // this could go into a different store that is contantly polling
+  async fetchTxns() {
+    let address: String;
+    switch (this.state.currency) {
+      case Currency.DAI:
+      case Currency.ETH:
+        address = this.state.ethWallet.address;
+        break;
+      default:
+        address = this.state.xDaiWallet.address;
+        break;
+    }
+
+    let url = `https://blockscout.com/poa/dai/api?module=account&action=txlist&address=`
+    fetch(url + address)
+    .then(res => res.json())
+    .then(response => {
+      this.setState({
+        transactions: response.message === "OK" ? response.result : []
+      })
+    })
+  }
 }

@@ -6,44 +6,21 @@ import {
 } from "reactstrap";
 import React, { Component } from "react";
 import { withI18n } from "react-i18next";
+import { Transaction } from "../types"
 
 interface Props {
   open: boolean;
   toggle: () => void;
-  address: String;
   t: Function;
+  txns: Transaction[];
 }
 
-interface State {
-  api: String;
-  txns: String[];
-}
 
-class Transactions extends Component<Props, State> {
-  state = {
-    api: `https://blockscout.com/poa/dai/api?module=account&action=txlist&address=`,
-    txns: [],
-  };
-
-  /*
-    check how this is done in the router for polling the txns
-    Modal obejcts don't  reload componentDidMount
-    Move the txns to the store state
-    Right after send tx fetch the txlist to see for pending txs
-  */
-  
-  componentDidMount() {
-    fetch(this.state.api + this.props.address)
-    .then(res => res.json())
-    .then(response => {
-      if(response.message === "OK")
-        this.setState({txns: response.result});
-    })
-  };
+class Transactions extends Component<Props> {
 
   renderTable() {
-    const {t} = this.props
-    if (this.state.txns.length === 0) return t("noTransactions")
+    const {t, txns} = this.props
+    if (txns.length === 0) return t("noTransactions")
     return(
       <div>
         <Table>
@@ -57,25 +34,15 @@ class Transactions extends Component<Props, State> {
             </tr>
           </thead>
           <tbody>
-            {this.state.txns.map((tx, i) => {
-              console.log('HEY', tx)
-              // Couldn't reference tx.transactionIndex:
-              // Property 'transactionIndex' does not exist on type 'never'. [2339]
-              // tis' the reason why this weird object exists
-              let {
-                transactionIndex,
-                timestamp,
-                value,
-                hash,
-                to,
-              } = tx
+            {txns.map((tx, i) => {
               return(
                 <tr key={i}>
-                  <th scope="row">{transactionIndex}</th>
-                  <td>{timestamp}</td>
-                  <td>{value}</td>
-                  <td>{hash}</td>
-                  <td>{to}</td>
+                  <th scope="row">{tx.transactionIndex}</th>
+                  <td>{tx.timestamp}</td>
+                  <td>{tx.value}</td>
+                  <td>{tx.hash}</td>
+                  <td>{tx.to}</td>
+                  <td>{tx.txreceipt_status}</td>
                 </tr>
               )
               })

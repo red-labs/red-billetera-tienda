@@ -19,6 +19,7 @@ interface Props {
   store: AppContainer;
 }
 
+
 function addressToEmoji(address: string) {
   const hash = ethers.utils.keccak256(address);
   const last2bytes = hash.slice(-4);
@@ -28,6 +29,9 @@ function addressToEmoji(address: string) {
 
 class App extends Component<Props> {
 
+  componentDidMount () {
+    this.props.store.fetchTxns()
+  }
   render() {
     let { i18n, t, store } = this.props;
     return (
@@ -133,11 +137,6 @@ class App extends Component<Props> {
             </Button>
           </div>
         </div>
-        <Transactions
-          address={store.state.xDaiWallet.address}
-          toggle={() => store.setRoute(Route.Main)}
-          open={store.state.route === Route.Transactions}
-        />
         <Send
           toggle={() => store.setRoute(Route.Main)}
           open={store.state.route === Route.Send}
@@ -152,6 +151,11 @@ class App extends Component<Props> {
           privateKey={store.state.xDaiWallet.privateKey}
           toggle={() => store.setRoute(Route.Main)}
           open={store.state.route === Route.Save}
+        />
+        <Transactions
+          toggle={() => store.setRoute(Route.Main)}
+          open={store.state.route === Route.Transactions}
+          txns={store.state.transactions}
         />
         <Advanced
           toggle={() => store.setRoute(Route.Main)}

@@ -1,3 +1,12 @@
+export interface Transaction {
+  transactionIndex?: String;
+  timestamp?: String;
+  value?: String;
+  hash?: String;
+  to?: String;
+  txreceipt_status?: String;
+}
+
 export enum Currency {
   XDAI,
   ETH,
