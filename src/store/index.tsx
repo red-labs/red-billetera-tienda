@@ -96,21 +96,20 @@ export class AppContainer extends Container<RootState> {
     this.setState({ daiBalance });
   };
 
-  // this could go into a different store that is contantly polling
-  async fetchTxns() {
-    let address: String;
+  fetchAndSetTxns() {
+    let url: String;
     switch (this.state.currency) {
       case Currency.DAI:
+        url = `Needs url`
       case Currency.ETH:
-        address = this.state.ethWallet.address;
+        url = `Needs url`
         break;
       default:
-        address = this.state.xDaiWallet.address;
+        url = `https://blockscout.com/poa/dai/api?module=account&action=txlist&address=`
         break;
     }
 
-    let url = `https://blockscout.com/poa/dai/api?module=account&action=txlist&address=`
-    fetch(url + address)
+    fetch(url + this.state.xDaiWallet.address)
     .then(res => res.json())
     .then(response => {
       this.setState({

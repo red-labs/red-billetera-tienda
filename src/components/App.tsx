@@ -30,7 +30,7 @@ function addressToEmoji(address: string) {
 class App extends Component<Props> {
 
   componentDidMount () {
-    this.props.store.fetchTxns()
+    this.props.store.fetchAndSetTxns();
   }
   render() {
     let { i18n, t, store } = this.props;
