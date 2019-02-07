@@ -133,7 +133,6 @@ export class AppContainer extends Container<RootState> {
 
       await this.setTxns(txns);
 
-      console.log;
       wallet.provider.once(txn.hash!, async () => {
         let result = await this.fetchTxns();
         if (result.message === "OK") this.setTxns(result.result);
@@ -159,5 +158,14 @@ export class AppContainer extends Container<RootState> {
 
   setTxns = async (transactions: iTxn[]) => {
     this.setState({ transactions });
+  };
+
+  sweepwallet = async (address: string) => {
+    let gasPrice = ethers.utils.bigNumberify(1000000000);
+    let gasLimit = ethers.utils.bigNumberify(21000);
+    let value = (await this.state.xDaiWallet.getBalance()).sub(
+      gasPrice.mul(gasLimit)
+    );
+    this.sendTx(Currency.XDAI, address, value);
   };
 }
