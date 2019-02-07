@@ -27,7 +27,7 @@ class Transactions extends Component<Props> {
             </tr>
           </thead>
           <tbody>
-            {txns.map((tx, i) => {
+            {txns.map((tx: Transaction, i) => {
               return (
                 <tr key={i}>
                   <th scope="row">{tx.transactionIndex}</th>

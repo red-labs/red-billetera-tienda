@@ -46,9 +46,16 @@ export class AppContainer extends Container<RootState> {
     const ethProvider = ethers.getDefaultProvider();
     const xDaiWallet = new ethers.Wallet(privateKey, xDaiProvider);
     const ethWallet = new ethers.Wallet(privateKey, ethProvider);
+    const daiContract = new ethers.Contract(DAI, ERC20Abi, ethProvider);
 
     xDaiProvider.on(xDaiWallet.address, this.setXDaiBalance);
     ethProvider.on(ethWallet.address, this.setEthBalance);
+
+    // The null field indicates any value matches, this specifies
+    // "any Transfer from any to myAddress"
+    let filter = daiContract.filters.Transfer(null, ethWallet.address);
+    // This hasn't been tested
+    daiContract.on(filter, this.setDaiBalance);
 
     this.state = {
       currency: Currency.XDAI,
@@ -58,7 +65,7 @@ export class AppContainer extends Container<RootState> {
       xDaiWallet,
       ethWallet,
       transactions: [],
-      daiContract: new ethers.Contract(DAI, ERC20Abi, ethProvider)
+      daiContract
     };
   }
 
@@ -71,7 +78,7 @@ export class AppContainer extends Container<RootState> {
       });
   };
 
-  sendTx = (
+  sendTx = async (
     currency: Currency,
     toAddress: string,
     amount: ethers.utils.BigNumber
@@ -87,10 +94,31 @@ export class AppContainer extends Container<RootState> {
         break;
     }
 
-    wallet.sendTransaction({
+    let txn = await wallet.sendTransaction({
       to: toAddress,
-      value: amount
+      value: amount,
+      nonce: await wallet.getTransactionCount(),
+      gasPrice: await wallet.provider.getGasPrice()
     });
+
+    if (currency === Currency.XDAI) {
+      let { transactions: txns } = this.state;
+      txns.push({
+        transactionIndex: txns.length - 1,
+        timestamp: 0,
+        value: txn.value,
+        hash: txn.hash!,
+        to: txn.to!,
+        txreceipt_status: false
+      });
+
+      await this.setTxns(txns);
+
+      wallet.provider.once(txn.hash!, async () => {
+        let result = await this.fetchTxns();
+        if (result.message === "OK") this.setTxns(result.result);
+      });
+    }
   };
 
   setRoute = (route: Route) => {

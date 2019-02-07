@@ -30,7 +30,7 @@ class App extends Component<Props> {
   async componentDidMount() {
     let { store } = this.props;
     let result = await store.fetchTxns();
-    result.message === "OK" ? store.setTxns(result.result) : [];
+    if (result.message === "OK") store.setTxns(result.result);
 
     store.setXDaiBalance(await store.state.xDaiWallet.getBalance());
     store.setEthBalance(await store.state.ethWallet.getBalance());
