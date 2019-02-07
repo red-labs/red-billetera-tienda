@@ -165,16 +165,19 @@ export class AppContainer extends Container<RootState> {
     this.setState({ daiBalance });
   };
 
-  setTxns = async (transactions: Transaction[]) => {
+  setTxns = (transactions: Transaction[]) => {
     this.setState({ transactions });
   };
 
-  sweepwallet = async (address: string) => {
+  sweepwallet = (address: string) => {
     let gasPrice = ethers.utils.bigNumberify(1000000000);
     let gasLimit = ethers.utils.bigNumberify(21000);
-    let value = (await this.state.xDaiWallet.getBalance()).sub(
-      gasPrice.mul(gasLimit)
-    );
-    this.sendTx(Currency.XDAI, address, value);
+    if (this.state.xDaiBalance) {
+      this.sendTx(
+        Currency.XDAI,
+        address,
+        this.state.xDaiBalance.sub(gasPrice.mul(gasLimit))
+      );
+    }
   };
 }
