@@ -1,5 +1,5 @@
-import { ethers, utils } from "ethers";
-import { Currency, Transaction } from "../types";
+import { ethers } from "ethers";
+import { Currency, iTxn } from "../types";
 import { Container } from "unstated";
 
 // This is a simplified ABI that only has the functions
@@ -25,7 +25,7 @@ export interface RootState {
   xDaiBalance?: ethers.utils.BigNumber;
   daiBalance?: ethers.utils.BigNumber;
   ethBalance?: ethers.utils.BigNumber;
-  transactions: Transaction[];
+  transactions: iTxn[];
   daiContract: ethers.Contract;
 }
 
@@ -74,14 +74,37 @@ export class AppContainer extends Container<RootState> {
     return fetch(url + this.state.xDaiWallet.address)
       .then(res => res.json())
       .then(response => {
+        if (response.message === "OK") {
+          response.result = this.convertTxns(response.result);
+        }
         return response;
       });
   };
 
+  convertTxns = (txns: iTxn[]) => {
+    txns.forEach(
+      (
+        { nonce, timeStamp, value, hash, to, txreceipt_status },
+        index,
+        array
+      ) => {
+        array[index] = {
+          nonce: Number(nonce),
+          timeStamp: Number(timeStamp),
+          value: ethers.utils.bigNumberify(value),
+          hash,
+          to,
+          txreceipt_status
+        };
+      }
+    );
+    return txns;
+  };
+
   sendTx = async (
     currency: Currency,
-    toAddress: string,
-    amount: ethers.utils.BigNumber
+    to: string,
+    value: ethers.utils.BigNumber
   ) => {
     let wallet: ethers.Wallet;
     switch (currency) {
@@ -94,26 +117,23 @@ export class AppContainer extends Container<RootState> {
         break;
     }
 
-    let txn = await wallet.sendTransaction({
-      to: toAddress,
-      value: amount,
-      nonce: await wallet.getTransactionCount(),
-      gasPrice: await wallet.provider.getGasPrice()
-    });
+    let txn = await wallet.sendTransaction({ to, value, gasPrice: 1000000000 });
 
+    console.log("Gas Price", ethers.utils.formatEther(txn.gasPrice.toString()));
     if (currency === Currency.XDAI) {
       let { transactions: txns } = this.state;
       txns.push({
-        transactionIndex: txns.length - 1,
-        timestamp: 0,
+        nonce: txn.nonce,
+        timeStamp: 0,
         value: txn.value,
         hash: txn.hash!,
         to: txn.to!,
-        txreceipt_status: false
+        txreceipt_status: "0"
       });
 
       await this.setTxns(txns);
 
+      console.log;
       wallet.provider.once(txn.hash!, async () => {
         let result = await this.fetchTxns();
         if (result.message === "OK") this.setTxns(result.result);
@@ -137,7 +157,7 @@ export class AppContainer extends Container<RootState> {
     this.setState({ daiBalance });
   };
 
-  setTxns = async (transactions: Transaction[]) => {
+  setTxns = async (transactions: iTxn[]) => {
     this.setState({ transactions });
   };
 }

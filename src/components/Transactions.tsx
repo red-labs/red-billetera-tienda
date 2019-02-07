@@ -1,13 +1,13 @@
 import { Modal, ModalBody, ModalHeader, Table } from "reactstrap";
 import React, { Component } from "react";
 import { withI18n } from "react-i18next";
-import { Transaction } from "../types";
+import { iTxn } from "../types";
 
 interface Props {
   open: boolean;
   toggle: () => void;
   t: Function;
-  txns: Transaction[];
+  txns: iTxn[];
 }
 
 class Transactions extends Component<Props> {
@@ -27,12 +27,12 @@ class Transactions extends Component<Props> {
             </tr>
           </thead>
           <tbody>
-            {txns.map((tx: Transaction, i) => {
+            {txns.map((tx: iTxn, i) => {
               return (
                 <tr key={i}>
-                  <th scope="row">{tx.transactionIndex}</th>
-                  <td>{tx.timestamp}</td>
-                  <td>{tx.value}</td>
+                  <th scope="row">{tx.nonce.toString()}</th>
+                  <td>{tx.timeStamp.toString()}</td>
+                  <td>{tx.value.toString()}</td>
                   <td>{tx.hash}</td>
                   <td>{tx.to}</td>
                   <td>{tx.txreceipt_status}</td>
