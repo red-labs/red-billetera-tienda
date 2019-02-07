@@ -27,9 +27,16 @@ function addressToEmoji(address: string) {
 }
 
 class App extends Component<Props> {
-  componentDidMount() {
-    this.props.store.fetchAndSetTxns();
-    this.props.store.fetchAndSetBalances();
+  async componentDidMount() {
+    let { store } = this.props;
+    let result = await store.fetchTxns();
+    result.message === "OK" ? store.setTxns(result.result) : [];
+
+    store.setXDaiBalance(await store.state.xDaiWallet.getBalance());
+    store.setEthBalance(await store.state.ethWallet.getBalance());
+    store.setDaiBalance(
+      await store.state.daiContract.balanceOf(store.state.ethWallet.address)
+    );
   }
 
   render() {
