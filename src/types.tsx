@@ -1,12 +1,12 @@
 import { utils } from "ethers";
 
-export interface iTxn {
-  nonce: Number;
-  timeStamp: Number;
+export interface Transaction {
+  nonce: number;
+  timeStamp: number;
   value: utils.BigNumber;
-  hash: String;
-  to: String;
-  txreceipt_status: String;
+  hash: string;
+  to: string;
+  txreceipt_status: boolean;
 }
 
 export enum Currency {

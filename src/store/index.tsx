@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { Currency, iTxn } from "../types";
+import { Currency, Transaction } from "../types";
 import { Container } from "unstated";
 
 // This is a simplified ABI that only has the functions
@@ -25,7 +25,7 @@ export interface RootState {
   xDaiBalance?: ethers.utils.BigNumber;
   daiBalance?: ethers.utils.BigNumber;
   ethBalance?: ethers.utils.BigNumber;
-  transactions: iTxn[];
+  transactions: Transaction[];
   daiContract: ethers.Contract;
 }
 
@@ -81,24 +81,33 @@ export class AppContainer extends Container<RootState> {
       });
   };
 
-  convertTxns = (txns: iTxn[]) => {
-    txns.forEach(
-      (
-        { nonce, timeStamp, value, hash, to, txreceipt_status },
-        index,
-        array
-      ) => {
-        array[index] = {
-          nonce: Number(nonce),
-          timeStamp: Number(timeStamp),
+  convertTxns = (txns: any): Transaction[] => {
+    return txns.map(
+      ({
+        nonce,
+        timeStamp,
+        value,
+        hash,
+        to,
+        txreceipt_status
+      }: {
+        nonce: string;
+        timeStamp: string;
+        value: string;
+        hash: string;
+        to: string;
+        txreceipt_status: string;
+      }) => {
+        return {
+          nonce: parseInt(nonce, 10),
+          timeStamp: parseInt(timeStamp, 10),
           value: ethers.utils.bigNumberify(value),
           hash,
           to,
-          txreceipt_status
+          txreceipt_status: txreceipt_status === "1"
         };
       }
     );
-    return txns;
   };
 
   sendTx = async (
@@ -128,7 +137,7 @@ export class AppContainer extends Container<RootState> {
         value: txn.value,
         hash: txn.hash!,
         to: txn.to!,
-        txreceipt_status: "0"
+        txreceipt_status: false
       });
 
       await this.setTxns(txns);
@@ -156,7 +165,7 @@ export class AppContainer extends Container<RootState> {
     this.setState({ daiBalance });
   };
 
-  setTxns = async (transactions: iTxn[]) => {
+  setTxns = async (transactions: Transaction[]) => {
     this.setState({ transactions });
   };
 

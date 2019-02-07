@@ -1,13 +1,13 @@
 import { Modal, ModalBody, ModalHeader, Table } from "reactstrap";
 import React, { Component } from "react";
 import { withI18n } from "react-i18next";
-import { iTxn } from "../types";
+import { Transaction } from "../types";
 
 interface Props {
   open: boolean;
   toggle: () => void;
   t: Function;
-  txns: iTxn[];
+  txns: Transaction[];
 }
 
 class Transactions extends Component<Props> {
@@ -27,7 +27,7 @@ class Transactions extends Component<Props> {
             </tr>
           </thead>
           <tbody>
-            {txns.map((tx: iTxn, i) => {
+            {txns.map((tx: Transaction, i) => {
               return (
                 <tr key={i}>
                   <th scope="row">{tx.nonce.toString()}</th>
