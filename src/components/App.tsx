@@ -1,153 +1,177 @@
-import React from "react";
+import React, { Component } from "react";
 import Send from "./Send";
 import Receive from "./Receive";
 import Save from "./Save";
+import Transactions from "./Transactions";
 import { Button } from "reactstrap";
 import Advanced from "./Advanced";
 //@ts-ignore
 import baseEmoji from "base-emoji";
 import { withI18n } from "react-i18next";
-import { ethers } from "ethers";
+import { utils } from "ethers";
 import { Currency } from "../types";
 import { AppContainer } from "../store";
-import { Subscribe } from "unstated";
-
-enum Route {
-  Main,
-  Send,
-  Receive,
-  Save,
-  Advanced
-}
+import { Route } from "../store/index";
 
 interface Props {
   i18n: any;
   t: Function;
+  store: AppContainer;
 }
 
 function addressToEmoji(address: string) {
-  const hash = ethers.utils.keccak256(address);
+  const hash = utils.keccak256(address);
   const last2bytes = hash.slice(-4);
   const buf = new Buffer(last2bytes, "hex");
   return baseEmoji.toUnicode(buf);
 }
 
-function App(props: Props) {
-  let { i18n, t } = props;
+class App extends Component<Props> {
+  async componentDidMount() {
+    let { store } = this.props;
+    let result = await store.fetchTxns();
+    if (result.message === "OK") store.setTxns(result.result);
 
-  return (
-    <Subscribe to={[AppContainer]}>
-      {(context: AppContainer) => (
-        <div style={{ textAlign: "center" }}>
+    store.setXDaiBalance(await store.state.xDaiWallet.getBalance());
+    store.setEthBalance(await store.state.ethWallet.getBalance());
+    store.setDaiBalance(
+      await store.state.daiContract.balanceOf(store.state.ethWallet.address)
+    );
+  }
+
+  render() {
+    let { i18n, t, store } = this.props;
+    return (
+      <div style={{ textAlign: "center" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            height: "100vh"
+          }}
+        >
+          <h1>
+            {store.state.xDaiWallet &&
+              addressToEmoji(store.state.xDaiWallet.address)}{" "}
+            {t("efectivo")}
+          </h1>
+          <h1>
+            {!isNaN(Number(store.state.xDaiBalance))
+              ? "$" +
+                Number(utils.formatEther(store.state.xDaiBalance!)).toFixed(2)
+              : t("loading")}
+          </h1>
+          <div className="d-flex w-100 text-center justify-content-center">
+            <Button
+              onClick={() => i18n.changeLanguage("en")}
+              style={{ flex: "1 1 0", maxWidth: 200, margin: 5 }}
+              size="lg"
+            >
+              English
+            </Button>
+            <Button
+              onClick={() => i18n.changeLanguage("es")}
+              style={{ flex: "1 1 0", maxWidth: 200, margin: 5 }}
+              size="lg"
+            >
+              Español
+            </Button>
+          </div>
           <div
             style={{
               display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-              height: "100vh"
+              justifyContent: "center"
             }}
           >
-            <h1>
-              {context.state.xDaiWallet &&
-                addressToEmoji(context.state.xDaiWallet.address)}{" "}
-              {t("efectivo")}
-            </h1>
-            <h1>
-              {!isNaN(Number(context.state.xDaiBalance))
-                ? "$" + context.state.xDaiBalance
-                : t("loading")}
-            </h1>
-            <div className="d-flex w-100 text-center justify-content-center">
-              <Button
-                onClick={() => i18n.changeLanguage("en")}
-                style={{ flex: "1 1 0", maxWidth: 200, margin: 5 }}
-                size="lg"
-              >
-                English
-              </Button>
-              <Button
-                onClick={() => i18n.changeLanguage("es")}
-                style={{ flex: "1 1 0", maxWidth: 200, margin: 5 }}
-                size="lg"
-              >
-                Español
-              </Button>
-            </div>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center"
-              }}
+            <Button
+              onClick={() => store.setRoute(Route.Send)}
+              style={{ flex: "1 1 0", maxWidth: 200, margin: 5 }}
+              size="lg"
             >
-              <Button
-                onClick={() => context.setRoute(Route.Send)}
-                style={{ flex: "1 1 0", maxWidth: 200, margin: 5 }}
-                size="lg"
-              >
-                {t("send")}
-              </Button>
-              <Button
-                onClick={() => context.setRoute(Route.Receive)}
-                style={{ flex: "1 1 0", maxWidth: 200, margin: 5 }}
-                size="lg"
-              >
-                {t("receive")}
-              </Button>
-            </div>
-
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center"
-              }}
+              {t("send")}
+            </Button>
+            <Button
+              onClick={() => store.setRoute(Route.Receive)}
+              style={{ flex: "1 1 0", maxWidth: 200, margin: 5 }}
+              size="lg"
             >
-              <Button
-                onClick={() => context.setRoute(Route.Save)}
-                style={{ flex: "1 1 0", maxWidth: 410, margin: 5 }}
-                size="lg"
-              >
-                {t("saveRestore")}
-              </Button>
-            </div>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center"
-              }}
-            >
-              <Button
-                outline
-                onClick={() => context.setRoute(Route.Advanced)}
-                style={{ flex: "1 1 0", maxWidth: 410, margin: 5 }}
-                size="sm"
-              >
-                {t("advanced")}
-              </Button>
-            </div>
+              {t("receive")}
+            </Button>
           </div>
-          <Send
-            toggle={() => context.setRoute(Route.Main)}
-            open={context.state.route === Route.Send}
-            currency={Currency.XDAI}
-          />
-          <Receive
-            address={context.state.xDaiWallet.address}
-            toggle={() => context.setRoute(Route.Main)}
-            open={context.state.route === Route.Receive}
-          />
-          <Save
-            privateKey={context.state.xDaiWallet.privateKey}
-            toggle={() => context.setRoute(Route.Main)}
-            open={context.state.route === Route.Save}
-          />
-          <Advanced
-            toggle={() => context.setRoute(Route.Main)}
-            open={context.state.route === Route.Advanced}
-          />
+
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center"
+            }}
+          >
+            <Button
+              onClick={() => store.setRoute(Route.Save)}
+              style={{ flex: "1 1 0", maxWidth: 410, margin: 5 }}
+              size="lg"
+            >
+              {t("saveRestore")}
+            </Button>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center"
+            }}
+          >
+            <Button
+              outline
+              onClick={() => store.setRoute(Route.Transactions)}
+              style={{ flex: "1 1 0", maxWidth: 410, margin: 5 }}
+              size="sm"
+            >
+              {t("transactions")}
+            </Button>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center"
+            }}
+          >
+            <Button
+              outline
+              onClick={() => store.setRoute(Route.Advanced)}
+              style={{ flex: "1 1 0", maxWidth: 410, margin: 5 }}
+              size="sm"
+            >
+              {t("advanced")}
+            </Button>
+          </div>
         </div>
-      )}
-    </Subscribe>
-  );
+        <Send
+          toggle={() => store.setRoute(Route.Main)}
+          open={store.state.route === Route.Send}
+          currency={Currency.XDAI}
+        />
+        <Receive
+          address={store.state.xDaiWallet.address}
+          toggle={() => store.setRoute(Route.Main)}
+          open={store.state.route === Route.Receive}
+        />
+        <Save
+          privateKey={store.state.xDaiWallet.privateKey}
+          toggle={() => store.setRoute(Route.Main)}
+          open={store.state.route === Route.Save}
+        />
+        <Transactions
+          toggle={() => store.setRoute(Route.Main)}
+          open={store.state.route === Route.Transactions}
+          txns={store.state.transactions}
+        />
+        <Advanced
+          toggle={() => store.setRoute(Route.Main)}
+          open={store.state.route === Route.Advanced}
+        />
+      </div>
+    );
+  }
 }
 
 export default withI18n()(App);

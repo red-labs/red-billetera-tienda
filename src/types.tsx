@@ -1,3 +1,14 @@
+import { utils } from "ethers";
+
+export interface Transaction {
+  nonce: number;
+  timeStamp: number;
+  value: utils.BigNumber;
+  hash: string;
+  to: string;
+  txreceipt_status: boolean;
+}
+
 export enum Currency {
   XDAI,
   ETH,

@@ -67,14 +67,7 @@ class Save extends Component<Props, State> {
               {copyIcon("#fff")} {t("copyPrivateKey")}
             </Button>
           </div>
-          <div>
-            Your private key is what allows your wallet to send and receive
-            money. Every account has a different private key. We recommend that
-            you copy it and back it up by saving it somewhere on your phone, or
-            texting or emailing it to yourself. But don't let anyone else see
-            it. If someone else has your private key they will be able to access
-            the money in this wallet.
-          </div>
+          <div>{t("privateKeySecurity")}</div>
           <div
             style={{
               display: "flex",
@@ -90,9 +83,7 @@ class Save extends Component<Props, State> {
               {t("restorePrivateKey")}
             </Button>
           </div>
-          <div>
-            Paste your private key here if you want to restore your wallet.
-          </div>
+          <div>{t("pastePrivateKey")}</div>
         </ModalBody>
         <div
           style={{

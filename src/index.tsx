@@ -1,19 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./components/App";
 import * as serviceWorker from "./serviceWorker";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./utils/i18n";
-import { Provider } from "unstated";
-// import { ethers } from "ethers";
-// import { ImmortalDB } from "immortal-db";
-// import { Currency } from "./types";
-// import { randomHex } from "./randomHex";
-// import { AppProvider } from "./Provider";
+import { AppContainer } from "./store";
+import { Subscribe, Provider } from "unstated";
+import App from "./components/App";
 
 ReactDOM.render(
   <Provider>
-    <App />
+    <Subscribe to={[AppContainer]}>
+      {(store: AppContainer) => <App store={store} />}
+    </Subscribe>
   </Provider>,
   document.getElementById("root")
 );

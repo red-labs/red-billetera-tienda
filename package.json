@@ -30,8 +30,7 @@
     "react-stateful": "git+https://github.com/jtremback/react-stateful.git",
     "reactstrap": "^7.1.0",
     "typescript": "3.2.4",
-    "unstated": "^2.1.1",
-    "web3": "^1.0.0-beta.39"
+    "unstated": "^2.1.1"
   },
   "scripts": {
     "predeploy": "npm run build",
