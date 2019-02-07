@@ -29,8 +29,8 @@ interface Props {
 
 interface State {
   qrReading: boolean;
-  toAddress: String;
-  amount: String;
+  toAddress: string;
+  amount: string;
 }
 
 class Send extends Component<Props, State> {
