@@ -16,6 +16,7 @@ import { Currency, currencyToName, currencyToSymbol } from "../types";
 import QrReader from "./QrReader";
 import { withI18n } from "react-i18next";
 import { isAddress } from "../utils/isAddress";
+import { addressToEmoji } from "../utils/addressToEmoji";
 import { AppContainer } from "../store";
 import { Subscribe } from "unstated";
 import { ethers } from "ethers";
@@ -30,7 +31,7 @@ interface Props {
 interface State {
   qrReading: boolean;
   toAddress: string;
-  amount: string;
+  amount?: string;
 }
 
 class Send extends Component<Props, State> {
@@ -44,7 +45,7 @@ class Send extends Component<Props, State> {
     txSendingAlert: undefined,
     txSuccessAlert: undefined,
     txErrorAlert: undefined,
-    amount: "0"
+    amount: undefined
   };
 
   render() {
@@ -71,11 +72,12 @@ class Send extends Component<Props, State> {
                     id="sendToAddress"
                     placeholder="0x..."
                     onChange={event => {
-                      this.setState({ toAddress: event.target.value });
+                      this.setState({ toAddress: event.target.value.trim() });
                     }}
                     value={this.state.toAddress}
                     style={{ flexGrow: 1, marginRight: 5 }}
                   />
+
                   <Button
                     onClick={() => this.setState({ qrReading: true })}
                     style={{ flexGrow: 1, marginLeft: 5 }}
@@ -104,6 +106,7 @@ class Send extends Component<Props, State> {
                     name="amountToSend"
                     id="amountToSend"
                     placeholder="0.00"
+                    type="number"
                     onChange={event => {
                       this.setState({
                         amount: event.target.value
@@ -116,25 +119,47 @@ class Send extends Component<Props, State> {
                   </InputGroupAddon>
                 </InputGroup>
               </FormGroup>
-            </ModalBody>
-            <ModalFooter>
+              {isAddress(this.state.toAddress) && (
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    marginTop: 20,
+                    marginBottom: 15
+                  }}
+                >
+                  <h5 style={{ marginRight: 10 }}>
+                    Send {formatDaiAmount(this.state.amount)} to:
+                  </h5>
+
+                  <h1>
+                    {addressToEmoji(
+                      this.state.toAddress.substring(0, 2) === "0x"
+                        ? this.state.toAddress
+                        : "0x" + this.state.toAddress
+                    )}
+                  </h1>
+                </div>
+              )}
               <Button
-                color="primary"
+                disabled={!isNonZeroNumber(this.state.amount)}
+                size="lg"
+                block
                 onClick={() => {
-                  context.sendTx(
-                    this.props.currency,
-                    this.state.toAddress,
-                    ethers.utils.parseEther(this.state.amount)
-                  );
+                  if (!isNonZeroNumber(this.state.amount)) {
+                    context.sendTx(
+                      this.props.currency,
+                      this.state.toAddress,
+                      ethers.utils.parseEther(this.state.amount!)
+                    );
+                  }
                   this.props.toggle();
                 }}
               >
                 {t("send")}
               </Button>{" "}
-              <Button color="secondary" onClick={this.props.toggle}>
-                {t("cancel")}
-              </Button>
-            </ModalFooter>
+            </ModalBody>
             <QrReader
               toggle={() => this.setState({ qrReading: false })}
               open={this.state.qrReading}
@@ -149,6 +174,30 @@ class Send extends Component<Props, State> {
       </Subscribe>
     );
   }
+}
+
+function isNonZeroNumber(number?: string) {
+  return !!(
+    number &&
+    !isNaN(number as any) &&
+    ethers.utils.parseEther(number).toString() !== "0"
+  );
+}
+
+function formatDaiAmount(amount?: string) {
+  return (
+    amount &&
+    !isNaN(amount as any) &&
+    ethers.utils.parseEther(amount).toString() !== "0" &&
+    "$" +
+      ethers.utils.commify(
+        Math.round(
+          parseFloat(
+            ethers.utils.formatEther(ethers.utils.parseEther(amount))
+          ) * 100
+        ) / 100
+      )
+  );
 }
 
 export default withI18n()(Send);

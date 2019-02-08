@@ -18,7 +18,7 @@
   "receive": "Receive",
   "restorePrivateKey": "Restore private key",
   "noTransactions": "No transactions found",
-  "saveRestore": "Save / Restore",
+  "saveRestore": "Back up wallet",
   "scanAddress": "Scan address",
   "send": "Send",
   "sendAmount": "Send amount",

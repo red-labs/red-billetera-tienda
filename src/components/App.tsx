@@ -3,12 +3,19 @@ import Send from "./Send";
 import Receive from "./Receive";
 import Save from "./Save";
 import Transactions from "./Transactions";
-import { Button } from "reactstrap";
+import {
+  Button,
+  ButtonDropdown,
+  DropdownToggle,
+  DropdownItem,
+  DropdownMenu
+} from "reactstrap";
 import Advanced from "./Advanced";
 //@ts-ignore
 import baseEmoji from "base-emoji";
 import { withI18n } from "react-i18next";
 import { utils } from "ethers";
+import { addressToEmoji } from "../utils/addressToEmoji";
 import { Currency } from "../types";
 import { Route, AppContainer } from "../store";
 
@@ -16,13 +23,6 @@ interface Props {
   i18n: any;
   t: Function;
   store: AppContainer;
-}
-
-function addressToEmoji(address: string) {
-  const hash = utils.keccak256(address);
-  const last2bytes = hash.slice(-4);
-  const buf = new Buffer(last2bytes, "hex");
-  return baseEmoji.toUnicode(buf);
 }
 
 class App extends Component<Props> {
@@ -42,98 +42,104 @@ class App extends Component<Props> {
             height: "100vh"
           }}
         >
-          <h1>
-            {store.state.xDaiWallet &&
-              addressToEmoji(store.state.xDaiWallet.address)}{" "}
-            {t("efectivo")}
-          </h1>
-          <h1>
-            {!isNaN(Number(store.state.xDaiBalance))
-              ? "$" +
-                Number(utils.formatEther(store.state.xDaiBalance!)).toFixed(2)
-              : t("loading")}
-          </h1>
-          <div className="d-flex w-100 text-center justify-content-center">
-            <Button
-              onClick={() => i18n.changeLanguage("en")}
-              style={{ flex: "1 1 0", maxWidth: 200, margin: 5 }}
-              size="lg"
-            >
-              English
-            </Button>
-            <Button
-              onClick={() => i18n.changeLanguage("es")}
-              style={{ flex: "1 1 0", maxWidth: 200, margin: 5 }}
-              size="lg"
-            >
-              Español
-            </Button>
-          </div>
           <div
             style={{
               display: "flex",
-              justifyContent: "center"
+              justifyContent: "space-between",
+              alignItems: "center"
             }}
           >
-            <Button
-              onClick={() => store.setRoute(Route.Send)}
-              style={{ flex: "1 1 0", maxWidth: 200, margin: 5 }}
-              size="lg"
-            >
-              {t("send")}
-            </Button>
-            <Button
-              onClick={() => store.setRoute(Route.Receive)}
-              style={{ flex: "1 1 0", maxWidth: 200, margin: 5 }}
-              size="lg"
-            >
-              {t("receive")}
-            </Button>
+            <h1>{t("efectivo")}</h1>
+            <div>
+              <ButtonDropdown outline>
+                <DropdownToggle caret>Language</DropdownToggle>
+                <DropdownMenu>
+                  <DropdownItem header>Header</DropdownItem>
+                  <DropdownItem disabled>Action</DropdownItem>
+                  <DropdownItem>Another Action</DropdownItem>
+                  <DropdownItem divider />
+                  <DropdownItem>Another Action</DropdownItem>
+                </DropdownMenu>
+              </ButtonDropdown>
+            </div>
           </div>
 
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center"
-            }}
-          >
-            <Button
-              onClick={() => store.setRoute(Route.Save)}
-              style={{ flex: "1 1 0", maxWidth: 410, margin: 5 }}
-              size="lg"
+          <div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center"
+              }}
             >
-              {t("saveRestore")}
-            </Button>
+              <h1>
+                {store.state.xDaiWallet &&
+                  addressToEmoji(store.state.xDaiWallet.address)}{" "}
+              </h1>
+              <h1 style={{ wordBreak: "normal" }}>
+                {!isNaN(Number(store.state.xDaiBalance))
+                  ? "$" +
+                    Number(utils.formatEther(store.state.xDaiBalance!)).toFixed(
+                      2
+                    )
+                  : t("loading")}
+              </h1>
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center"
+              }}
+            >
+              <Button
+                onClick={() => store.setRoute(Route.Receive)}
+                style={{ flex: "1 1 0", maxWidth: 200, marginRight: 10 }}
+                size="lg"
+              >
+                {t("receive")}
+              </Button>
+              <Button
+                onClick={() => store.setRoute(Route.Send)}
+                style={{ flex: "1 1 0", maxWidth: 200 }}
+                size="lg"
+              >
+                {t("send")}
+              </Button>
+            </div>
           </div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center"
-            }}
-          >
-            <Button
-              outline
-              onClick={() => store.setRoute(Route.Transactions)}
-              style={{ flex: "1 1 0", maxWidth: 410, margin: 5 }}
-              size="sm"
+
+          <div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center"
+              }}
             >
-              {t("transactions")}
-            </Button>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center"
-            }}
-          >
-            <Button
-              outline
-              onClick={() => store.setRoute(Route.Advanced)}
-              style={{ flex: "1 1 0", maxWidth: 410, margin: 5 }}
-              size="sm"
+              <Button
+                onClick={() => store.setRoute(Route.Save)}
+                style={{ flex: "1 1 0", maxWidth: 410, margin: 5 }}
+                size="lg"
+              >
+                {t("saveRestore")}
+              </Button>
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center"
+              }}
             >
-              {t("advanced")}
-            </Button>
+              <Button
+                color="link"
+                onClick={() => store.setRoute(Route.Advanced)}
+                style={{ flex: "1 1 0", maxWidth: 410, margin: 5 }}
+                size="sm"
+              >
+                {t("advanced")}
+              </Button>
+            </div>
           </div>
         </div>
         <Send
@@ -165,3 +171,20 @@ class App extends Component<Props> {
 }
 
 export default withI18n()(App);
+
+/* <div className="d-flex w-100 text-center justify-content-center">
+            <Button
+              onClick={() => i18n.changeLanguage("en")}
+              style={{ flex: "1 1 0", maxWidth: 200, margin: 5 }}
+              size="lg"
+            >
+              English
+            </Button>
+            <Button
+              onClick={() => i18n.changeLanguage("es")}
+              style={{ flex: "1 1 0", maxWidth: 200, margin: 5 }}
+              size="lg"
+            >
+              Español
+            </Button>
+          </div> */
