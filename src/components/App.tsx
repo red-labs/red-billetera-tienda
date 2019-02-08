@@ -153,7 +153,6 @@ class App extends Component<Props> {
           open={store.state.route === Route.Receive}
         />
         <Save
-          privateKey={store.state.xDaiWallet.privateKey}
           toggle={() => store.setRoute(Route.Main)}
           open={store.state.route === Route.Save}
         />

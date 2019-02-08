@@ -149,6 +149,16 @@ export class AppContainer extends Container<RootState> {
     this.setState({ route });
   };
 
+  restorePrivateKey = async (privateKey: string) => {
+    await this.sweepWallet(ethers.utils.computeAddress(privateKey));
+    await this.setState({
+      xDaiWallet: new ethers.Wallet(privateKey, this.state.xDaiProvider),
+      ethWallet: new ethers.Wallet(privateKey, this.state.ethProvider)
+    });
+    localStorage.setItem("efectivoPrivateKey", privateKey);
+    this.startPolls();
+  };
+
   updateXDaiBalance = async () => {
     this.setState({ xDaiBalance: await this.state.xDaiWallet.getBalance() });
   };
@@ -165,10 +175,14 @@ export class AppContainer extends Container<RootState> {
     });
   };
 
-  sweepwallet = (address: string) => {
+  sweepWallet = (address: string) => {
     let gasPrice = ethers.utils.bigNumberify(1000000000);
     let gasLimit = ethers.utils.bigNumberify(21000);
-    if (this.state.xDaiBalance) {
+
+    if (
+      this.state.xDaiBalance &&
+      !this.state.xDaiBalance.eq(ethers.constants.Zero)
+    ) {
       this.sendTx(
         Currency.XDAI,
         address,
