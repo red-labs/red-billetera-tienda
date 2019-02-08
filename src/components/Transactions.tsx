@@ -2,17 +2,17 @@ import { Modal, ModalBody, ModalHeader, Table } from "reactstrap";
 import React, { Component } from "react";
 import { withI18n } from "react-i18next";
 import { Transaction } from "../types";
-
+import { AppContainer } from "../store";
+import { Subscribe } from "unstated";
 interface Props {
   open: boolean;
   toggle: () => void;
   t: Function;
-  txns: Transaction[];
 }
 
 class Transactions extends Component<Props> {
-  renderTable() {
-    const { t, txns } = this.props;
+  renderTable(txns: Transaction[]) {
+    const { t } = this.props;
     if (txns.length === 0) return t("noTransactions");
     return (
       <div>
@@ -47,22 +47,26 @@ class Transactions extends Component<Props> {
   render() {
     const { t } = this.props;
     return (
-      <Modal isOpen={this.props.open} toggle={this.props.toggle}>
-        <ModalHeader toggle={this.props.toggle}>
-          {t("transactions")}
-        </ModalHeader>
-        <ModalBody>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              flexDirection: "column"
-            }}
-          >
-            {this.renderTable()}
-          </div>
-        </ModalBody>
-      </Modal>
+      <Subscribe to={[AppContainer]}>
+        {(context: AppContainer) => (
+          <Modal isOpen={this.props.open} toggle={this.props.toggle}>
+            <ModalHeader toggle={this.props.toggle}>
+              {t("transactions")}
+            </ModalHeader>
+            <ModalBody>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  flexDirection: "column"
+                }}
+              >
+                {this.renderTable(context.state.transactions)}
+              </div>
+            </ModalBody>
+          </Modal>
+        )}
+      </Subscribe>
     );
   }
 }

@@ -10,8 +10,7 @@ import baseEmoji from "base-emoji";
 import { withI18n } from "react-i18next";
 import { utils } from "ethers";
 import { Currency } from "../types";
-import { AppContainer } from "../store";
-import { Route } from "../store/index";
+import { Route, AppContainer } from "../store";
 
 interface Props {
   i18n: any;
@@ -28,15 +27,7 @@ function addressToEmoji(address: string) {
 
 class App extends Component<Props> {
   async componentDidMount() {
-    let { store } = this.props;
-    let result = await store.fetchTxns();
-    if (result.message === "OK") store.setTxns(result.result);
-
-    store.setXDaiBalance(await store.state.xDaiWallet.getBalance());
-    store.setEthBalance(await store.state.ethWallet.getBalance());
-    store.setDaiBalance(
-      await store.state.daiContract.balanceOf(store.state.ethWallet.address)
-    );
+    this.props.store.startPolls();
   }
 
   render() {
@@ -163,7 +154,6 @@ class App extends Component<Props> {
         <Transactions
           toggle={() => store.setRoute(Route.Main)}
           open={store.state.route === Route.Transactions}
-          txns={store.state.transactions}
         />
         <Advanced
           toggle={() => store.setRoute(Route.Main)}

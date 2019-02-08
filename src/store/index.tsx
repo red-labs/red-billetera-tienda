@@ -48,15 +48,6 @@ export class AppContainer extends Container<RootState> {
     const ethWallet = new ethers.Wallet(privateKey, ethProvider);
     const daiContract = new ethers.Contract(DAI, ERC20Abi, ethProvider);
 
-    xDaiProvider.on(xDaiWallet.address, this.setXDaiBalance);
-    ethProvider.on(ethWallet.address, this.setEthBalance);
-
-    // The null field indicates any value matches, this specifies
-    // "any Transfer from any to myAddress"
-    let filter = daiContract.filters.Transfer(null, ethWallet.address);
-    // This hasn't been tested
-    daiContract.on(filter, this.setDaiBalance);
-
     this.state = {
       currency: Currency.XDAI,
       route: Route.Main,
@@ -69,44 +60,69 @@ export class AppContainer extends Container<RootState> {
     };
   }
 
-  fetchTxns = () => {
-    let url: String = `https://blockscout.com/poa/dai/api?module=account&action=txlist&address=`;
-    return fetch(url + this.state.xDaiWallet.address)
-      .then(res => res.json())
-      .then(response => {
-        if (response.message === "OK") {
-          response.result = this.convertTxns(response.result);
+  updateTransactions = async () => {
+    const url: String = `https://blockscout.com/poa/dai/api?module=account&action=txlist&address=`;
+    const res = await fetch(url + this.state.xDaiWallet.address);
+
+    if (res.status !== 200) {
+      return;
+    }
+
+    const parsed = await res.json();
+
+    if (parsed.message !== "OK") {
+      return;
+    }
+
+    const result: {
+      nonce: string;
+      timeStamp: string;
+      value: string;
+      hash: string;
+      to: string;
+      txreceipt_status: string;
+    }[] = parsed.result;
+
+    this.setState({
+      transactions: result.map(
+        (tx): Transaction => {
+          return {
+            nonce: parseInt(tx.nonce, 10),
+            timeStamp: parseInt(tx.timeStamp, 10),
+            value: ethers.utils.bigNumberify(tx.value),
+            hash: tx.hash,
+            to: tx.to,
+            txreceipt_status: tx.txreceipt_status === "1"
+          };
         }
-        return response;
-      });
+      )
+    });
   };
 
-  convertTxns = (txns: any): Transaction[] => {
-    return txns.map(
-      ({
-        nonce,
-        timeStamp,
-        value,
-        hash,
-        to,
-        txreceipt_status
-      }: {
-        nonce: string;
-        timeStamp: string;
-        value: string;
-        hash: string;
-        to: string;
-        txreceipt_status: string;
-      }) => {
-        return {
-          nonce: parseInt(nonce, 10),
-          timeStamp: parseInt(timeStamp, 10),
-          value: ethers.utils.bigNumberify(value),
-          hash,
-          to,
-          txreceipt_status: txreceipt_status === "1"
-        };
-      }
+  startPolls = () => {
+    this.updateTransactions();
+    setInterval(this.updateTransactions, 5000);
+
+    this.updateXDaiBalance();
+    this.state.xDaiProvider.on(this.state.xDaiWallet.address, xDaiBalance =>
+      this.setState({ xDaiBalance })
+    );
+
+    this.updateEthBalance();
+    this.state.ethProvider.on(this.state.ethWallet.address, ethBalance =>
+      this.setState({ ethBalance })
+    );
+
+    this.updateDaiBalance();
+    // The null field indicates any value matches, this specifies
+    // "any Transfer from any to myAddress"
+    // This hasn't been tested
+    this.state.daiContract.on(
+      this.state.daiContract.filters.Transfer(
+        null,
+        this.state.ethWallet.address
+      ),
+      daiBalance => this.setState({ daiBalance })
     );
   };
 
@@ -126,47 +142,27 @@ export class AppContainer extends Container<RootState> {
         break;
     }
 
-    let txn = await wallet.sendTransaction({ to, value, gasPrice: 1000000000 });
-
-    console.log("Gas Price", ethers.utils.formatEther(txn.gasPrice.toString()));
-    if (currency === Currency.XDAI) {
-      let { transactions: txns } = this.state;
-      txns.push({
-        nonce: txn.nonce,
-        timeStamp: 0,
-        value: txn.value,
-        hash: txn.hash!,
-        to: txn.to!,
-        txreceipt_status: false
-      });
-
-      await this.setTxns(txns);
-
-      wallet.provider.once(txn.hash!, async () => {
-        let result = await this.fetchTxns();
-        if (result.message === "OK") this.setTxns(result.result);
-      });
-    }
+    await wallet.sendTransaction({ to, value, gasPrice: 1000000000 });
   };
 
   setRoute = (route: Route) => {
     this.setState({ route });
   };
 
-  setXDaiBalance = (xDaiBalance: ethers.utils.BigNumber) => {
-    this.setState({ xDaiBalance });
+  updateXDaiBalance = async () => {
+    this.setState({ xDaiBalance: await this.state.xDaiWallet.getBalance() });
   };
 
-  setEthBalance = (ethBalance: ethers.utils.BigNumber) => {
-    this.setState({ ethBalance });
+  updateEthBalance = async () => {
+    this.setState({ ethBalance: await this.state.ethWallet.getBalance() });
   };
 
-  setDaiBalance = (daiBalance: ethers.utils.BigNumber) => {
-    this.setState({ daiBalance });
-  };
-
-  setTxns = (transactions: Transaction[]) => {
-    this.setState({ transactions });
+  updateDaiBalance = async () => {
+    this.setState({
+      daiBalance: await this.state.daiContract.balanceOf(
+        this.state.ethWallet.address
+      )
+    });
   };
 
   sweepwallet = (address: string) => {
