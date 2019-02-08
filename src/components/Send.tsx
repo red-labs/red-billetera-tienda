@@ -15,8 +15,13 @@ import React, { Component } from "react";
 import { Currency, currencyToName, currencyToSymbol } from "../types";
 import QrReader from "./QrReader";
 import { withI18n } from "react-i18next";
-import { isAddress } from "../utils/isAddress";
-import { addressToEmoji } from "../utils/addressToEmoji";
+import {
+  isAddress,
+  addressToEmoji,
+  add0x,
+  isNonZeroNumber,
+  formatDaiAmount
+} from "../utils";
 import { AppContainer } from "../store";
 import { Subscribe } from "unstated";
 import { ethers } from "ethers";
@@ -133,24 +138,21 @@ class Send extends Component<Props, State> {
                     Send {formatDaiAmount(this.state.amount)} to:
                   </h5>
 
-                  <h1>
-                    {addressToEmoji(
-                      this.state.toAddress.substring(0, 2) === "0x"
-                        ? this.state.toAddress
-                        : "0x" + this.state.toAddress
-                    )}
-                  </h1>
+                  <h1>{addressToEmoji(add0x(this.state.toAddress))}</h1>
                 </div>
               )}
               <Button
-                disabled={!isNonZeroNumber(this.state.amount)}
+                disabled={
+                  !isNonZeroNumber(this.state.amount) &&
+                  !isAddress(this.state.toAddress)
+                }
                 size="lg"
                 block
                 onClick={() => {
                   if (!isNonZeroNumber(this.state.amount)) {
                     context.sendTx(
                       this.props.currency,
-                      this.state.toAddress,
+                      add0x(this.state.toAddress),
                       ethers.utils.parseEther(this.state.amount!)
                     );
                   }
@@ -174,30 +176,6 @@ class Send extends Component<Props, State> {
       </Subscribe>
     );
   }
-}
-
-function isNonZeroNumber(number?: string) {
-  return !!(
-    number &&
-    !isNaN(number as any) &&
-    ethers.utils.parseEther(number).toString() !== "0"
-  );
-}
-
-function formatDaiAmount(amount?: string) {
-  return (
-    amount &&
-    !isNaN(amount as any) &&
-    ethers.utils.parseEther(amount).toString() !== "0" &&
-    "$" +
-      ethers.utils.commify(
-        Math.round(
-          parseFloat(
-            ethers.utils.formatEther(ethers.utils.parseEther(amount))
-          ) * 100
-        ) / 100
-      )
-  );
 }
 
 export default withI18n()(Send);

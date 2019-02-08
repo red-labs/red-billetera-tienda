@@ -15,7 +15,7 @@ import Advanced from "./Advanced";
 import baseEmoji from "base-emoji";
 import { withI18n } from "react-i18next";
 import { utils } from "ethers";
-import { addressToEmoji } from "../utils/addressToEmoji";
+import { addressToEmoji } from "../utils";
 import { Currency } from "../types";
 import { Route, AppContainer } from "../store";
 
