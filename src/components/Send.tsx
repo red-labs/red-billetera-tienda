@@ -14,6 +14,7 @@ import { qr, camera } from "../utils/icons";
 import React, { Component } from "react";
 import { Currency, currencyToName, currencyToSymbol } from "../types";
 import QrReader from "./QrReader";
+import { Screen, TopBar } from "./Screen";
 import { withI18n } from "react-i18next";
 import {
   isAddress,
@@ -59,10 +60,10 @@ class Send extends Component<Props, State> {
     return (
       <Subscribe to={[AppContainer]}>
         {(context: AppContainer) => (
-          <Modal isOpen={this.props.open} toggle={this.props.toggle}>
-            <ModalHeader toggle={this.props.toggle}>
+          <Screen isOpen={this.props.open} toggle={this.props.toggle}>
+            <TopBar toggle={this.props.toggle}>
               {t("send")} {currencyToName(this.props.currency)}
-            </ModalHeader>
+            </TopBar>
             <ModalBody>
               <FormGroup>
                 <Label for="sendToAddress">{t("sendToAddress")}</Label>
@@ -174,7 +175,7 @@ class Send extends Component<Props, State> {
                 }
               }}
             />
-          </Modal>
+          </Screen>
         )}
       </Subscribe>
     );

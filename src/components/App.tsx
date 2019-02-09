@@ -33,7 +33,7 @@ class App extends Component<Props> {
   render() {
     let { i18n, t, store } = this.props;
     return (
-      <div style={{ textAlign: "center" }}>
+      <div>
         <div
           style={{
             display: "flex",
