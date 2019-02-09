@@ -15,7 +15,7 @@ import Advanced from "./Advanced";
 import baseEmoji from "base-emoji";
 import { withI18n } from "react-i18next";
 import { utils } from "ethers";
-import { addressToEmoji } from "../utils";
+import { addressToEmoji, formatDaiAmount } from "../utils";
 import { Currency } from "../types";
 import { Route, AppContainer } from "../store";
 import { ScreenBody } from "./Screen";
@@ -50,7 +50,7 @@ class App extends Component<Props> {
               alignItems: "center"
             }}
           >
-            <h1>{t("efectivo")}</h1>
+            <h1 style={{ fontWeight: "normal" }}>{t("efectivo")}</h1>
             <div>
               <ButtonDropdown outline>
                 <DropdownToggle caret>Language</DropdownToggle>
@@ -70,7 +70,8 @@ class App extends Component<Props> {
               style={{
                 display: "flex",
                 justifyContent: "space-between",
-                alignItems: "center"
+                alignItems: "center",
+                marginBottom: "2rem"
               }}
             >
               <h1>
@@ -78,11 +79,8 @@ class App extends Component<Props> {
                   addressToEmoji(store.state.xDaiWallet.address)}{" "}
               </h1>
               <h1 style={{ wordBreak: "normal" }}>
-                {!isNaN(Number(store.state.xDaiBalance))
-                  ? "$" +
-                    Number(utils.formatEther(store.state.xDaiBalance!)).toFixed(
-                      2
-                    )
+                {!isNaN(store.state.xDaiBalance as any)
+                  ? formatDaiAmount(store.state.xDaiBalance!)
                   : t("loading")}
               </h1>
             </div>
@@ -109,6 +107,11 @@ class App extends Component<Props> {
               </Button>
             </div>
           </div>
+
+          <Transactions
+            toggle={() => store.setRoute(Route.Main)}
+            open={store.state.route === Route.Transactions}
+          />
 
           <div>
             <div
@@ -157,10 +160,7 @@ class App extends Component<Props> {
           toggle={() => store.setRoute(Route.Main)}
           open={store.state.route === Route.Save}
         />
-        <Transactions
-          toggle={() => store.setRoute(Route.Main)}
-          open={store.state.route === Route.Transactions}
-        />
+
         <Advanced
           toggle={() => store.setRoute(Route.Main)}
           open={store.state.route === Route.Advanced}

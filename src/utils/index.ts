@@ -2,6 +2,7 @@ import { ethers } from "ethers";
 //@ts-ignore
 import baseEmoji from "base-emoji";
 import { utils } from "ethers";
+import { BigNumber } from "ethers/utils";
 
 export function add0x(str: string) {
   return str.substring(0, 2) === "0x" ? str : "0x" + str;
@@ -11,23 +12,16 @@ export function isNonZeroNumber(number?: string) {
   return !!(
     number &&
     !isNaN(number as any) &&
-    ethers.utils.parseEther(number).toString() !== "0"
+    ethers.utils.parseEther(number).eq(ethers.constants.Zero)
   );
 }
 
-export function formatDaiAmount(amount?: string) {
+export function formatDaiAmount(amount: BigNumber) {
   return (
-    amount &&
-    !isNaN(amount as any) &&
-    ethers.utils.parseEther(amount).toString() !== "0" &&
     "$" +
-      ethers.utils.commify(
-        Math.round(
-          parseFloat(
-            ethers.utils.formatEther(ethers.utils.parseEther(amount))
-          ) * 100
-        ) / 100
-      )
+    ethers.utils.commify(
+      parseFloat(ethers.utils.formatEther(amount)).toFixed(2)
+    )
   );
 }
 

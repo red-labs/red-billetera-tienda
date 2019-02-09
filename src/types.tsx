@@ -6,6 +6,7 @@ export interface Transaction {
   value: utils.BigNumber;
   hash: string;
   to: string;
+  from: string;
   txreceipt_status: boolean;
 }
 

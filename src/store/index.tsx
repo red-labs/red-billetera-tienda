@@ -80,6 +80,7 @@ export class AppContainer extends Container<RootState> {
       value: string;
       hash: string;
       to: string;
+      from: string;
       txreceipt_status: string;
     }[] = parsed.result;
 
@@ -92,6 +93,7 @@ export class AppContainer extends Container<RootState> {
             value: ethers.utils.bigNumberify(tx.value),
             hash: tx.hash,
             to: tx.to,
+            from: tx.from,
             txreceipt_status: tx.txreceipt_status === "1"
           };
         }

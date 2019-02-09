@@ -3,6 +3,8 @@ import {
   Modal,
   ModalBody,
   ModalHeader,
+  FormGroup,
+  Label,
   Input,
   Alert
 } from "reactstrap";
@@ -55,28 +57,48 @@ class Save extends Component<Props, State> {
               {t("saveRestore")}
             </ScreenHeader>
             <ScreenBody>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  flexDirection: "column"
-                }}
-              >
+              <FormGroup>
                 <Input
-                  style={{ width: 240, marginTop: 10, marginBottom: 10 }}
+                  name="copyPrivateKey"
+                  id="copyPrivateKey"
+                  placeholder="0x..."
                   value={context.state.xDaiWallet.privateKey}
                 />
-                <Button
-                  onClick={() => this.copy(context.state.xDaiWallet.privateKey)}
-                  block
-                  style={{ maxWidth: 240, margin: 5 }}
-                  size="lg"
-                >
-                  {copyIcon("#fff")} {t("copyPrivateKey")}
-                </Button>
+              </FormGroup>
+              {/* <Input value={context.state.xDaiWallet.privateKey} /> */}
+              <Button
+                onClick={() => this.copy(context.state.xDaiWallet.privateKey)}
+                block
+                size="lg"
+                style={{ marginBottom: "1rem" }}
+              >
+                {copyIcon("#fff")} {t("copyPrivateKey")}
+              </Button>
+
+              <div style={{ marginBottom: "1rem" }}>
+                {t("privateKeySecurity")}
               </div>
-              <div>{t("privateKeySecurity")}</div>
-              <div
+
+              <FormGroup>
+                <Input
+                  name="restorePrivateKey"
+                  id="restorePrivateKey"
+                  placeholder="0x..."
+                  onChange={event => {
+                    this.setState({ inputValue: event.target.value.trim() });
+                  }}
+                  value={this.state.inputValue}
+                />
+              </FormGroup>
+              <Button
+                onClick={() => context.restorePrivateKey(this.state.inputValue)}
+                block
+                size="lg"
+                style={{ marginBottom: "1rem" }}
+              >
+                {t("restorePrivateKey")}
+              </Button>
+              {/* <div
                 style={{
                   display: "flex",
                   alignItems: "center",
@@ -85,23 +107,13 @@ class Save extends Component<Props, State> {
               >
                 <Input
                   name="restorePrivateKey"
-                  style={{ width: 240, marginTop: 10, marginBottom: 10 }}
                   placeholder={"0x..."}
                   onChange={event => {
                     this.setState({ inputValue: event.target.value.trim() });
                   }}
                 />
-                <Button
-                  onClick={() =>
-                    context.restorePrivateKey(this.state.inputValue)
-                  }
-                  block
-                  style={{ maxWidth: 240, margin: 5 }}
-                  size="lg"
-                >
-                  {t("restorePrivateKey")}
-                </Button>
-              </div>
+
+              </div> */}
               <div>{t("pastePrivateKey")}</div>
             </ScreenBody>
             <div

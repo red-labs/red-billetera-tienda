@@ -136,7 +136,15 @@ class Send extends Component<Props, State> {
                   }}
                 >
                   <h5 style={{ marginRight: 10 }}>
-                    Send {formatDaiAmount(this.state.amount)} to:
+                    Send{" "}
+                    {this.state.amount &&
+                      !isNaN(this.state.amount as any) &&
+                      ethers.utils.parseEther(this.state.amount!).toString() !==
+                        "0" &&
+                      formatDaiAmount(
+                        ethers.utils.parseEther(this.state.amount!)
+                      )}{" "}
+                    to:
                   </h5>
 
                   <h1>{addressToEmoji(add0x(this.state.toAddress))}</h1>
