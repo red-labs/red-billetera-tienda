@@ -38,6 +38,7 @@ export function Screen(props: {
         ...{
           position: "fixed",
           top: 20,
+          left: 0,
           background: "white",
           width: "100vw",
           height: "100vh",
@@ -52,12 +53,12 @@ export function Screen(props: {
           : {})
       }}
     >
-      {props.children}
+      {props.isOpen && props.children}
     </div>
   );
 }
 
-export function TopBar(props: { children: any; toggle: () => void }) {
+export function ScreenHeader(props: { children: any; toggle: () => void }) {
   return (
     <div
       style={{
@@ -88,4 +89,8 @@ export function TopBar(props: { children: any; toggle: () => void }) {
       />
     </div>
   );
+}
+
+export function ScreenBody(props: { children: any }) {
+  return <div style={{ padding: "1rem" }}>{props.children}</div>;
 }

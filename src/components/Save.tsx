@@ -12,6 +12,7 @@ import copy from "clipboard-copy";
 import { withI18n } from "react-i18next";
 import { Subscribe } from "unstated";
 import { AppContainer } from "../store";
+import { Screen, ScreenHeader, ScreenBody } from "./Screen";
 
 interface Props {
   open: boolean;
@@ -49,11 +50,11 @@ class Save extends Component<Props, State> {
     return (
       <Subscribe to={[AppContainer]}>
         {(context: AppContainer) => (
-          <Modal isOpen={this.props.open} toggle={this.props.toggle}>
-            <ModalHeader toggle={this.props.toggle}>
+          <Screen isOpen={this.props.open} toggle={this.props.toggle}>
+            <ScreenHeader toggle={this.props.toggle}>
               {t("saveRestore")}
-            </ModalHeader>
-            <ModalBody>
+            </ScreenHeader>
+            <ScreenBody>
               <div
                 style={{
                   display: "flex",
@@ -102,7 +103,7 @@ class Save extends Component<Props, State> {
                 </Button>
               </div>
               <div>{t("pastePrivateKey")}</div>
-            </ModalBody>
+            </ScreenBody>
             <div
               style={{
                 position: "fixed",
@@ -143,7 +144,7 @@ class Save extends Component<Props, State> {
                 {t("privateKeyRestored")}
               </Alert>
             </div>
-          </Modal>
+          </Screen>
         )}
       </Subscribe>
     );

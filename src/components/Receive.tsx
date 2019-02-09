@@ -11,6 +11,7 @@ import React, { Component } from "react";
 import QRCode from "qrcode.react";
 import copy from "clipboard-copy";
 import { withI18n } from "react-i18next";
+import { Screen, ScreenHeader, ScreenBody } from "./Screen";
 
 interface Props {
   open: boolean;
@@ -42,9 +43,9 @@ class Receive extends Component<Props, State> {
       this.state.alertOpen = false;
     }
     return (
-      <Modal isOpen={this.props.open} toggle={this.props.toggle}>
-        <ModalHeader toggle={this.props.toggle}>{t("receive")}</ModalHeader>
-        <ModalBody>
+      <Screen isOpen={this.props.open} toggle={this.props.toggle}>
+        <ScreenHeader toggle={this.props.toggle}>{t("receive")}</ScreenHeader>
+        <ScreenBody>
           <div
             style={{
               display: "flex",
@@ -67,7 +68,7 @@ class Receive extends Component<Props, State> {
               {copyIcon("#fff")} {t("copyAddress")}
             </Button>
           </div>
-        </ModalBody>
+        </ScreenBody>
         <div
           style={{
             position: "fixed",
@@ -88,7 +89,7 @@ class Receive extends Component<Props, State> {
             {t("addressCopied")}
           </Alert>
         </div>
-      </Modal>
+      </Screen>
     );
   }
 }

@@ -4,6 +4,7 @@ import { withI18n } from "react-i18next";
 import { Transaction } from "../types";
 import { AppContainer } from "../store";
 import { Subscribe } from "unstated";
+import { Screen, ScreenHeader, ScreenBody } from "./Screen";
 interface Props {
   open: boolean;
   toggle: () => void;
@@ -49,11 +50,11 @@ class Transactions extends Component<Props> {
     return (
       <Subscribe to={[AppContainer]}>
         {(context: AppContainer) => (
-          <Modal isOpen={this.props.open} toggle={this.props.toggle}>
-            <ModalHeader toggle={this.props.toggle}>
+          <Screen isOpen={this.props.open} toggle={this.props.toggle}>
+            <ScreenHeader toggle={this.props.toggle}>
               {t("transactions")}
-            </ModalHeader>
-            <ModalBody>
+            </ScreenHeader>
+            <ScreenBody>
               <div
                 style={{
                   display: "flex",
@@ -63,8 +64,8 @@ class Transactions extends Component<Props> {
               >
                 {this.renderTable(context.state.transactions)}
               </div>
-            </ModalBody>
-          </Modal>
+            </ScreenBody>
+          </Screen>
         )}
       </Subscribe>
     );

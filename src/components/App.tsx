@@ -18,6 +18,7 @@ import { utils } from "ethers";
 import { addressToEmoji } from "../utils";
 import { Currency } from "../types";
 import { Route, AppContainer } from "../store";
+import { ScreenBody } from "./Screen";
 
 interface Props {
   i18n: any;
@@ -33,7 +34,7 @@ class App extends Component<Props> {
   render() {
     let { i18n, t, store } = this.props;
     return (
-      <div>
+      <div style={{ paddingLeft: "1rem", paddingRight: "1rem" }}>
         <div
           style={{
             display: "flex",

@@ -13,7 +13,7 @@ import {
 import React, { Component } from "react";
 import { Currency, currencyToName, currencyToSymbol } from "../types";
 import { withI18n } from "react-i18next";
-
+import { Screen, ScreenHeader, ScreenBody } from "./Screen";
 interface Props {
   open: boolean;
   toggle: () => void;
@@ -34,12 +34,12 @@ class Convert extends Component<Props, State> {
     const { t } = this.props;
 
     return (
-      <Modal isOpen={this.props.open} toggle={this.props.toggle}>
-        <ModalHeader toggle={this.props.toggle}>
+      <Screen isOpen={this.props.open} toggle={this.props.toggle}>
+        <ScreenHeader toggle={this.props.toggle}>
           {t("convert")} {currencyToName(this.props.currency)} {t("to")}
           {currencyToName(this.props.convertTo)}
-        </ModalHeader>
-        <ModalBody>
+        </ScreenHeader>
+        <ScreenBody>
           <FormGroup>
             <Label for="amountToSend">{t("convert")}</Label>
             <InputGroup>
@@ -57,16 +57,8 @@ class Convert extends Component<Props, State> {
               {t("to")} {currencyToName(this.props.convertTo)}
             </Label>
           </FormGroup>
-        </ModalBody>
-        <ModalFooter>
-          <Button color="primary" onClick={this.props.toggle}>
-            {t("convert")}
-          </Button>{" "}
-          <Button color="secondary" onClick={this.props.toggle}>
-            {t("cancel")}
-          </Button>
-        </ModalFooter>
-      </Modal>
+        </ScreenBody>
+      </Screen>
     );
   }
 }
