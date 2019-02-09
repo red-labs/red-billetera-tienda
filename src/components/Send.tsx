@@ -149,7 +149,10 @@ class Send extends Component<Props, State> {
                 size="lg"
                 block
                 onClick={() => {
-                  if (!isNonZeroNumber(this.state.amount)) {
+                  if (
+                    isNonZeroNumber(this.state.amount) &&
+                    isAddress(add0x(this.state.toAddress))
+                  ) {
                     context.sendTx(
                       this.props.currency,
                       add0x(this.state.toAddress),
