@@ -92,7 +92,7 @@ class Transactions extends Component<Props> {
                         </>
                       )}
                     </div>
-                    <div>less than a minute ago</div>
+                    <div>3 days ago</div>
                   </ListGroupItem>
                 ))}
             </ListGroup>

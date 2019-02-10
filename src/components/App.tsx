@@ -34,13 +34,19 @@ class App extends Component<Props> {
   render() {
     let { i18n, t, store } = this.props;
     return (
-      <div style={{ paddingLeft: "1rem", paddingRight: "1rem" }}>
+      <div style={{ height: "100vh", display: "flex", alignItems: "center" }}>
         <div
           style={{
             display: "flex",
+            flex: 1,
             flexDirection: "column",
             justifyContent: "space-between",
-            height: "100vh"
+            paddingLeft: "1rem",
+            paddingRight: "1rem",
+            maxWidth: 450,
+            height: "100%",
+            maxHeight: 900,
+            margin: "auto"
           }}
         >
           <div
@@ -93,14 +99,14 @@ class App extends Component<Props> {
             >
               <Button
                 onClick={() => store.setRoute(Route.Receive)}
-                style={{ flex: "1 1 0", maxWidth: 200, marginRight: 10 }}
+                style={{ flex: "1 1 0", marginRight: "1rem" }}
                 size="lg"
               >
                 {t("receive")}
               </Button>
               <Button
                 onClick={() => store.setRoute(Route.Send)}
-                style={{ flex: "1 1 0", maxWidth: 200 }}
+                style={{ flex: "1 1 0" }}
                 size="lg"
               >
                 {t("send")}
@@ -114,36 +120,17 @@ class App extends Component<Props> {
           />
 
           <div>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center"
-              }}
-            >
-              <Button
-                onClick={() => store.setRoute(Route.Save)}
-                style={{ flex: "1 1 0", maxWidth: 410, margin: 5 }}
-                size="lg"
-              >
-                {t("saveRestore")}
-              </Button>
-            </div>
+            <Button onClick={() => store.setRoute(Route.Save)} size="lg" block>
+              {t("saveRestore")}
+            </Button>
 
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center"
-              }}
+            <Button
+              color="link"
+              onClick={() => store.setRoute(Route.Advanced)}
+              block
             >
-              <Button
-                color="link"
-                onClick={() => store.setRoute(Route.Advanced)}
-                style={{ flex: "1 1 0", maxWidth: 410, margin: 5 }}
-                size="sm"
-              >
-                {t("advanced")}
-              </Button>
-            </div>
+              {t("advanced")}
+            </Button>
           </div>
         </div>
         <Send

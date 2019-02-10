@@ -39,9 +39,11 @@ export function Screen(props: {
           position: "fixed",
           top: 20,
           left: 0,
-          background: "white",
+
           width: "100vw",
           height: "100vh",
+          display: "flex",
+          alignItems: "center",
           transform: "translateX(-100vw)",
           transition: "all .1s ease, top .11s ease-out"
         },
@@ -53,7 +55,18 @@ export function Screen(props: {
           : {})
       }}
     >
-      {props.isOpen && props.children}
+      <div
+        style={{
+          background: "white",
+          flex: 1,
+          maxWidth: 450,
+          maxHeight: 900,
+          margin: "auto",
+          height: "100%"
+        }}
+      >
+        {props.isOpen && props.children}
+      </div>
     </div>
   );
 }
