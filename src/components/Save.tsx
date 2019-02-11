@@ -36,8 +36,6 @@ class Save extends Component<Props, State> {
     }, 3000);
   };
 
-  restorePrivateKey = async (context: AppContainer) => {};
-
   render() {
     const { t } = this.props;
     if (!this.props.open) {
