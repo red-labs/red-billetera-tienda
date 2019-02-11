@@ -9,6 +9,7 @@
   "copyPrivateKey": "Copy private key",
   "date": "Date",
   "efectivo": "Efectivo",
+  "failedToRestorePk": "Could not restore account",
   "hash": "Transaction ID",
   "loading": "Loading...",
   "pastePrivateKey": "Paste your private key here if you want to restore your wallet.",

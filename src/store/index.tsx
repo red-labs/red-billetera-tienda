@@ -134,17 +134,36 @@ export class AppContainer extends Container<RootState> {
     value: ethers.utils.BigNumber
   ) => {
     let wallet: ethers.Wallet;
+    let gasPrice: ethers.utils.BigNumber;
+    let gasLimit: ethers.utils.BigNumber;
+    let data: string = "0x";
     switch (currency) {
       case Currency.DAI:
+        wallet = this.state.ethWallet;
+        gasPrice = await this.state.ethProvider.getGasPrice();
+        gasLimit = await this.state.daiContract.estimate.transfer(to, value);
+        data = "0x<transfer><to><value>";
       case Currency.ETH:
         wallet = this.state.ethWallet;
+        gasPrice = await this.state.ethProvider.getGasPrice();
+        gasLimit = ethers.utils.bigNumberify(21000);
         break;
       default:
+        gasPrice = ethers.utils.bigNumberify(1000000000);
+        gasLimit = ethers.utils.bigNumberify(21000);
         wallet = this.state.xDaiWallet;
         break;
     }
 
-    await wallet.sendTransaction({ to, value, gasPrice: 1000000000 });
+    await wallet
+      .sendTransaction({
+        to,
+        value,
+        gasPrice
+      })
+      .catch(e => {
+        throw new Error(e);
+      });
   };
 
   setRoute = (route: Route) => {
@@ -177,19 +196,38 @@ export class AppContainer extends Container<RootState> {
     });
   };
 
-  sweepWallet = (address: string) => {
-    let gasPrice = ethers.utils.bigNumberify(1000000000);
-    let gasLimit = ethers.utils.bigNumberify(21000);
+  sweepWallet = async (address: string) => {
+    let gasPrice: ethers.utils.BigNumber;
+    let gasLimit: ethers.utils.BigNumber;
 
     if (
       this.state.xDaiBalance &&
       !this.state.xDaiBalance.eq(ethers.constants.Zero)
     ) {
-      this.sendTx(
+      gasPrice = ethers.utils.bigNumberify(1000000000);
+      gasLimit = ethers.utils.bigNumberify(21000);
+      await this.sendTx(
         Currency.XDAI,
         address,
         this.state.xDaiBalance.sub(gasPrice.mul(gasLimit))
       );
     }
+    /*
+    Future code for sweeping DAI and ETH
+    if (
+      this.state.daiBalance &&
+      !this.state.daiBalance.eq(ethers.constants.Zero)
+    ) {
+      await this.state.daiContract.estimate.transfer();
+      await this.sendTx(Currency.DAI, address, this.state.daiBalance);
+    }
+
+    if (
+      this.state.ethBalance &&
+      !this.state.ethBalance.eq(ethers.constants.Zero)
+    ) {
+      await this.sendTx(Currency.ETH, address);
+    }
+    */
   };
 }

@@ -1,13 +1,4 @@
-import {
-  Button,
-  Modal,
-  ModalBody,
-  ModalHeader,
-  FormGroup,
-  Label,
-  Input,
-  Alert
-} from "reactstrap";
+import { Button, FormGroup, Input, Alert } from "reactstrap";
 import { copy as copyIcon } from "../utils/icons";
 import React, { Component } from "react";
 import copy from "clipboard-copy";
@@ -25,6 +16,7 @@ interface Props {
 interface State {
   saveAlertOpen: boolean;
   restoreAlertOpen: boolean;
+  failedRestoreAlertOpen: boolean;
   inputValue: string;
 }
 
@@ -32,6 +24,7 @@ class Save extends Component<Props, State> {
   state = {
     saveAlertOpen: false,
     restoreAlertOpen: false,
+    failedRestoreAlertOpen: false,
     inputValue: ""
   };
 
@@ -91,7 +84,19 @@ class Save extends Component<Props, State> {
                 />
               </FormGroup>
               <Button
-                onClick={() => context.restorePrivateKey(this.state.inputValue)}
+                onClick={async () => {
+                  try {
+                    await context.restorePrivateKey(this.state.inputValue);
+                    this.props.toggle();
+                    this.setState({ inputValue: "" });
+                  } catch (e) {
+                    console.log(e);
+                    this.setState({ failedRestoreAlertOpen: true });
+                    setTimeout(() => {
+                      this.setState({ failedRestoreAlertOpen: false });
+                    }, 5000);
+                  }
+                }}
                 block
                 size="lg"
                 style={{ marginBottom: "1rem" }}
@@ -154,6 +159,26 @@ class Save extends Component<Props, State> {
                 toggle={() => this.setState({ restoreAlertOpen: false })}
               >
                 {t("privateKeyRestored")}
+              </Alert>
+            </div>
+            <div
+              style={{
+                position: "fixed",
+                bottom: 10,
+                left: 10,
+                right: 10,
+                display: "flex",
+                justifyContent: "center",
+                textAlign: "center"
+              }}
+            >
+              <Alert
+                style={{ width: "100%" }}
+                isOpen={this.state.failedRestoreAlertOpen}
+                color="danger"
+                toggle={() => this.setState({ failedRestoreAlertOpen: false })}
+              >
+                {t("failedToRestorePk")}
               </Alert>
             </div>
           </Screen>
