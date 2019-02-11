@@ -27,7 +27,14 @@ interface Props {
   store: AppContainer;
 }
 
+interface State {
+  languageDropdownOpen: boolean;
+}
+
 class App extends Component<Props> {
+  state = {
+    languageDropdownOpen: false
+  };
   async componentDidMount() {
     this.props.store.startPolls();
   }
@@ -47,7 +54,8 @@ class App extends Component<Props> {
             maxWidth: 450,
             height: "100%",
             maxHeight: 900,
-            margin: "auto"
+            margin: "auto",
+            overflow: "hidden"
           }}
         >
           <div
@@ -59,14 +67,22 @@ class App extends Component<Props> {
           >
             <h1 style={{ fontWeight: "normal" }}>{t("efectivo")}</h1>
             <div>
-              <ButtonDropdown outline>
+              <ButtonDropdown
+                isOpen={this.state.languageDropdownOpen}
+                toggle={() =>
+                  this.setState({
+                    languageDropdownOpen: !this.state.languageDropdownOpen
+                  })
+                }
+              >
                 <DropdownToggle caret>Language</DropdownToggle>
-                <DropdownMenu>
-                  <DropdownItem header>Header</DropdownItem>
-                  <DropdownItem disabled>Action</DropdownItem>
-                  <DropdownItem>Another Action</DropdownItem>
-                  <DropdownItem divider />
-                  <DropdownItem>Another Action</DropdownItem>
+                <DropdownMenu className="dropdown-menu-right">
+                  <DropdownItem onClick={() => i18n.changeLanguage("en")}>
+                    English
+                  </DropdownItem>
+                  <DropdownItem onClick={() => i18n.changeLanguage("es")}>
+                    Español
+                  </DropdownItem>
                 </DropdownMenu>
               </ButtonDropdown>
             </div>
