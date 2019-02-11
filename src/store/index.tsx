@@ -134,17 +134,36 @@ export class AppContainer extends Container<RootState> {
     value: ethers.utils.BigNumber
   ) => {
     let wallet: ethers.Wallet;
+    let gasPrice: ethers.utils.BigNumber;
+    let gasLimit: ethers.utils.BigNumber;
+    let data: string = "0x";
     switch (currency) {
       case Currency.DAI:
+        wallet = this.state.ethWallet;
+        gasPrice = await this.state.ethProvider.getGasPrice();
+        gasLimit = await this.state.daiContract.estimate.transfer(to, value);
+        data = "0x<transfer><to><value>";
       case Currency.ETH:
         wallet = this.state.ethWallet;
+        gasPrice = await this.state.ethProvider.getGasPrice();
+        gasLimit = ethers.utils.bigNumberify(21000);
         break;
       default:
+        gasPrice = ethers.utils.bigNumberify(1000000000);
+        gasLimit = ethers.utils.bigNumberify(21000);
         wallet = this.state.xDaiWallet;
         break;
     }
 
-    await wallet.sendTransaction({ to, value, gasPrice: 1000000000 });
+    await wallet
+      .sendTransaction({
+        to,
+        value,
+        gasPrice
+      })
+      .catch(e => {
+        throw new Error(e);
+      });
   };
 
   setRoute = (route: Route) => {
@@ -181,7 +200,6 @@ export class AppContainer extends Container<RootState> {
     let gasPrice: ethers.utils.BigNumber;
     let gasLimit: ethers.utils.BigNumber;
 
-    // Add a throw!!!!!!
     if (
       this.state.xDaiBalance &&
       !this.state.xDaiBalance.eq(ethers.constants.Zero)
@@ -195,7 +213,7 @@ export class AppContainer extends Container<RootState> {
       );
     }
     /*
-    Future code for swepeing DAI and ETH
+    Future code for sweeping DAI and ETH
     if (
       this.state.daiBalance &&
       !this.state.daiBalance.eq(ethers.constants.Zero)

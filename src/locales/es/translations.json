@@ -9,6 +9,7 @@
   "copyPrivateKey": "Copiar clave privada",
   "date": "Fecha",
   "efectivo": "Efectivo",
+  "failedToRestorePk": "No se pudo recuperar cuenta",
   "hash": "ID de transacción",
   "loading": "Cargando...",
   "pastePrivateKey": "Pegue su llave privada aqui si quieres recuperar una cuenta",
