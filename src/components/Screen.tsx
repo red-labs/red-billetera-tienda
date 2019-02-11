@@ -37,19 +37,17 @@ export function Screen(props: {
       style={{
         ...{
           position: "fixed",
-          top: 20,
           left: 0,
-
+          top: 0,
           width: "100vw",
           height: "100vh",
           display: "flex",
           alignItems: "center",
-          transform: "translateX(-100vw)",
-          transition: "all .1s ease, top .11s ease-out"
+          transform: "translateX(-100vw) translateY(20px)",
+          transition: "all .1s ease"
         },
         ...(props.isOpen
           ? {
-              top: 0,
               transform: "translateX(0px) translateY(0px)"
             }
           : {})
@@ -106,7 +104,14 @@ export function ScreenHeader(props: { children: any; toggle: () => void }) {
 
 export function ScreenBody(props: { children: any }) {
   return (
-    <div style={{ padding: "1rem", overflow: "scroll", height: "100%" }}>
+    <div
+      style={{
+        padding: "1rem",
+        paddingBottom: "4rem",
+        overflow: "scroll",
+        height: "100%"
+      }}
+    >
       {props.children}
     </div>
   );

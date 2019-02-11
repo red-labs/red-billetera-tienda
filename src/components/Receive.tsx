@@ -59,12 +59,7 @@ class Receive extends Component<Props, State> {
               style={{ width: 240, marginTop: 10, marginBottom: 10 }}
               value={this.props.address}
             />
-            <Button
-              onClick={this.copy}
-              block
-              style={{ maxWidth: 240, margin: 5 }}
-              size="lg"
-            >
+            <Button onClick={this.copy} block size="lg">
               {copyIcon("#fff")} {t("copyAddress")}
             </Button>
           </div>
