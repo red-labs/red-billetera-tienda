@@ -3,6 +3,8 @@ import {
   Modal,
   ModalBody,
   ModalHeader,
+  FormGroup,
+  Label,
   Input,
   Alert
 } from "reactstrap";
@@ -12,6 +14,7 @@ import copy from "clipboard-copy";
 import { withI18n } from "react-i18next";
 import { Subscribe } from "unstated";
 import { AppContainer } from "../store";
+import { Screen, ScreenHeader, ScreenBody } from "./Screen";
 
 interface Props {
   open: boolean;
@@ -49,33 +52,53 @@ class Save extends Component<Props, State> {
     return (
       <Subscribe to={[AppContainer]}>
         {(context: AppContainer) => (
-          <Modal isOpen={this.props.open} toggle={this.props.toggle}>
-            <ModalHeader toggle={this.props.toggle}>
+          <Screen isOpen={this.props.open} toggle={this.props.toggle}>
+            <ScreenHeader toggle={this.props.toggle}>
               {t("saveRestore")}
-            </ModalHeader>
-            <ModalBody>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  flexDirection: "column"
-                }}
-              >
+            </ScreenHeader>
+            <ScreenBody>
+              <FormGroup>
                 <Input
-                  style={{ width: 240, marginTop: 10, marginBottom: 10 }}
+                  name="copyPrivateKey"
+                  id="copyPrivateKey"
+                  placeholder="0x..."
                   value={context.state.xDaiWallet.privateKey}
                 />
-                <Button
-                  onClick={() => this.copy(context.state.xDaiWallet.privateKey)}
-                  block
-                  style={{ maxWidth: 240, margin: 5 }}
-                  size="lg"
-                >
-                  {copyIcon("#fff")} {t("copyPrivateKey")}
-                </Button>
+              </FormGroup>
+              {/* <Input value={context.state.xDaiWallet.privateKey} /> */}
+              <Button
+                onClick={() => this.copy(context.state.xDaiWallet.privateKey)}
+                block
+                size="lg"
+                style={{ marginBottom: "1rem" }}
+              >
+                {copyIcon("#fff")} {t("copyPrivateKey")}
+              </Button>
+
+              <div style={{ marginBottom: "1rem" }}>
+                {t("privateKeySecurity")}
               </div>
-              <div>{t("privateKeySecurity")}</div>
-              <div
+
+              <FormGroup>
+                <Input
+                  name="restorePrivateKey"
+                  id="restorePrivateKey"
+                  placeholder="0x..."
+                  onChange={event => {
+                    this.setState({ inputValue: event.target.value.trim() });
+                  }}
+                  value={this.state.inputValue}
+                />
+              </FormGroup>
+              <Button
+                onClick={() => context.restorePrivateKey(this.state.inputValue)}
+                block
+                size="lg"
+                style={{ marginBottom: "1rem" }}
+              >
+                {t("restorePrivateKey")}
+              </Button>
+              {/* <div
                 style={{
                   display: "flex",
                   alignItems: "center",
@@ -84,25 +107,15 @@ class Save extends Component<Props, State> {
               >
                 <Input
                   name="restorePrivateKey"
-                  style={{ width: 240, marginTop: 10, marginBottom: 10 }}
                   placeholder={"0x..."}
                   onChange={event => {
                     this.setState({ inputValue: event.target.value.trim() });
                   }}
                 />
-                <Button
-                  onClick={() =>
-                    context.restorePrivateKey(this.state.inputValue)
-                  }
-                  block
-                  style={{ maxWidth: 240, margin: 5 }}
-                  size="lg"
-                >
-                  {t("restorePrivateKey")}
-                </Button>
-              </div>
+
+              </div> */}
               <div>{t("pastePrivateKey")}</div>
-            </ModalBody>
+            </ScreenBody>
             <div
               style={{
                 position: "fixed",
@@ -143,7 +156,7 @@ class Save extends Component<Props, State> {
                 {t("privateKeyRestored")}
               </Alert>
             </div>
-          </Modal>
+          </Screen>
         )}
       </Subscribe>
     );

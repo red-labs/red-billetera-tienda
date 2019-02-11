@@ -3,6 +3,7 @@ import Send from "./Send";
 import Receive from "./Receive";
 import Save from "./Save";
 import Transactions from "./Transactions";
+import TransactionsScreen from "./TransactionsScreen";
 import {
   Button,
   ButtonDropdown,
@@ -15,9 +16,10 @@ import Advanced from "./Advanced";
 import baseEmoji from "base-emoji";
 import { withI18n } from "react-i18next";
 import { utils } from "ethers";
-import { addressToEmoji } from "../utils/addressToEmoji";
+import { addressToEmoji, formatDaiAmount } from "../utils";
 import { Currency } from "../types";
 import { Route, AppContainer } from "../store";
+import { ScreenBody } from "./Screen";
 
 interface Props {
   i18n: any;
@@ -33,13 +35,19 @@ class App extends Component<Props> {
   render() {
     let { i18n, t, store } = this.props;
     return (
-      <div style={{ textAlign: "center" }}>
+      <div style={{ height: "100vh", display: "flex", alignItems: "center" }}>
         <div
           style={{
             display: "flex",
+            flex: 1,
             flexDirection: "column",
             justifyContent: "space-between",
-            height: "100vh"
+            paddingLeft: "1rem",
+            paddingRight: "1rem",
+            maxWidth: 450,
+            height: "100%",
+            maxHeight: 900,
+            margin: "auto"
           }}
         >
           <div
@@ -49,7 +57,7 @@ class App extends Component<Props> {
               alignItems: "center"
             }}
           >
-            <h1>{t("efectivo")}</h1>
+            <h1 style={{ fontWeight: "normal" }}>{t("efectivo")}</h1>
             <div>
               <ButtonDropdown outline>
                 <DropdownToggle caret>Language</DropdownToggle>
@@ -69,7 +77,8 @@ class App extends Component<Props> {
               style={{
                 display: "flex",
                 justifyContent: "space-between",
-                alignItems: "center"
+                alignItems: "center",
+                marginBottom: "2rem"
               }}
             >
               <h1>
@@ -77,11 +86,8 @@ class App extends Component<Props> {
                   addressToEmoji(store.state.xDaiWallet.address)}{" "}
               </h1>
               <h1 style={{ wordBreak: "normal" }}>
-                {!isNaN(Number(store.state.xDaiBalance))
-                  ? "$" +
-                    Number(utils.formatEther(store.state.xDaiBalance!)).toFixed(
-                      2
-                    )
+                {!isNaN(store.state.xDaiBalance as any)
+                  ? formatDaiAmount(store.state.xDaiBalance!)
                   : t("loading")}
               </h1>
             </div>
@@ -94,14 +100,14 @@ class App extends Component<Props> {
             >
               <Button
                 onClick={() => store.setRoute(Route.Receive)}
-                style={{ flex: "1 1 0", maxWidth: 200, marginRight: 10 }}
+                style={{ flex: "1 1 0", marginRight: "1rem" }}
                 size="lg"
               >
                 {t("receive")}
               </Button>
               <Button
                 onClick={() => store.setRoute(Route.Send)}
-                style={{ flex: "1 1 0", maxWidth: 200 }}
+                style={{ flex: "1 1 0" }}
                 size="lg"
               >
                 {t("send")}
@@ -109,37 +115,22 @@ class App extends Component<Props> {
             </div>
           </div>
 
-          <div>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center"
-              }}
-            >
-              <Button
-                onClick={() => store.setRoute(Route.Save)}
-                style={{ flex: "1 1 0", maxWidth: 410, margin: 5 }}
-                size="lg"
-              >
-                {t("saveRestore")}
-              </Button>
-            </div>
+          <Transactions
+            viewTransactions={() => store.setRoute(Route.Transactions)}
+          />
 
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center"
-              }}
+          <div>
+            <Button onClick={() => store.setRoute(Route.Save)} size="lg" block>
+              {t("saveRestore")}
+            </Button>
+
+            <Button
+              color="link"
+              onClick={() => store.setRoute(Route.Advanced)}
+              block
             >
-              <Button
-                color="link"
-                onClick={() => store.setRoute(Route.Advanced)}
-                style={{ flex: "1 1 0", maxWidth: 410, margin: 5 }}
-                size="sm"
-              >
-                {t("advanced")}
-              </Button>
-            </div>
+              {t("advanced")}
+            </Button>
           </div>
         </div>
         <Send
@@ -156,7 +147,7 @@ class App extends Component<Props> {
           toggle={() => store.setRoute(Route.Main)}
           open={store.state.route === Route.Save}
         />
-        <Transactions
+        <TransactionsScreen
           toggle={() => store.setRoute(Route.Main)}
           open={store.state.route === Route.Transactions}
         />

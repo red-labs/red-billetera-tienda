@@ -2,6 +2,7 @@ import QrReader from "react-qr-reader";
 import { Modal, ModalBody, ModalHeader } from "reactstrap";
 import React, { Component } from "react";
 import { withI18n } from "react-i18next";
+import { Screen, ScreenHeader, ScreenBody } from "./Screen";
 
 interface Props {
   open: boolean;
@@ -17,15 +18,17 @@ class Send extends Component<Props, State> {
     const { t } = this.props;
 
     return (
-      <Modal isOpen={this.props.open} toggle={this.props.toggle}>
-        <ModalHeader toggle={this.props.toggle}>{t("scanAddress")}</ModalHeader>
-        <ModalBody>
+      <Screen isOpen={this.props.open} toggle={this.props.toggle}>
+        <ScreenHeader toggle={this.props.toggle}>
+          {t("scanAddress")}
+        </ScreenHeader>
+        <ScreenBody>
           <QrReader
             onScan={this.props.onScan}
             onError={err => console.log("error", err)}
           />
-        </ModalBody>
-      </Modal>
+        </ScreenBody>
+      </Screen>
     );
   }
 }

@@ -10,6 +10,7 @@ import { Currency } from "../types";
 import Send from "./Send";
 import Convert from "./Convert";
 import { withI18n } from "react-i18next";
+import { Screen, ScreenHeader, ScreenBody } from "./Screen";
 
 interface Props {
   open: boolean;
@@ -95,9 +96,9 @@ class Advanced extends Component<Props, State> {
       this.state.alertOpen = false;
     }
     return (
-      <Modal isOpen={this.props.open} toggle={this.props.toggle}>
-        <ModalHeader toggle={this.props.toggle}>{t("advanced")}</ModalHeader>
-        <ModalBody>
+      <Screen isOpen={this.props.open} toggle={this.props.toggle}>
+        <ScreenHeader toggle={this.props.toggle}>{t("advanced")}</ScreenHeader>
+        <ScreenBody>
           <div
             style={{
               display: "flex",
@@ -236,7 +237,7 @@ class Advanced extends Component<Props, State> {
             </div>
           </div>
           <hr />
-        </ModalBody>
+        </ScreenBody>
 
         {this.state.convertModal !== undefined && (
           <Convert
@@ -262,7 +263,7 @@ class Advanced extends Component<Props, State> {
           open={this.state.sendModal.open}
           currency={Currency.XDAI}
         />
-      </Modal>
+      </Screen>
     );
   }
 }

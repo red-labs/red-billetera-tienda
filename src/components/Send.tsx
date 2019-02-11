@@ -14,9 +14,14 @@ import { qr, camera } from "../utils/icons";
 import React, { Component } from "react";
 import { Currency, currencyToName, currencyToSymbol } from "../types";
 import QrReader from "./QrReader";
+import { Screen, ScreenHeader, ScreenBody } from "./Screen";
 import { withI18n } from "react-i18next";
-import { isAddress } from "../utils/isAddress";
-import { addressToEmoji } from "../utils/addressToEmoji";
+import {
+  cleanAddress,
+  addressToEmoji,
+  isNonZeroNumber,
+  formatDaiAmount
+} from "../utils";
 import { AppContainer } from "../store";
 import { Subscribe } from "unstated";
 import { ethers } from "ethers";
@@ -54,11 +59,11 @@ class Send extends Component<Props, State> {
     return (
       <Subscribe to={[AppContainer]}>
         {(context: AppContainer) => (
-          <Modal isOpen={this.props.open} toggle={this.props.toggle}>
-            <ModalHeader toggle={this.props.toggle}>
+          <Screen isOpen={this.props.open} toggle={this.props.toggle}>
+            <ScreenHeader toggle={this.props.toggle}>
               {t("send")} {currencyToName(this.props.currency)}
-            </ModalHeader>
-            <ModalBody>
+            </ScreenHeader>
+            <ScreenBody>
               <FormGroup>
                 <Label for="sendToAddress">{t("sendToAddress")}</Label>
                 <div
@@ -119,85 +124,75 @@ class Send extends Component<Props, State> {
                   </InputGroupAddon>
                 </InputGroup>
               </FormGroup>
-              {isAddress(this.state.toAddress) && (
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginTop: 20,
-                    marginBottom: 15
-                  }}
-                >
-                  <h5 style={{ marginRight: 10 }}>
-                    Send {formatDaiAmount(this.state.amount)} to:
-                  </h5>
+              {cleanAddress(this.state.toAddress) && (
+                <>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      marginTop: 20,
+                      marginBottom: 15
+                    }}
+                  >
+                    <h5 style={{ marginRight: 10 }}>
+                      Send{" "}
+                      {this.state.amount &&
+                        !isNaN(this.state.amount as any) &&
+                        ethers.utils
+                          .parseEther(this.state.amount!)
+                          .toString() !== "0" &&
+                        formatDaiAmount(
+                          ethers.utils.parseEther(this.state.amount!)
+                        )}{" "}
+                      to:
+                    </h5>
 
-                  <h1>
-                    {addressToEmoji(
-                      this.state.toAddress.substring(0, 2) === "0x"
-                        ? this.state.toAddress
-                        : "0x" + this.state.toAddress
-                    )}
-                  </h1>
-                </div>
+                    <h1>
+                      {addressToEmoji(cleanAddress(this.state.toAddress)!)}
+                    </h1>
+                  </div>
+                  <Button
+                    size="lg"
+                    block
+                    onClick={() => {
+                      console.log(
+                        this.state,
+                        isNonZeroNumber(this.state.amount),
+                        cleanAddress(this.state.toAddress)
+                      );
+
+                      const address = cleanAddress(this.state.toAddress);
+
+                      if (isNonZeroNumber(this.state.amount) && address) {
+                        context.sendTx(
+                          this.props.currency,
+                          address,
+                          ethers.utils.parseEther(this.state.amount!)
+                        );
+                      }
+                      this.props.toggle();
+                    }}
+                  >
+                    {t("send")}
+                  </Button>
+                </>
               )}
-              <Button
-                disabled={!isNonZeroNumber(this.state.amount)}
-                size="lg"
-                block
-                onClick={() => {
-                  if (!isNonZeroNumber(this.state.amount)) {
-                    context.sendTx(
-                      this.props.currency,
-                      this.state.toAddress,
-                      ethers.utils.parseEther(this.state.amount!)
-                    );
-                  }
-                  this.props.toggle();
-                }}
-              >
-                {t("send")}
-              </Button>{" "}
-            </ModalBody>
+            </ScreenBody>
             <QrReader
               toggle={() => this.setState({ qrReading: false })}
               open={this.state.qrReading}
               onScan={(scanned: string | null) => {
-                if (scanned && isAddress(scanned)) {
+                if (scanned && cleanAddress(scanned)) {
                   this.setState({ qrReading: false, toAddress: scanned });
                 }
               }}
             />
-          </Modal>
+          </Screen>
         )}
       </Subscribe>
     );
   }
-}
-
-function isNonZeroNumber(number?: string) {
-  return !!(
-    number &&
-    !isNaN(number as any) &&
-    ethers.utils.parseEther(number).toString() !== "0"
-  );
-}
-
-function formatDaiAmount(amount?: string) {
-  return (
-    amount &&
-    !isNaN(amount as any) &&
-    ethers.utils.parseEther(amount).toString() !== "0" &&
-    "$" +
-      ethers.utils.commify(
-        Math.round(
-          parseFloat(
-            ethers.utils.formatEther(ethers.utils.parseEther(amount))
-          ) * 100
-        ) / 100
-      )
-  );
 }
 
 export default withI18n()(Send);
