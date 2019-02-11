@@ -105,5 +105,9 @@ export function ScreenHeader(props: { children: any; toggle: () => void }) {
 }
 
 export function ScreenBody(props: { children: any }) {
-  return <div style={{ padding: "1rem" }}>{props.children}</div>;
+  return (
+    <div style={{ padding: "1rem", overflow: "scroll", height: "100%" }}>
+      {props.children}
+    </div>
+  );
 }

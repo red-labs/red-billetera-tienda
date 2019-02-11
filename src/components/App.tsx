@@ -3,6 +3,7 @@ import Send from "./Send";
 import Receive from "./Receive";
 import Save from "./Save";
 import Transactions from "./Transactions";
+import TransactionsScreen from "./TransactionsScreen";
 import {
   Button,
   ButtonDropdown,
@@ -115,8 +116,7 @@ class App extends Component<Props> {
           </div>
 
           <Transactions
-            toggle={() => store.setRoute(Route.Main)}
-            open={store.state.route === Route.Transactions}
+            viewTransactions={() => store.setRoute(Route.Transactions)}
           />
 
           <div>
@@ -147,7 +147,10 @@ class App extends Component<Props> {
           toggle={() => store.setRoute(Route.Main)}
           open={store.state.route === Route.Save}
         />
-
+        <TransactionsScreen
+          toggle={() => store.setRoute(Route.Main)}
+          open={store.state.route === Route.Transactions}
+        />
         <Advanced
           toggle={() => store.setRoute(Route.Main)}
           open={store.state.route === Route.Advanced}

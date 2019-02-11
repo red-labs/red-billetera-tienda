@@ -17,7 +17,8 @@ import { addressToEmoji, formatDaiAmount } from "../utils";
 import { distanceInWordsStrict } from "date-fns";
 
 interface Props {
-  viewTransactions: () => void;
+  open: boolean;
+  toggle: () => void;
   t: Function;
 }
 
@@ -26,15 +27,10 @@ class Transactions extends Component<Props> {
     const { t } = this.props;
     return (
       <Subscribe to={[AppContainer]}>
-        {(context: AppContainer) =>
-          context.state.transactions.length > 0 && (
-            <div
-              style={{
-                position: "relative",
-                height: "30vh",
-                overflow: "hidden"
-              }}
-            >
+        {(context: AppContainer) => (
+          <Screen isOpen={this.props.open} toggle={this.props.toggle}>
+            <ScreenHeader toggle={this.props.toggle}>Transactions</ScreenHeader>
+            <ScreenBody>
               <ListGroup flush>
                 {context.state.transactions
                   .sort((tx1, tx2) => tx2.timeStamp - tx1.timeStamp)
@@ -74,26 +70,9 @@ class Transactions extends Component<Props> {
                     </ListGroupItem>
                   ))}
               </ListGroup>
-              <div
-                style={{
-                  position: "absolute",
-                  bottom: 0,
-                  width: "100%",
-                  height: "5rem",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "flex-end",
-                  background:
-                    "linear-gradient(to bottom, rgba(255,255,255,0) 0%,rgba(255,255,255,.7) 40%,rgba(255,255,255,1) 55%)"
-                }}
-              >
-                <Button onClick={this.props.viewTransactions} color="link">
-                  See all transactions
-                </Button>
-              </div>
-            </div>
-          )
-        }
+            </ScreenBody>
+          </Screen>
+        )}
       </Subscribe>
     );
   }

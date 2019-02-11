@@ -17,9 +17,8 @@ import QrReader from "./QrReader";
 import { Screen, ScreenHeader, ScreenBody } from "./Screen";
 import { withI18n } from "react-i18next";
 import {
-  isAddress,
+  cleanAddress,
   addressToEmoji,
-  add0x,
   isNonZeroNumber,
   formatDaiAmount
 } from "../utils";
@@ -125,60 +124,66 @@ class Send extends Component<Props, State> {
                   </InputGroupAddon>
                 </InputGroup>
               </FormGroup>
-              {isAddress(this.state.toAddress) && (
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginTop: 20,
-                    marginBottom: 15
-                  }}
-                >
-                  <h5 style={{ marginRight: 10 }}>
-                    Send{" "}
-                    {this.state.amount &&
-                      !isNaN(this.state.amount as any) &&
-                      ethers.utils.parseEther(this.state.amount!).toString() !==
-                        "0" &&
-                      formatDaiAmount(
-                        ethers.utils.parseEther(this.state.amount!)
-                      )}{" "}
-                    to:
-                  </h5>
+              {cleanAddress(this.state.toAddress) && (
+                <>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      marginTop: 20,
+                      marginBottom: 15
+                    }}
+                  >
+                    <h5 style={{ marginRight: 10 }}>
+                      Send{" "}
+                      {this.state.amount &&
+                        !isNaN(this.state.amount as any) &&
+                        ethers.utils
+                          .parseEther(this.state.amount!)
+                          .toString() !== "0" &&
+                        formatDaiAmount(
+                          ethers.utils.parseEther(this.state.amount!)
+                        )}{" "}
+                      to:
+                    </h5>
 
-                  <h1>{addressToEmoji(add0x(this.state.toAddress))}</h1>
-                </div>
+                    <h1>
+                      {addressToEmoji(cleanAddress(this.state.toAddress)!)}
+                    </h1>
+                  </div>
+                  <Button
+                    size="lg"
+                    block
+                    onClick={() => {
+                      console.log(
+                        this.state,
+                        isNonZeroNumber(this.state.amount),
+                        cleanAddress(this.state.toAddress)
+                      );
+
+                      const address = cleanAddress(this.state.toAddress);
+
+                      if (isNonZeroNumber(this.state.amount) && address) {
+                        context.sendTx(
+                          this.props.currency,
+                          address,
+                          ethers.utils.parseEther(this.state.amount!)
+                        );
+                      }
+                      this.props.toggle();
+                    }}
+                  >
+                    {t("send")}
+                  </Button>
+                </>
               )}
-              <Button
-                disabled={
-                  !isNonZeroNumber(this.state.amount) &&
-                  !isAddress(this.state.toAddress)
-                }
-                size="lg"
-                block
-                onClick={() => {
-                  if (
-                    isNonZeroNumber(this.state.amount) &&
-                    isAddress(add0x(this.state.toAddress))
-                  ) {
-                    context.sendTx(
-                      this.props.currency,
-                      add0x(this.state.toAddress),
-                      ethers.utils.parseEther(this.state.amount!)
-                    );
-                  }
-                  this.props.toggle();
-                }}
-              >
-                {t("send")}
-              </Button>{" "}
             </ScreenBody>
             <QrReader
               toggle={() => this.setState({ qrReading: false })}
               open={this.state.qrReading}
               onScan={(scanned: string | null) => {
-                if (scanned && isAddress(scanned)) {
+                if (scanned && cleanAddress(scanned)) {
                   this.setState({ qrReading: false, toAddress: scanned });
                 }
               }}
