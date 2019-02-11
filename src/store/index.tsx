@@ -175,19 +175,39 @@ export class AppContainer extends Container<RootState> {
     });
   };
 
-  sweepWallet = (address: string) => {
-    let gasPrice = ethers.utils.bigNumberify(1000000000);
-    let gasLimit = ethers.utils.bigNumberify(21000);
+  sweepWallet = async (address: string) => {
+    let gasPrice: ethers.utils.BigNumber;
+    let gasLimit: ethers.utils.BigNumber;
 
+    // Add a throw!!!!!!
     if (
       this.state.xDaiBalance &&
       !this.state.xDaiBalance.eq(ethers.constants.Zero)
     ) {
-      this.sendTx(
+      gasPrice = ethers.utils.bigNumberify(1000000000);
+      gasLimit = ethers.utils.bigNumberify(21000);
+      await this.sendTx(
         Currency.XDAI,
         address,
         this.state.xDaiBalance.sub(gasPrice.mul(gasLimit))
       );
     }
+    /*
+    Future code for swepeing DAI and ETH
+    if (
+      this.state.daiBalance &&
+      !this.state.daiBalance.eq(ethers.constants.Zero)
+    ) {
+      await this.state.daiContract.estimate.transfer();
+      await this.sendTx(Currency.DAI, address, this.state.daiBalance);
+    }
+
+    if (
+      this.state.ethBalance &&
+      !this.state.ethBalance.eq(ethers.constants.Zero)
+    ) {
+      await this.sendTx(Currency.ETH, address);
+    }
+    */
   };
 }
