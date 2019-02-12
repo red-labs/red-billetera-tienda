@@ -17,6 +17,7 @@ interface State {
   saveAlertOpen: boolean;
   restoreAlertOpen: boolean;
   failedRestoreAlertOpen: boolean;
+  pleaseWait: boolean;
   inputValue: string;
 }
 
@@ -25,6 +26,7 @@ class Save extends Component<Props, State> {
     saveAlertOpen: false,
     restoreAlertOpen: false,
     failedRestoreAlertOpen: false,
+    pleaseWait: false,
     inputValue: ""
   };
 
@@ -85,15 +87,24 @@ class Save extends Component<Props, State> {
               </FormGroup>
               <Button
                 onClick={async () => {
-                  try {
-                    await context.restorePrivateKey(this.state.inputValue);
-                    window.location.reload();
-                  } catch (e) {
-                    console.error(e);
-                    this.setState({ failedRestoreAlertOpen: true });
-                    setTimeout(() => {
-                      this.setState({ failedRestoreAlertOpen: false });
-                    }, 5000);
+                  if (
+                    this.state.inputValue !==
+                    context.state.xDaiWallet.privateKey
+                  ) {
+                    try {
+                      this.setState({ pleaseWait: true });
+                      await context.restorePrivateKey(this.state.inputValue);
+                      this.setState({ pleaseWait: false });
+                      window.location.reload();
+                    } catch (e) {
+                      console.error(e);
+                      this.setState({ failedRestoreAlertOpen: true });
+                      setTimeout(() => {
+                        this.setState({ failedRestoreAlertOpen: false });
+                      }, 10000);
+                    }
+                  } else {
+                    this.props.toggle();
                   }
                 }}
                 block
@@ -178,6 +189,26 @@ class Save extends Component<Props, State> {
                 toggle={() => this.setState({ failedRestoreAlertOpen: false })}
               >
                 {t("failedToRestorePk")}
+              </Alert>
+            </div>
+            <div
+              style={{
+                position: "fixed",
+                bottom: 10,
+                left: 10,
+                right: 10,
+                display: "flex",
+                justifyContent: "center",
+                textAlign: "center"
+              }}
+            >
+              <Alert
+                style={{ width: "100%" }}
+                isOpen={this.state.pleaseWait}
+                color="primary"
+                toggle={() => this.setState({ failedRestoreAlertOpen: false })}
+              >
+                {t("pleaseWait")}
               </Alert>
             </div>
           </Screen>

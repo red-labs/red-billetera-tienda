@@ -13,6 +13,7 @@
   "hash": "ID de transacción",
   "loading": "Cargando...",
   "pastePrivateKey": "Pegue su llave privada aqui si quieres recuperar una cuenta",
+  "pleaseWait": "Por favor espere...",
   "privateKeyCopied": "Clave privada copiada",
   "privateKeyRestored": "Clave privada restaurada",
   "privateKeySecurity": "Tu clave privada es lo que permite a su cuenta enviar y recibir dinero. Cada cuenta tiene una llave privada diferente. LE RECOMENDAMOS que lo copies y que lo guardes en algún lugar en tu celular, mensaje de texto, correo electrónico hacia ti mismo. No dejes que otra persona vea o tenga acceso a tu llave privada. Si alguien tiene tu llave privada esa persona tiene acceso completo a tu dinero.",
