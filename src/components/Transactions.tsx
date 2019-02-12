@@ -50,16 +50,16 @@ class Transactions extends Component<Props> {
                         {tx.to.toLowerCase() ===
                         context.state.xDaiWallet.address.toLowerCase() ? (
                           <>
-                            Received {formatDaiAmount(tx.value) + " "}
+                            {t("received")} {formatDaiAmount(tx.value) + " "}
                             <span style={{ whiteSpace: "nowrap" }}>
-                              from {addressToEmoji(tx.from)}
+                              {t("from")} {addressToEmoji(tx.from)}
                             </span>
                           </>
                         ) : (
                           <>
-                            Sent {formatDaiAmount(tx.value) + " "}
+                            {t("sent")} {formatDaiAmount(tx.value) + " "}
                             <span style={{ whiteSpace: "nowrap" }}>
-                              to {addressToEmoji(tx.to)}
+                              {t("to")} {addressToEmoji(tx.to)}
                             </span>
                           </>
                         )}
@@ -69,7 +69,7 @@ class Transactions extends Component<Props> {
                           new Date(),
                           new Date(tx.timeStamp * 1000)
                         )}{" "}
-                        ago
+                        {t("ago")}
                       </small>
                     </ListGroupItem>
                   ))}
@@ -88,7 +88,7 @@ class Transactions extends Component<Props> {
                 }}
               >
                 <Button onClick={this.props.viewTransactions} color="link">
-                  See all transactions
+                  {t("allTransactions")}
                 </Button>
               </div>
             </div>
