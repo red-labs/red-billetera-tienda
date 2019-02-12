@@ -43,7 +43,7 @@ export class AppContainer extends Container<RootState> {
       localStorage.setItem("efectivoPrivateKey", privateKey);
     }
     const xDaiProvider = new ethers.providers.JsonRpcProvider(
-      "http://localhost:3000"
+      "https://dai.poa.network"
     );
     const ethProvider = ethers.getDefaultProvider();
     const xDaiWallet = new ethers.Wallet(privateKey, xDaiProvider);

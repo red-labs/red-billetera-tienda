@@ -54,6 +54,5 @@
     "prettier": "1.16.2",
     "tslint-config-prettier": "^1.17.0",
     "tslint-react": "^3.6.0"
-  },
-  "proxy": "https://dai.poa.network"
+  }
 }
