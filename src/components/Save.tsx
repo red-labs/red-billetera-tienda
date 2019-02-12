@@ -98,7 +98,10 @@ class Save extends Component<Props, State> {
                       window.location.reload();
                     } catch (e) {
                       console.error(e);
-                      this.setState({ failedRestoreAlertOpen: true });
+                      this.setState({
+                        pleaseWait: false,
+                        failedRestoreAlertOpen: true
+                      });
                       setTimeout(() => {
                         this.setState({ failedRestoreAlertOpen: false });
                       }, 10000);
