@@ -6,7 +6,6 @@ import { promiseTimeout } from "../utils";
 // This is a simplified ABI that only has the functions
 // that the app might care about.
 import ERC20Abi from "../utils/ERC20.json";
-import { setTimeout } from "timers";
 
 export enum Route {
   Main,
@@ -105,12 +104,13 @@ export class AppContainer extends Container<RootState> {
 
   startPolls = () => {
     this.updateTransactions();
-    setInterval(this.updateTransactions, 5000);
+    this.listenForNewTransactions();
 
     this.updateXDaiBalance();
-    this.state.xDaiProvider.on(this.state.xDaiWallet.address, xDaiBalance =>
-      this.setState({ xDaiBalance })
-    );
+    this.state.xDaiProvider.on(this.state.xDaiWallet.address, xDaiBalance => {
+      this.updateTransactions();
+      this.setState({ xDaiBalance });
+    });
 
     this.updateEthBalance();
     this.state.ethProvider.on(this.state.ethWallet.address, ethBalance =>
