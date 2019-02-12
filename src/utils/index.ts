@@ -66,8 +66,7 @@ export function promiseTimeout(
   msg: string
 ): Promise<any> {
   let timeout = new Promise((resolve, reject) => {
-    let id = setTimeout(() => {
-      clearTimeout(id);
+    setTimeout(() => {
       reject(msg);
     }, ms);
   });
