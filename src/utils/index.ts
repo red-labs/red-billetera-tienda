@@ -60,6 +60,20 @@ export function cleanAddress(address: string): string | undefined {
   }
 }
 
+export function promiseTimeout(
+  ms: number,
+  promise: any,
+  msg: string
+): Promise<any> {
+  let timeout = new Promise((resolve, reject) => {
+    let id = setTimeout(() => {
+      clearTimeout(id);
+      reject(msg);
+    }, ms);
+  });
+  return Promise.race([promise, timeout]);
+}
+
 // export function isAddress(address: string) {
 //   // check if it has the basic requirements of an address
 //   if (!/^(0x)?[0-9a-f]{40}$/i.test(address)) {

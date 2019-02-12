@@ -87,10 +87,9 @@ class Save extends Component<Props, State> {
                 onClick={async () => {
                   try {
                     await context.restorePrivateKey(this.state.inputValue);
-                    this.props.toggle();
-                    this.setState({ inputValue: "" });
+                    window.location.reload();
                   } catch (e) {
-                    console.log(e);
+                    console.error(e);
                     this.setState({ failedRestoreAlertOpen: true });
                     setTimeout(() => {
                       this.setState({ failedRestoreAlertOpen: false });

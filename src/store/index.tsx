@@ -1,10 +1,12 @@
 import { ethers } from "ethers";
 import { Currency, Transaction } from "../types";
 import { Container } from "unstated";
+import { promiseTimeout } from "../utils";
 
 // This is a simplified ABI that only has the functions
 // that the app might care about.
 import ERC20Abi from "../utils/ERC20.json";
+import { setTimeout } from "timers";
 
 export enum Route {
   Main,
@@ -155,15 +157,11 @@ export class AppContainer extends Container<RootState> {
         break;
     }
 
-    await wallet
-      .sendTransaction({
-        to,
-        value,
-        gasPrice
-      })
-      .catch(e => {
-        throw new Error(e);
-      });
+    return await wallet.sendTransaction({
+      to,
+      value,
+      gasPrice
+    });
   };
 
   setRoute = (route: Route) => {
@@ -177,7 +175,6 @@ export class AppContainer extends Container<RootState> {
       ethWallet: new ethers.Wallet(privateKey, this.state.ethProvider)
     });
     localStorage.setItem("efectivoPrivateKey", privateKey);
-    this.startPolls();
   };
 
   updateXDaiBalance = async () => {
@@ -206,12 +203,22 @@ export class AppContainer extends Container<RootState> {
     ) {
       gasPrice = ethers.utils.bigNumberify(1000000000);
       gasLimit = ethers.utils.bigNumberify(21000);
-      await this.sendTx(
+      let txn = await this.sendTx(
         Currency.XDAI,
         address,
         this.state.xDaiBalance.sub(gasPrice.mul(gasLimit))
       );
+
+      if (txn.hash) {
+        let ms = 15000;
+        return await promiseTimeout(
+          ms,
+          this.state.xDaiProvider.waitForTransaction(txn.hash),
+          "Transaction not mined after " + ms + " timeout out"
+        );
+      }
     }
+
     /*
     Future code for sweeping DAI and ETH
     if (
