@@ -1,20 +1,14 @@
-import {
-  Modal,
-  ModalBody,
-  ModalHeader,
-  Button,
-  Table,
-  ListGroup,
-  ListGroupItem
-} from "reactstrap";
+import { Button, ListGroup, ListGroupItem } from "reactstrap";
 import React, { Component } from "react";
 import { withI18n } from "react-i18next";
 import { Transaction } from "../types";
 import { AppContainer } from "../store";
 import { Subscribe } from "unstated";
-import { Screen, ScreenHeader, ScreenBody } from "./Screen";
 import { addressToEmoji, formatDaiAmount } from "../utils";
 import { distanceInWordsStrict } from "date-fns";
+import i18n from "i18next";
+import es from "date-fns/locale/es";
+import en from "date-fns/locale/en";
 
 interface Props {
   viewTransactions: () => void;
@@ -50,16 +44,20 @@ class Transactions extends Component<Props> {
                         {tx.to.toLowerCase() ===
                         context.state.xDaiWallet.address.toLowerCase() ? (
                           <>
-                            {t("received")} {formatDaiAmount(tx.value) + " "}
+                            {t("received", {
+                              amount: formatDaiAmount(tx.value) + " "
+                            })}
                             <span style={{ whiteSpace: "nowrap" }}>
-                              {t("from")} {addressToEmoji(tx.from)}
+                              {" " + t("from")} {addressToEmoji(tx.from)}
                             </span>
                           </>
                         ) : (
                           <>
-                            {t("sent")} {formatDaiAmount(tx.value) + " "}
+                            {t("sent", {
+                              amount: formatDaiAmount(tx.value) + " "
+                            })}
                             <span style={{ whiteSpace: "nowrap" }}>
-                              {t("to")} {addressToEmoji(tx.to)}
+                              {" " + t("to")} {addressToEmoji(tx.to)}
                             </span>
                           </>
                         )}
@@ -67,9 +65,12 @@ class Transactions extends Component<Props> {
                       <small>
                         {distanceInWordsStrict(
                           new Date(),
-                          new Date(tx.timeStamp * 1000)
-                        )}{" "}
-                        {t("ago")}
+                          new Date(tx.timeStamp * 1000),
+                          {
+                            locale: i18n.language === "es" ? es : en,
+                            addSuffix: true
+                          }
+                        )}
                       </small>
                     </ListGroupItem>
                   ))}
