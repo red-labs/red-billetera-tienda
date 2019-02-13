@@ -33,6 +33,7 @@ class Transactions extends Component<Props> {
                     <TransactionRow
                       tx={tx}
                       address={context.state.xDaiWallet.address}
+                      key={i}
                     />
                   ))}
               </ListGroup>
