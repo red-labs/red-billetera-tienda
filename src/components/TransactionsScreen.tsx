@@ -22,7 +22,9 @@ class Transactions extends Component<Props> {
       <Subscribe to={[AppContainer]}>
         {(context: AppContainer) => (
           <Screen isOpen={this.props.open} toggle={this.props.toggle}>
-            <ScreenHeader toggle={this.props.toggle}>Transactions</ScreenHeader>
+            <ScreenHeader toggle={this.props.toggle}>
+              {t("transactions")}
+            </ScreenHeader>
             <ScreenBody>
               <ListGroup flush>
                 {context.state.transactions
