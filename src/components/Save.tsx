@@ -52,6 +52,9 @@ class Save extends Component<Props, State> {
               {t("saveRestore")}
             </ScreenHeader>
             <ScreenBody>
+              <div style={{ marginBottom: "1rem" }}>
+                {t("privateKeySecurity")}
+              </div>
               <FormGroup>
                 <Input
                   name="copyPrivateKey"
@@ -70,9 +73,8 @@ class Save extends Component<Props, State> {
                 {copyIcon("#fff")} {t("copyPrivateKey")}
               </Button>
 
-              <div style={{ marginBottom: "1rem" }}>
-                {t("privateKeySecurity")}
-              </div>
+              <p />
+              <div>{t("pastePrivateKey")}</div>
 
               <FormGroup>
                 <Input
@@ -132,7 +134,6 @@ class Save extends Component<Props, State> {
                 />
 
               </div> */}
-              <div>{t("pastePrivateKey")}</div>
             </ScreenBody>
             <div
               style={{
