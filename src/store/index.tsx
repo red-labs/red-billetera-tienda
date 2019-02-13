@@ -104,7 +104,6 @@ export class AppContainer extends Container<RootState> {
 
   startPolls = () => {
     this.updateTransactions();
-    this.listenForNewTransactions();
 
     this.updateXDaiBalance();
     this.state.xDaiProvider.on(this.state.xDaiWallet.address, xDaiBalance => {
