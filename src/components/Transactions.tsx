@@ -4,11 +4,7 @@ import { withI18n } from "react-i18next";
 import { Transaction } from "../types";
 import { AppContainer } from "../store";
 import { Subscribe } from "unstated";
-import { addressToEmoji, formatDaiAmount } from "../utils";
-import { distanceInWordsStrict } from "date-fns";
-import i18n from "i18next";
-import es from "date-fns/locale/es";
-import en from "date-fns/locale/en";
+import TransactionRow from "./TransactionRow";
 
 interface Props {
   viewTransactions: () => void;
@@ -33,46 +29,10 @@ class Transactions extends Component<Props> {
                 {context.state.transactions
                   .sort((tx1, tx2) => tx2.timeStamp - tx1.timeStamp)
                   .map((tx: Transaction, i) => (
-                    <ListGroupItem
-                      style={{
-                        padding: "0.5rem 0",
-                        display: "flex",
-                        justifyContent: "space-between"
-                      }}
-                    >
-                      <small>
-                        {tx.to.toLowerCase() ===
-                        context.state.xDaiWallet.address.toLowerCase() ? (
-                          <>
-                            {t("received", {
-                              amount: formatDaiAmount(tx.value) + " "
-                            })}
-                            <span style={{ whiteSpace: "nowrap" }}>
-                              {" " + t("from")} {addressToEmoji(tx.from)}
-                            </span>
-                          </>
-                        ) : (
-                          <>
-                            {t("sent", {
-                              amount: formatDaiAmount(tx.value) + " "
-                            })}
-                            <span style={{ whiteSpace: "nowrap" }}>
-                              {" " + t("to")} {addressToEmoji(tx.to)}
-                            </span>
-                          </>
-                        )}
-                      </small>
-                      <small>
-                        {distanceInWordsStrict(
-                          new Date(),
-                          new Date(tx.timeStamp * 1000),
-                          {
-                            locale: i18n.language === "es" ? es : en,
-                            addSuffix: true
-                          }
-                        )}
-                      </small>
-                    </ListGroupItem>
+                    <TransactionRow
+                      tx={tx}
+                      address={context.state.xDaiWallet.address}
+                    />
                   ))}
               </ListGroup>
               <div
