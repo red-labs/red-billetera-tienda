@@ -63,7 +63,6 @@ class Save extends Component<Props, State> {
                   value={context.state.xDaiWallet.privateKey}
                 />
               </FormGroup>
-              {/* <Input value={context.state.xDaiWallet.privateKey} /> */}
               <Button
                 onClick={() => this.copy(context.state.xDaiWallet.privateKey)}
                 block
@@ -118,22 +117,6 @@ class Save extends Component<Props, State> {
               >
                 {t("restorePrivateKey")}
               </Button>
-              {/* <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  flexDirection: "column"
-                }}
-              >
-                <Input
-                  name="restorePrivateKey"
-                  placeholder={"0x..."}
-                  onChange={event => {
-                    this.setState({ inputValue: event.target.value.trim() });
-                  }}
-                />
-
-              </div> */}
             </ScreenBody>
             <div
               style={{
