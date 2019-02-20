@@ -6,6 +6,7 @@ import { withI18n } from "react-i18next";
 import { Subscribe } from "unstated";
 import { AppContainer } from "../store";
 import { Screen, ScreenHeader, ScreenBody } from "./Screen";
+import RenderAlert from "./Alerts";
 
 interface Props {
   open: boolean;
@@ -118,86 +119,34 @@ class Save extends Component<Props, State> {
                 {t("restorePrivateKey")}
               </Button>
             </ScreenBody>
-            <div
-              style={{
-                position: "fixed",
-                bottom: 10,
-                left: 10,
-                right: 10,
-                display: "flex",
-                justifyContent: "center",
-                textAlign: "center"
-              }}
-            >
-              <Alert
-                style={{ width: "100%" }}
-                isOpen={this.state.saveAlertOpen}
-                color="success"
-                toggle={() => this.setState({ saveAlertOpen: false })}
-              >
-                {t("privateKeyCopied")}
-              </Alert>
-            </div>
-            <div
-              style={{
-                position: "fixed",
-                bottom: 10,
-                left: 10,
-                right: 10,
-                display: "flex",
-                justifyContent: "center",
-                textAlign: "center"
-              }}
-            >
-              <Alert
-                style={{ width: "100%" }}
-                isOpen={this.state.restoreAlertOpen}
-                color="success"
-                toggle={() => this.setState({ restoreAlertOpen: false })}
-              >
-                {t("privateKeyRestored")}
-              </Alert>
-            </div>
-            <div
-              style={{
-                position: "fixed",
-                bottom: 10,
-                left: 10,
-                right: 10,
-                display: "flex",
-                justifyContent: "center",
-                textAlign: "center"
-              }}
-            >
-              <Alert
-                style={{ width: "100%" }}
-                isOpen={this.state.failedRestoreAlertOpen}
-                color="danger"
-                toggle={() => this.setState({ failedRestoreAlertOpen: false })}
-              >
-                {t("failedToRestorePk")}
-              </Alert>
-            </div>
-            <div
-              style={{
-                position: "fixed",
-                bottom: 10,
-                left: 10,
-                right: 10,
-                display: "flex",
-                justifyContent: "center",
-                textAlign: "center"
-              }}
-            >
-              <Alert
-                style={{ width: "100%" }}
-                isOpen={this.state.pleaseWait}
-                color="primary"
-                toggle={() => this.setState({ failedRestoreAlertOpen: false })}
-              >
-                {t("pleaseWait")}
-              </Alert>
-            </div>
+            <RenderAlert
+              number={1}
+              msg="privateKeyCopied"
+              color="success"
+              isOpen={this.state.saveAlertOpen}
+              toggle={() => this.setState({ saveAlertOpen: false })}
+            />
+            <RenderAlert
+              number={1}
+              msg="privateKeyRestored"
+              color="success"
+              isOpen={this.state.restoreAlertOpen}
+              toggle={() => this.setState({ restoreAlertOpen: false })}
+            />
+            <RenderAlert
+              number={1}
+              msg="failedToRestorePk"
+              color="danger"
+              isOpen={this.state.failedRestoreAlertOpen}
+              toggle={() => this.setState({ failedRestoreAlertOpen: false })}
+            />
+            <RenderAlert
+              number={1}
+              msg="pleaseWait"
+              color="primary"
+              isOpen={this.state.pleaseWait}
+              toggle={() => this.setState({ pleaseWait: false })}
+            />
           </Screen>
         )}
       </Subscribe>
