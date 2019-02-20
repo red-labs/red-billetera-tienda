@@ -120,28 +120,24 @@ class Save extends Component<Props, State> {
               </Button>
             </ScreenBody>
             <RenderAlert
-              number={1}
               msg="privateKeyCopied"
               color="success"
               isOpen={this.state.saveAlertOpen}
               toggle={() => this.setState({ saveAlertOpen: false })}
             />
             <RenderAlert
-              number={1}
               msg="privateKeyRestored"
               color="success"
               isOpen={this.state.restoreAlertOpen}
               toggle={() => this.setState({ restoreAlertOpen: false })}
             />
             <RenderAlert
-              number={1}
               msg="failedToRestorePk"
               color="danger"
               isOpen={this.state.failedRestoreAlertOpen}
               toggle={() => this.setState({ failedRestoreAlertOpen: false })}
             />
             <RenderAlert
-              number={1}
               msg="pleaseWait"
               color="primary"
               isOpen={this.state.pleaseWait}
