@@ -1,17 +1,11 @@
-import {
-  Button,
-  Modal,
-  ModalBody,
-  ModalHeader,
-  Input,
-  Alert
-} from "reactstrap";
+import { Button, Modal, ModalBody, ModalHeader, Input } from "reactstrap";
 import { copy as copyIcon } from "../utils/icons";
 import React, { Component } from "react";
 import QRCode from "qrcode.react";
 import copy from "clipboard-copy";
 import { withI18n } from "react-i18next";
 import { Screen, ScreenHeader, ScreenBody } from "./Screen";
+import Alert from "./Alerts";
 
 interface Props {
   open: boolean;
@@ -64,26 +58,12 @@ class Receive extends Component<Props, State> {
             </Button>
           </div>
         </ScreenBody>
-        <div
-          style={{
-            position: "fixed",
-            bottom: 10,
-            left: 10,
-            right: 10,
-            display: "flex",
-            justifyContent: "center",
-            textAlign: "center"
-          }}
-        >
-          <Alert
-            style={{ width: "100%" }}
-            isOpen={this.state.alertOpen}
-            color="success"
-            toggle={() => this.setState({ alertOpen: false })}
-          >
-            {t("addressCopied")}
-          </Alert>
-        </div>
+        <Alert
+          msg="addressCopied"
+          isOpen={this.state.alertOpen}
+          color="success"
+          toggle={() => this.setState({ alertOpen: false })}
+        />
       </Screen>
     );
   }
