@@ -1,7 +1,7 @@
 {
   "name": "efectivo-web",
   "version": "0.1.0",
-  "homepage": "https://althea-mesh.github.io/efectivo-web",
+  "homepage": "http://efectivo.cc",
   "dependencies": {
     "@types/i18next": "^12.1.0",
     "@types/jest": "23.3.13",

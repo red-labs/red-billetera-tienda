@@ -6,6 +6,7 @@ import "./utils/i18n";
 import { AppContainer } from "./store";
 import { Subscribe, Provider } from "unstated";
 import App from "./components/App";
+import "./index.css";
 
 ReactDOM.render(
   <Provider>

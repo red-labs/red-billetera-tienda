@@ -55,12 +55,14 @@ export function Screen(props: {
     >
       <div
         style={{
-          background: "white",
+          background: "rgba(255,255,255,0.5)",
           flex: 1,
           maxWidth: 450,
           maxHeight: 900,
           margin: "auto",
-          height: "100%"
+          height: "100%",
+          display: "flex",
+          flexDirection: "column"
         }}
       >
         {props.isOpen && props.children}
@@ -106,13 +108,12 @@ export function ScreenBody(props: { children: any }) {
   return (
     <div
       style={{
-        padding: "1rem",
-        paddingBottom: "4rem",
-        overflow: "scroll",
-        height: "100%"
+        overflow: "scroll"
       }}
     >
-      {props.children}
+      <div style={{ padding: "1rem", marginBottom: "4rem" }}>
+        {props.children}
+      </div>
     </div>
   );
 }
