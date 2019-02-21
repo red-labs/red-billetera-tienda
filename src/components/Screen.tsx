@@ -55,7 +55,7 @@ export function Screen(props: {
     >
       <div
         style={{
-          background: "rgba(255,255,255,0.5)",
+          background: "white", //"rgba(255,255,255,0.5)"
           flex: 1,
           maxWidth: 450,
           maxHeight: 900,
