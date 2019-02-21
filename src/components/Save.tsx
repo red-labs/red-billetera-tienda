@@ -74,7 +74,7 @@ class Save extends Component<Props, State> {
               </Button>
 
               <p />
-              <div>{t("pastePrivateKey")}</div>
+              <div style={{ marginBottom: "1rem" }}>{t("pastePrivateKey")}</div>
 
               <FormGroup>
                 <Input

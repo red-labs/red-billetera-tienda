@@ -137,17 +137,23 @@ class App extends Component<Props> {
           />
 
           <div>
-            <Button onClick={() => store.setRoute(Route.Save)} size="lg" block>
+            <Button
+              style={{ marginBottom: "1rem" }}
+              onClick={() => store.setRoute(Route.Save)}
+              size="lg"
+              block
+            >
               {t("saveRestore")}
             </Button>
 
-            <Button
+            {/* <div style={{ height: 75 }} /> */}
+            {/* <Button
               color="link"
               onClick={() => store.setRoute(Route.Advanced)}
               block
             >
               {t("advanced")}
-            </Button>
+            </Button> */}
           </div>
         </div>
         <Send
