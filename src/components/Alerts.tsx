@@ -26,7 +26,7 @@ function RenderAlert(props: Props) {
       }}
     >
       <Alert
-        style={{ width: "100%" }}
+        style={{ width: 450 }}
         isOpen={props.isOpen}
         color={props.color}
         toggle={() => props.toggle()}
