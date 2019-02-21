@@ -14,30 +14,26 @@ interface Props {
 
 function RenderAlert(props: Props) {
   return (
-    <Subscribe to={[AppContainer]}>
-      {(context: AppContainer) => (
-        <div
-          style={{
-            position: "fixed",
-            bottom: 10,
-            left: 10,
-            right: 10,
-            display: "flex",
-            justifyContent: "center",
-            textAlign: "center"
-          }}
-        >
-          <Alert
-            style={{ width: "100%" }}
-            isOpen={props.isOpen}
-            color={props.color}
-            toggle={() => props.toggle()}
-          >
-            {props.t(props.msg)}
-          </Alert>
-        </div>
-      )}
-    </Subscribe>
+    <div
+      style={{
+        position: "fixed",
+        bottom: 10,
+        left: 10,
+        right: 10,
+        display: "flex",
+        justifyContent: "center",
+        textAlign: "center"
+      }}
+    >
+      <Alert
+        style={{ width: "100%" }}
+        isOpen={props.isOpen}
+        color={props.color}
+        toggle={() => props.toggle()}
+      >
+        {props.t(props.msg)}
+      </Alert>
+    </div>
   );
 }
 
