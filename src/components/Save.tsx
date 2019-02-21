@@ -1,4 +1,4 @@
-import { Button, FormGroup, Input, Alert } from "reactstrap";
+import { Button, FormGroup, Input } from "reactstrap";
 import { copy as copyIcon } from "../utils/icons";
 import React, { Component } from "react";
 import copy from "clipboard-copy";
@@ -6,7 +6,7 @@ import { withI18n } from "react-i18next";
 import { Subscribe } from "unstated";
 import { AppContainer } from "../store";
 import { Screen, ScreenHeader, ScreenBody } from "./Screen";
-import RenderAlert from "./Alerts";
+import Alert from "./Alerts";
 
 interface Props {
   open: boolean;
@@ -119,25 +119,25 @@ class Save extends Component<Props, State> {
                 {t("restorePrivateKey")}
               </Button>
             </ScreenBody>
-            <RenderAlert
+            <Alert
               msg="privateKeyCopied"
               color="success"
               isOpen={this.state.saveAlertOpen}
               toggle={() => this.setState({ saveAlertOpen: false })}
             />
-            <RenderAlert
+            <Alert
               msg="privateKeyRestored"
               color="success"
               isOpen={this.state.restoreAlertOpen}
               toggle={() => this.setState({ restoreAlertOpen: false })}
             />
-            <RenderAlert
+            <Alert
               msg="failedToRestorePk"
               color="danger"
               isOpen={this.state.failedRestoreAlertOpen}
               toggle={() => this.setState({ failedRestoreAlertOpen: false })}
             />
-            <RenderAlert
+            <Alert
               msg="pleaseWait"
               color="primary"
               isOpen={this.state.pleaseWait}
