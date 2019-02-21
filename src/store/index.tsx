@@ -28,6 +28,9 @@ export interface RootState {
   ethBalance?: ethers.utils.BigNumber;
   transactions: Transaction[];
   daiContract: ethers.Contract;
+  txSendingAlert: boolean;
+  txSuccessAlert: boolean;
+  txErrorAlert: boolean;
 }
 
 const DAI = "0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359";
@@ -44,6 +47,7 @@ export class AppContainer extends Container<RootState> {
     const xDaiProvider = new ethers.providers.JsonRpcProvider(
       "https://dai.poa.network"
     );
+
     const ethProvider = ethers.getDefaultProvider();
     const xDaiWallet = new ethers.Wallet(privateKey, xDaiProvider);
     const ethWallet = new ethers.Wallet(privateKey, ethProvider);
@@ -57,7 +61,10 @@ export class AppContainer extends Container<RootState> {
       xDaiWallet,
       ethWallet,
       transactions: [],
-      daiContract
+      daiContract,
+      txSendingAlert: false,
+      txSuccessAlert: false,
+      txErrorAlert: false
     };
   }
 

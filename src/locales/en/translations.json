@@ -32,5 +32,8 @@
   "sendToAddress": "Send to address",
   "sendX": "Send {{symbol}}",
   "to": "to",
-  "transactions": "Transactions"
+  "transactions": "Transactions",
+  "txError": "Error when sending transaction",
+  "txSending": "Sending transaction",
+  "txSuccess": "Transation sent"
 }

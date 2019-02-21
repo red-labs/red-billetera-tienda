@@ -32,5 +32,8 @@
   "sendToAddress": "Enviar a la cuenta:",
   "sendX": "Enviar {{symbol}}",
   "to": "a",
-  "transactions": "Transacciones"
+  "transactions": "Transacciones",
+  "txError": "Error enviando transacción",
+  "txSending": "Enviando transacción",
+  "txSuccess": "Transacción enviada exitosamente"
 }

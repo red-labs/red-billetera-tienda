@@ -20,6 +20,7 @@ import { addressToEmoji, formatDaiAmount } from "../utils";
 import { Currency } from "../types";
 import { Route, AppContainer } from "../store";
 import { ScreenBody } from "./Screen";
+import Alert from "./Alerts";
 
 interface Props {
   i18n: any;
@@ -170,6 +171,24 @@ class App extends Component<Props> {
         <Advanced
           toggle={() => store.setRoute(Route.Main)}
           open={store.state.route === Route.Advanced}
+        />
+        <Alert
+          msg="txSending"
+          color="primary"
+          isOpen={store.state.txSendingAlert}
+          toggle={() => store.setState({ txSendingAlert: false })}
+        />
+        <Alert
+          msg="txSuccess"
+          color="primary"
+          isOpen={store.state.txSuccessAlert}
+          toggle={() => store.setState({ txSuccessAlert: false })}
+        />
+        <Alert
+          msg="txError"
+          color="danger"
+          isOpen={store.state.txErrorAlert}
+          toggle={() => store.setState({ txErrorAlert: false })}
         />
       </div>
     );

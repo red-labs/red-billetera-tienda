@@ -1,9 +1,5 @@
 import {
   Button,
-  Modal,
-  ModalBody,
-  ModalHeader,
-  ModalFooter,
   Input,
   InputGroup,
   InputGroupAddon,
@@ -25,6 +21,7 @@ import {
 import { AppContainer } from "../store";
 import { Subscribe } from "unstated";
 import { ethers } from "ethers";
+import Alert from "./Alerts";
 
 interface Props {
   open: boolean;
@@ -47,9 +44,6 @@ class Send extends Component<Props, State> {
   state = {
     qrReading: false,
     toAddress: "",
-    txSendingAlert: undefined,
-    txSuccessAlert: undefined,
-    txErrorAlert: undefined,
     amount: undefined
   };
 
@@ -136,7 +130,7 @@ class Send extends Component<Props, State> {
                     }}
                   >
                     <h5 style={{ marginRight: 10 }}>
-                      Send{" "}
+                      {t("send")}{" "}
                       {this.state.amount &&
                         !isNaN(this.state.amount as any) &&
                         ethers.utils
@@ -145,7 +139,7 @@ class Send extends Component<Props, State> {
                         formatDaiAmount(
                           ethers.utils.parseEther(this.state.amount!)
                         )}{" "}
-                      to:
+                      {t("to")}:
                     </h5>
 
                     <h1>
@@ -155,7 +149,8 @@ class Send extends Component<Props, State> {
                   <Button
                     size="lg"
                     block
-                    onClick={() => {
+                    onClick={async () => {
+                      context.setState({ txSendingAlert: true });
                       console.log(
                         this.state,
                         isNonZeroNumber(this.state.amount),
@@ -165,13 +160,34 @@ class Send extends Component<Props, State> {
                       const address = cleanAddress(this.state.toAddress);
 
                       if (isNonZeroNumber(this.state.amount) && address) {
-                        context.sendTx(
-                          this.props.currency,
-                          address,
-                          ethers.utils.parseEther(this.state.amount!)
-                        );
+                        try {
+                          let txn = await context.sendTx(
+                            this.props.currency,
+                            address,
+                            ethers.utils.parseEther(this.state.amount!)
+                          );
+                          if (txn.hash) {
+                            context.state.xDaiProvider.once(txn.hash, () => {
+                              context.setState({
+                                txSendingAlert: false,
+                                txSuccessAlert: true
+                              });
+                              setTimeout(() => {
+                                context.setState({ txSuccessAlert: false });
+                              }, 10000);
+                            });
+                          }
+                        } catch (e) {
+                          context.setState({
+                            txSendingAlert: false,
+                            txErrorAlert: true
+                          });
+                          setTimeout(() => {
+                            context.setState({ txErrorAlert: false });
+                          }, 10000);
+                        }
+                        this.props.toggle();
                       }
-                      this.props.toggle();
                     }}
                   >
                     {t("send")}
