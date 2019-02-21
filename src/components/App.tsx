@@ -76,7 +76,7 @@ class App extends Component<Props> {
                   })
                 }
               >
-                <DropdownToggle caret>Language</DropdownToggle>
+                <DropdownToggle caret>{t("language")}</DropdownToggle>
                 <DropdownMenu className="dropdown-menu-right">
                   <DropdownItem onClick={() => i18n.changeLanguage("en")}>
                     English

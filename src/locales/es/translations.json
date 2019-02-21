@@ -14,6 +14,7 @@
   "failedToRestorePk": "No se pudo recuperar cuenta",
   "from": "de",
   "hash": "ID de transacción",
+  "language": "Idioma",
   "loading": "Cargando...",
   "pastePrivateKey": "Pegue su llave privada aqui si quieres recuperar una cuenta",
   "pleaseWait": "Por favor espere...",

@@ -14,6 +14,7 @@
   "failedToRestorePk": "Could not restore account",
   "from": "from",
   "hash": "Transaction ID",
+  "language": "Language",
   "loading": "Loading...",
   "pastePrivateKey": "Paste your private key here if you want to restore your wallet.",
   "pleaseWait": "Please wait...",
