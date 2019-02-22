@@ -31,6 +31,10 @@ export interface RootState {
   txSendingAlert: boolean;
   txSuccessAlert: boolean;
   txErrorAlert: boolean;
+  saveAlertOpen: boolean;
+  restoreAlertOpen: boolean;
+  failedRestoreAlertOpen: boolean;
+  pleaseWaitAlertOpen: boolean;
 }
 
 const DAI = "0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359";
@@ -64,7 +68,11 @@ export class AppContainer extends Container<RootState> {
       daiContract,
       txSendingAlert: false,
       txSuccessAlert: false,
-      txErrorAlert: false
+      txErrorAlert: false,
+      saveAlertOpen: false,
+      restoreAlertOpen: false,
+      failedRestoreAlertOpen: false,
+      pleaseWaitAlertOpen: false
     };
   }
 

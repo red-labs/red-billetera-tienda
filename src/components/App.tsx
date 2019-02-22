@@ -180,7 +180,7 @@ class App extends Component<Props> {
         />
         <Alert
           msg="txSuccess"
-          color="primary"
+          color="success"
           isOpen={store.state.txSuccessAlert}
           toggle={() => store.setState({ txSuccessAlert: false })}
         />
@@ -189,6 +189,30 @@ class App extends Component<Props> {
           color="danger"
           isOpen={store.state.txErrorAlert}
           toggle={() => store.setState({ txErrorAlert: false })}
+        />
+        <Alert
+          msg="privateKeyCopied"
+          color="success"
+          isOpen={store.state.saveAlertOpen}
+          toggle={() => store.setState({ saveAlertOpen: false })}
+        />
+        <Alert
+          msg="privateKeyRestored"
+          color="success"
+          isOpen={store.state.restoreAlertOpen}
+          toggle={() => store.setState({ restoreAlertOpen: false })}
+        />
+        <Alert
+          msg="failedToRestorePk"
+          color="danger"
+          isOpen={store.state.failedRestoreAlertOpen}
+          toggle={() => store.setState({ failedRestoreAlertOpen: false })}
+        />
+        <Alert
+          msg="pleaseWait"
+          color="primary"
+          isOpen={store.state.pleaseWaitAlertOpen}
+          toggle={() => store.setState({ pleaseWaitAlertOpen: false })}
         />
       </div>
     );
