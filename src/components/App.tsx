@@ -12,14 +12,10 @@ import {
   DropdownMenu
 } from "reactstrap";
 import Advanced from "./Advanced";
-//@ts-ignore
-import baseEmoji from "base-emoji";
 import { withI18n } from "react-i18next";
-import { utils } from "ethers";
-import { addressToEmoji, formatDaiAmount } from "../utils";
+import { addressToEmoji, formatDaiAmount, roundDaiDown } from "../utils";
 import { Currency } from "../types";
 import { Route, AppContainer } from "../store";
-import { ScreenBody } from "./Screen";
 import Alert from "./Alerts";
 
 interface Props {
@@ -104,7 +100,7 @@ class App extends Component<Props> {
               </h1>
               <h1 style={{ wordBreak: "normal" }}>
                 {!isNaN(store.state.xDaiBalance as any)
-                  ? formatDaiAmount(store.state.xDaiBalance!)
+                  ? roundDaiDown(store.state.xDaiBalance!)
                   : t("loading")}
               </h1>
             </div>

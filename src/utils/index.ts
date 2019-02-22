@@ -25,6 +25,27 @@ export function formatDaiAmount(amount: BigNumber) {
   );
 }
 
+export function roundDaiDown(amount: BigNumber) {
+  const cost = ethers.utils
+    .bigNumberify(1000000000)
+    .mul(ethers.utils.bigNumberify(21000));
+
+  if (amount.sub(cost).lte(ethers.constants.Zero)) {
+    return formatDaiAmount(amount);
+  }
+
+  const [whole, dec] = ethers.utils.formatEther(amount.sub(cost)).split(".");
+
+  if (dec.slice(0, 2) === "00") {
+    if (whole === "0") {
+      return "$" + whole + "." + dec.slice(0, 4);
+    }
+    return "$" + whole + ".00";
+  }
+
+  return "$" + whole + "." + dec.slice(0, 2);
+}
+
 export function addressToEmoji(address: string) {
   const hash = utils.keccak256(address);
   const last2bytes = hash.slice(-4);
