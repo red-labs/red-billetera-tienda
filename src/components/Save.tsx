@@ -6,7 +6,6 @@ import { withI18n } from "react-i18next";
 import { Subscribe } from "unstated";
 import { AppContainer } from "../store";
 import { Screen, ScreenHeader, ScreenBody } from "./Screen";
-import Alert from "./Alerts";
 
 interface Props {
   open: boolean;
@@ -15,36 +14,24 @@ interface Props {
 }
 
 interface State {
-  saveAlertOpen: boolean;
-  restoreAlertOpen: boolean;
-  failedRestoreAlertOpen: boolean;
-  pleaseWait: boolean;
   inputValue: string;
 }
 
 class Save extends Component<Props, State> {
   state = {
-    saveAlertOpen: false,
-    restoreAlertOpen: false,
-    failedRestoreAlertOpen: false,
-    pleaseWait: false,
     inputValue: ""
   };
 
-  copy = (privateKey: string) => {
-    copy(privateKey);
-    this.setState({ saveAlertOpen: true });
+  copy = (context: AppContainer) => {
+    copy(context.state.xDaiWallet.privateKey);
+    context.setState({ saveAlertOpen: true });
     setTimeout(() => {
-      this.setState({ saveAlertOpen: false });
+      context.setState({ saveAlertOpen: false });
     }, 3000);
   };
 
   render() {
     const { t } = this.props;
-    if (!this.props.open) {
-      this.state.saveAlertOpen = false;
-      this.state.restoreAlertOpen = false;
-    }
     return (
       <Subscribe to={[AppContainer]}>
         {(context: AppContainer) => (
@@ -65,7 +52,7 @@ class Save extends Component<Props, State> {
                 />
               </FormGroup>
               <Button
-                onClick={() => this.copy(context.state.xDaiWallet.privateKey)}
+                onClick={() => this.copy(context)}
                 block
                 size="lg"
                 style={{ marginBottom: "1rem" }}
@@ -94,18 +81,18 @@ class Save extends Component<Props, State> {
                     context.state.xDaiWallet.privateKey
                   ) {
                     try {
-                      this.setState({ pleaseWait: true });
+                      context.setState({ pleaseWaitAlertOpen: true });
                       await context.restorePrivateKey(this.state.inputValue);
-                      this.setState({ pleaseWait: false });
+                      context.setState({ pleaseWaitAlertOpen: false });
                       window.location.reload();
                     } catch (e) {
                       console.error(e);
-                      this.setState({
-                        pleaseWait: false,
+                      context.setState({
+                        pleaseWaitAlertOpen: false,
                         failedRestoreAlertOpen: true
                       });
                       setTimeout(() => {
-                        this.setState({ failedRestoreAlertOpen: false });
+                        context.setState({ failedRestoreAlertOpen: false });
                       }, 10000);
                     }
                   } else {
@@ -119,30 +106,6 @@ class Save extends Component<Props, State> {
                 {t("restorePrivateKey")}
               </Button>
             </ScreenBody>
-            <Alert
-              msg="privateKeyCopied"
-              color="success"
-              isOpen={this.state.saveAlertOpen}
-              toggle={() => this.setState({ saveAlertOpen: false })}
-            />
-            <Alert
-              msg="privateKeyRestored"
-              color="success"
-              isOpen={this.state.restoreAlertOpen}
-              toggle={() => this.setState({ restoreAlertOpen: false })}
-            />
-            <Alert
-              msg="failedToRestorePk"
-              color="danger"
-              isOpen={this.state.failedRestoreAlertOpen}
-              toggle={() => this.setState({ failedRestoreAlertOpen: false })}
-            />
-            <Alert
-              msg="pleaseWait"
-              color="primary"
-              isOpen={this.state.pleaseWait}
-              toggle={() => this.setState({ pleaseWait: false })}
-            />
           </Screen>
         )}
       </Subscribe>
