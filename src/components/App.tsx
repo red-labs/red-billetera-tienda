@@ -162,7 +162,6 @@ class App extends Component<Props> {
           currency={Currency.XDAI}
         />
         <Receive
-          address={store.state.xDaiWallet.address}
           toggle={() => store.setRoute(Route.Main)}
           open={store.state.route === Route.Receive}
         />
@@ -219,6 +218,13 @@ class App extends Component<Props> {
           color="primary"
           isOpen={store.state.pleaseWaitAlertOpen}
           toggle={() => store.setState({ pleaseWaitAlertOpen: false })}
+        />
+
+        <Alert
+          msg="addressCopied"
+          isOpen={store.state.addressCopiedAlertOpen}
+          color="success"
+          toggle={() => store.setState({ addressCopiedAlertOpen: false })}
         />
       </div>
     );

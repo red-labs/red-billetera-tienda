@@ -35,6 +35,7 @@ export interface RootState {
   restoreAlertOpen: boolean;
   failedRestoreAlertOpen: boolean;
   pleaseWaitAlertOpen: boolean;
+  addressCopiedAlertOpen: boolean;
 }
 
 const DAI = "0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359";
@@ -72,7 +73,8 @@ export class AppContainer extends Container<RootState> {
       saveAlertOpen: false,
       restoreAlertOpen: false,
       failedRestoreAlertOpen: false,
-      pleaseWaitAlertOpen: false
+      pleaseWaitAlertOpen: false,
+      addressCopiedAlertOpen: false
     };
   }
 
