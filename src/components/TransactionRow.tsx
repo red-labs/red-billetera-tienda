@@ -12,10 +12,6 @@ interface Props {
   tx: Transaction;
   t: Function;
   address: string;
-  // This is just to remove this annoying warning from the console:
-  // Warning Each child in an array or iterator should have a
-  // unique key prop
-  key: number;
 }
 
 function TransactionRow(props: Props) {
