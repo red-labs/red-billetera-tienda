@@ -50,7 +50,7 @@ class Receive extends Component<Props, State> {
             <QRCode size={240} renderAs="svg" value={this.props.address} />
 
             <Input
-              style={{ width: 240, marginTop: 10, marginBottom: 10 }}
+              style={{ marginTop: 10, marginBottom: 10 }}
               value={this.props.address}
             />
             <Button onClick={this.copy} block size="lg">
