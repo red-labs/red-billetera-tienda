@@ -50,6 +50,7 @@ class Receive extends Component<Props> {
                 <Input
                   style={{ marginTop: 10, marginBottom: 10 }}
                   value={context.state.xDaiWallet.address}
+                  readOnly
                 />
                 <Button onClick={() => this.copy(context)} block size="lg">
                   {copyIcon("#fff")} {t("copyAddress")}
