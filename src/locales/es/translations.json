@@ -1,5 +1,6 @@
 {
   "addressCopied": "Cuenta fue copiada",
+  "addressEmojiCopied": "Cuenta {{emoji}} fue copiada",
   "advanced": "Modo avanzado",
   "ago": "hace",
   "amount": "Monto",

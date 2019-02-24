@@ -36,6 +36,7 @@ export interface RootState {
   failedRestoreAlertOpen: boolean;
   pleaseWaitAlertOpen: boolean;
   addressCopiedAlertOpen: boolean;
+  addressCopiedEmojiAlertOpen: boolean;
 }
 
 const DAI = "0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359";
@@ -74,7 +75,8 @@ export class AppContainer extends Container<RootState> {
       restoreAlertOpen: false,
       failedRestoreAlertOpen: false,
       pleaseWaitAlertOpen: false,
-      addressCopiedAlertOpen: false
+      addressCopiedAlertOpen: false,
+      addressCopiedEmojiAlertOpen: false
     };
   }
 

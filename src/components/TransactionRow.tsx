@@ -11,11 +11,8 @@ import { Transaction } from "../types";
 interface Props {
   tx: Transaction;
   t: Function;
+  onClick: () => void;
   address: string;
-  // This is just to remove this annoying warning from the console:
-  // Warning Each child in an array or iterator should have a
-  // unique key prop
-  key: number;
 }
 
 function TransactionRow(props: Props) {
@@ -27,6 +24,7 @@ function TransactionRow(props: Props) {
         display: "flex",
         justifyContent: "space-between"
       }}
+      onClick={() => props.onClick()}
     >
       <small>
         {tx.to.toLowerCase() === address.toLowerCase() ? (
