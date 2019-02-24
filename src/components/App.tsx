@@ -215,7 +215,6 @@ class App extends Component<Props> {
           isOpen={store.state.pleaseWaitAlertOpen}
           toggle={() => store.setState({ pleaseWaitAlertOpen: false })}
         />
-
         <Alert
           msg="addressCopied"
           isOpen={store.state.addressCopiedAlertOpen}

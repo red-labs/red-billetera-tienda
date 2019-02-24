@@ -1,4 +1,4 @@
-import { ListGroup } from "reactstrap";
+import { ListGroup, Alert } from "reactstrap";
 import React, { Component } from "react";
 import { withI18n } from "react-i18next";
 import { Transaction } from "../types";
@@ -6,8 +6,9 @@ import { AppContainer } from "../store";
 import { Subscribe } from "unstated";
 import { Screen, ScreenHeader, ScreenBody } from "./Screen";
 import TransactionRow from "./TransactionRow";
-import ListGroupItem from "reactstrap/lib/ListGroupItem";
 import copy from "clipboard-copy";
+import ethers from "ethers";
+import { addressToEmoji } from "../utils";
 
 interface Props {
   open: boolean;
@@ -15,17 +16,27 @@ interface Props {
   t: Function;
 }
 
-class Transactions extends Component<Props> {
+interface State {
+  emojiAddress: string;
+}
+
+class Transactions extends Component<Props, State> {
+  state = {
+    emojiAddress: ""
+  };
+
   copy = (context: AppContainer, tx: Transaction) => {
-    copy(
+    const counterParty =
       tx.to.toLowerCase() === context.state.xDaiWallet.address.toLowerCase()
         ? tx.from
-        : tx.to
-    );
+        : tx.to;
 
-    context.setState({ addressCopiedAlertOpen: true });
+    this.setState({ emojiAddress: addressToEmoji(counterParty) });
+    copy(counterParty);
+
+    context.setState({ addressCopiedEmojiAlertOpen: true });
     setTimeout(() => {
-      context.setState({ addressCopiedAlertOpen: false });
+      context.setState({ addressCopiedEmojiAlertOpen: false });
     }, 10000);
   };
 
@@ -46,29 +57,37 @@ class Transactions extends Component<Props> {
                     <div key={i}>
                       <TransactionRow
                         tx={tx}
+                        onClick={() => this.copy(context, tx)}
                         address={context.state.xDaiWallet.address}
                       />
-                      <ListGroupItem
-                        style={{
-                          padding: "0.5rem 0",
-                          display: "flex",
-                          justifyContent: "center"
-                        }}
-                        onClick={() => this.copy(context, tx)}
-                      >
-                        <small>
-                          <span>
-                            {tx.to.toLowerCase() ===
-                            context.state.xDaiWallet.address.toLowerCase()
-                              ? tx.from
-                              : tx.to}
-                          </span>
-                        </small>
-                      </ListGroupItem>
                     </div>
                   ))}
               </ListGroup>
             </ScreenBody>
+            <div
+              style={{
+                position: "fixed",
+                bottom: 10,
+                left: 10,
+                right: 10,
+                display: "flex",
+                justifyContent: "center",
+                textAlign: "center"
+              }}
+            >
+              <Alert
+                style={{ width: 450 }}
+                isOpen={context.state.addressCopiedEmojiAlertOpen}
+                color="success"
+                toggle={() =>
+                  context.setState({ addressCopiedEmojiAlertOpen: false })
+                }
+              >
+                {t("addressEmojiCopied", {
+                  emoji: this.state.emojiAddress
+                })}
+              </Alert>
+            </div>
           </Screen>
         )}
       </Subscribe>

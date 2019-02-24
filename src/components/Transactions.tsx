@@ -31,6 +31,7 @@ class Transactions extends Component<Props> {
                   .map((tx: Transaction, i) => (
                     <TransactionRow
                       tx={tx}
+                      onClick={() => null}
                       address={context.state.xDaiWallet.address}
                       key={i}
                     />

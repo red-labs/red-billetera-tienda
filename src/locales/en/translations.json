@@ -1,5 +1,6 @@
 {
   "addressCopied": "Address copied to clipboard",
+  "addressEmojiCopied": "Address {{emoji}} copied to clipboard",
   "advanced": "Advanced",
   "ago": "ago",
   "allTransactions": "See all transactions",

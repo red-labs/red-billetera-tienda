@@ -11,6 +11,7 @@ import { Transaction } from "../types";
 interface Props {
   tx: Transaction;
   t: Function;
+  onClick: () => void;
   address: string;
 }
 
@@ -23,6 +24,7 @@ function TransactionRow(props: Props) {
         display: "flex",
         justifyContent: "space-between"
       }}
+      onClick={() => props.onClick()}
     >
       <small>
         {tx.to.toLowerCase() === address.toLowerCase() ? (
