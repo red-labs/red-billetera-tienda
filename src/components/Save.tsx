@@ -47,6 +47,7 @@ class Save extends Component<Props, State> {
                 <Input
                   name="copyPrivateKey"
                   id="copyPrivateKey"
+                  readOnly
                   placeholder="0x..."
                   value={context.state.xDaiWallet.privateKey}
                 />
