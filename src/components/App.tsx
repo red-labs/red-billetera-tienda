@@ -34,6 +34,7 @@ class App extends Component<Props> {
   };
   async componentDidMount() {
     this.props.store.startPolls();
+    this.props.store.pollCopRate();
   }
 
   render() {
@@ -75,10 +76,10 @@ class App extends Component<Props> {
                 <DropdownToggle caret>{t("language")}</DropdownToggle>
                 <DropdownMenu className="dropdown-menu-right">
                   <DropdownItem onClick={() => i18n.changeLanguage("en")}>
-                    English
+                    English (USD)
                   </DropdownItem>
                   <DropdownItem onClick={() => i18n.changeLanguage("es")}>
-                    Español
+                    Español (COP)
                   </DropdownItem>
                 </DropdownMenu>
               </ButtonDropdown>

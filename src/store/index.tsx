@@ -37,6 +37,7 @@ export interface RootState {
   pleaseWaitAlertOpen: boolean;
   addressCopiedAlertOpen: boolean;
   addressCopiedEmojiAlertOpen: boolean;
+  usdcop?: ethers.utils.BigNumber;
 }
 
 const DAI = "0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359";
@@ -80,12 +81,28 @@ export class AppContainer extends Container<RootState> {
     };
   }
 
-  fetchCOPRate = async () => {
+  fetchCOPRate = async (): Promise<string> => {
     let res = await fetch("https://sasquatch.network/usdcop");
-    if (res.status !== 200) return;
+    if (res.status !== 200) return "";
     const parsed = await res.json();
-    if (!parsed.success) return;
+    if (!parsed.success) return "";
+    console.log("CALLED API", parsed.quotes.USDCOP);
     return parsed.quotes.USDCOP;
+  };
+
+  pollCopRate = async () => {
+    let usdcop = localStorage.getItem("usdcop");
+    if (usdcop === null) {
+      usdcop = await this.fetchCOPRate();
+      localStorage.setItem("usdcop", usdcop);
+    }
+    this.setState({
+      usdcop: ethers.utils.bigNumberify(
+        parseFloat(usdcop)
+          .toFixed()
+          .toString()
+      )
+    });
   };
 
   updateTransactions = async () => {
