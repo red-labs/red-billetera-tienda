@@ -80,6 +80,14 @@ export class AppContainer extends Container<RootState> {
     };
   }
 
+  fetchCOPRate = async () => {
+    let res = await fetch("https://sasquatch.network/usdcop");
+    if (res.status !== 200) return;
+    const parsed = await res.json();
+    if (!parsed.success) return;
+    return parsed.quotes.USDCOP;
+  };
+
   updateTransactions = async () => {
     const url: String = `https://blockscout.com/poa/dai/api?module=account&action=txlist&address=`;
     const res = await fetch(url + this.state.xDaiWallet.address);
