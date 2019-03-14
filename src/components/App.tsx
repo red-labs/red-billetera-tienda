@@ -17,6 +17,7 @@ import { addressToEmoji, formatDaiAmount, roundDaiDown } from "../utils";
 import { Currency } from "../types";
 import { Route, AppContainer } from "../store";
 import Alert from "./Alerts";
+import i18n from "i18next";
 
 interface Props {
   i18n: any;
@@ -38,7 +39,7 @@ class App extends Component<Props> {
   }
 
   render() {
-    let { i18n, t, store } = this.props;
+    let { t, store } = this.props;
     return (
       <div style={{ height: "100vh", display: "flex", alignItems: "center" }}>
         <div
