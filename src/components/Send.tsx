@@ -47,25 +47,30 @@ class Send extends Component<Props, State> {
     if (this.state.amount === "" || copRate === undefined) {
       return <div />;
     }
+    let copAmount = "";
     let amount = parseEther(this.state.amount!).toString();
     if (i18n.language === "es") {
-      amount =
+      copAmount =
+        "($" +
         commify(formatEther(parseEther(this.state.amount!).mul(copRate))) +
-        " COP";
+        " COP)";
     }
     return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "2rem"
-        }}
-      >
-        <h5 style={{ marginRight: 10 }}>
-          {t("send")} {" $" + amount + " "} {t("to")}:
-        </h5>
-        <h1>{addressToEmoji(cleanAddress(this.state.toAddress)!)}</h1>
+      <div style={{ verticalAlign: "center", display: "compact" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "2rem"
+          }}
+        >
+          <h5 style={{ marginRight: 10 }}>
+            {t("send")} {" $" + formatEther(amount) + " "} {t("to")}:
+          </h5>
+          <h1>{addressToEmoji(cleanAddress(this.state.toAddress)!)}</h1>
+        </div>
+        <h5>{copAmount}</h5>
       </div>
     );
   };
@@ -172,7 +177,7 @@ class Send extends Component<Props, State> {
                           let txn = await context.sendTx(
                             this.props.currency,
                             address,
-                            parseEther(this.state.amount!)
+                            ethers.utils.parseEther(this.state.amount!)
                           );
                           if (txn.hash) {
                             context.state.xDaiProvider.once(txn.hash, () => {
