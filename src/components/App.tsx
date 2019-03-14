@@ -34,7 +34,7 @@ class App extends Component<Props> {
   };
   async componentDidMount() {
     this.props.store.startPolls();
-    this.props.store.pollCopRate();
+    this.props.store.getUsdCopRate();
   }
 
   render() {

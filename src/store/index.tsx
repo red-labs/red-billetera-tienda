@@ -90,11 +90,19 @@ export class AppContainer extends Container<RootState> {
     return parsed.quotes.USDCOP;
   };
 
-  pollCopRate = async () => {
+  getUsdCopRate = async () => {
     let usdcop = localStorage.getItem("usdcop");
-    if (usdcop === null) {
+    let lastRateTimeStamp = localStorage.getItem("lastRateTimeStamp");
+    if (
+      usdcop === null ||
+      new Date().getTime() - parseInt(lastRateTimeStamp!) > 1000 * 60 * 60 // 1 hour in ms
+    ) {
       usdcop = await this.fetchCOPRate();
       localStorage.setItem("usdcop", usdcop);
+      localStorage.setItem(
+        "lastRateTimeStamp",
+        new Date().getTime().toString()
+      );
     }
     this.setState({
       usdcop: ethers.utils.bigNumberify(
