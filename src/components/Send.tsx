@@ -12,16 +12,12 @@ import { Currency, currencyToName, currencyToSymbol } from "../types";
 import QrReader from "./QrReader";
 import { Screen, ScreenHeader, ScreenBody } from "./Screen";
 import { withI18n } from "react-i18next";
-import {
-  cleanAddress,
-  addressToEmoji,
-  isNonZeroNumber,
-  formatDaiAmount
-} from "../utils";
+import { cleanAddress, addressToEmoji, isNonZeroNumber } from "../utils";
 import { AppContainer } from "../store";
 import { Subscribe } from "unstated";
 import { ethers } from "ethers";
-import Alert from "./Alerts";
+import { commify, BigNumber, formatEther, parseEther } from "ethers/utils";
+import i18n from "i18next";
 
 interface Props {
   open: boolean;
@@ -33,7 +29,7 @@ interface Props {
 interface State {
   qrReading: boolean;
   toAddress: string;
-  amount?: string;
+  amount: string;
 }
 
 class Send extends Component<Props, State> {
@@ -44,7 +40,34 @@ class Send extends Component<Props, State> {
   state = {
     qrReading: false,
     toAddress: "",
-    amount: undefined
+    amount: ""
+  };
+
+  transactionDetails = (t: Function, copRate?: BigNumber) => {
+    if (this.state.amount === "" || copRate === undefined) {
+      return <div />;
+    }
+    let amount = parseEther(this.state.amount!).toString();
+    if (i18n.language === "es") {
+      amount =
+        commify(formatEther(parseEther(this.state.amount!).mul(copRate))) +
+        " COP";
+    }
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "2rem"
+        }}
+      >
+        <h5 style={{ marginRight: 10 }}>
+          {t("send")} {" $" + amount + " "} {t("to")}:
+        </h5>
+        <h1>{addressToEmoji(cleanAddress(this.state.toAddress)!)}</h1>
+      </div>
+    );
   };
 
   render() {
@@ -129,22 +152,7 @@ class Send extends Component<Props, State> {
                       marginBottom: 15
                     }}
                   >
-                    <h5 style={{ marginRight: 10 }}>
-                      {t("send")}{" "}
-                      {this.state.amount &&
-                        !isNaN(this.state.amount as any) &&
-                        ethers.utils
-                          .parseEther(this.state.amount!)
-                          .toString() !== "0" &&
-                        formatDaiAmount(
-                          ethers.utils.parseEther(this.state.amount!)
-                        )}{" "}
-                      {t("to")}:
-                    </h5>
-
-                    <h1>
-                      {addressToEmoji(cleanAddress(this.state.toAddress)!)}
-                    </h1>
+                    {this.transactionDetails(t, context.state.usdcop)}
                   </div>
                   <Button
                     size="lg"
@@ -164,7 +172,7 @@ class Send extends Component<Props, State> {
                           let txn = await context.sendTx(
                             this.props.currency,
                             address,
-                            ethers.utils.parseEther(this.state.amount!)
+                            parseEther(this.state.amount!)
                           );
                           if (txn.hash) {
                             context.state.xDaiProvider.once(txn.hash, () => {
