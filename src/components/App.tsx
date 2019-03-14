@@ -66,6 +66,9 @@ class App extends Component<Props> {
             <h1 style={{ fontWeight: "normal" }}>{t("efectivo")}</h1>
             <div>
               <ButtonDropdown
+                style={{
+                  width: 159
+                }}
                 isOpen={this.state.languageDropdownOpen}
                 toggle={() =>
                   this.setState({
@@ -99,13 +102,22 @@ class App extends Component<Props> {
                 {store.state.xDaiWallet &&
                   addressToEmoji(store.state.xDaiWallet.address)}{" "}
               </h1>
-              <h1 style={{ wordBreak: "normal" }}>
-                {!isNaN(store.state.xDaiBalance as any)
-                  ? roundDaiDown(store.state.xDaiBalance!)
-                  : t("loading")}
-              </h1>
+              <div style={{ verticalAlign: "middle" }}>
+                <h1 style={{ wordBreak: "normal" }}>
+                  {!isNaN(store.state.xDaiBalance as any)
+                    ? roundDaiDown(store.state.xDaiBalance!)
+                    : t("loading")}
+                </h1>
+                {!isNaN(store.state.xDaiBalance as any) &&
+                i18n.language === "es"
+                  ? "(" +
+                    roundDaiDown(
+                      store.state.xDaiBalance!.mul(store.state.usdcop!)
+                    ) +
+                    " COP)"
+                  : ""}
+              </div>
             </div>
-
             <div
               style={{
                 display: "flex",
