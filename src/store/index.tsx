@@ -90,7 +90,7 @@ export class AppContainer extends Container<RootState> {
     return parsed.quotes.USDCOP;
   };
 
-  getUsdCopRate = async () => {
+  startUsdCopRatePoll = async () => {
     let usdcop = localStorage.getItem("usdcop");
     let lastRateTimeStamp = localStorage.getItem("lastRateTimeStamp");
     if (
