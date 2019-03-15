@@ -1,4 +1,4 @@
-import { Button, Modal, ModalBody, ModalHeader, Input } from "reactstrap";
+import { Button, Card, CardText, Input } from "reactstrap";
 import { copy as copyIcon } from "../utils/icons";
 import React, { Component } from "react";
 import QRCode from "qrcode.react";
@@ -46,12 +46,15 @@ class Receive extends Component<Props> {
                   renderAs="svg"
                   value={context.state.xDaiWallet.address}
                 />
-
-                <Input
-                  style={{ marginTop: 10, marginBottom: 10 }}
-                  value={context.state.xDaiWallet.address}
-                  readOnly
-                />
+                <Card
+                  inverse
+                  color="success"
+                  style={{ marginTop: 20, marginBottom: 10 }}
+                >
+                  <CardText style={{ margin: 5 }}>
+                    {context.state.xDaiWallet.address}
+                  </CardText>
+                </Card>
                 <Button onClick={() => this.copy(context)} block size="lg">
                   {copyIcon("#fff")} {t("copyAddress")}
                 </Button>
