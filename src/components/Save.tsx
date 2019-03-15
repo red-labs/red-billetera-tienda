@@ -1,4 +1,4 @@
-import { Button, FormGroup, Input } from "reactstrap";
+import { Button, FormGroup, Input, Card, CardText } from "reactstrap";
 import { copy as copyIcon } from "../utils/icons";
 import React, { Component } from "react";
 import copy from "clipboard-copy";
@@ -43,15 +43,16 @@ class Save extends Component<Props, State> {
               <div style={{ marginBottom: "1rem" }}>
                 {t("privateKeySecurity")}
               </div>
-              <FormGroup>
-                <Input
-                  name="copyPrivateKey"
-                  id="copyPrivateKey"
-                  readOnly
-                  placeholder="0x..."
-                  value={context.state.xDaiWallet.privateKey}
-                />
-              </FormGroup>
+              <Card
+                inverse
+                color="danger"
+                name="copyPrivateKey"
+                id="copyPrivateKey"
+              >
+                <CardText align="center">
+                  {context.state.xDaiWallet.privateKey}
+                </CardText>
+              </Card>
               <Button
                 onClick={() => this.copy(context)}
                 block
