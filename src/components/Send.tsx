@@ -12,7 +12,12 @@ import { Currency, currencyToName, currencyToSymbol } from "../types";
 import QrReader from "./QrReader";
 import { Screen, ScreenHeader, ScreenBody } from "./Screen";
 import { withI18n } from "react-i18next";
-import { cleanAddress, addressToEmoji, isNonZeroNumber } from "../utils";
+import {
+  cleanAddress,
+  addressToEmoji,
+  isNonZeroNumber,
+  convertToCOP
+} from "../utils";
 import { AppContainer } from "../store";
 import { Subscribe } from "unstated";
 import { ethers } from "ethers";
@@ -47,14 +52,7 @@ class Send extends Component<Props, State> {
     if (this.state.amount === "" || copRate === undefined) {
       return <div />;
     }
-    let copAmount = "";
-    let amount = parseEther(this.state.amount!).toString();
-    if (i18n.language === "es") {
-      copAmount =
-        "($" +
-        commify(formatEther(parseEther(this.state.amount!).mul(copRate))) +
-        " COP)";
-    }
+    let amount = parseEther(this.state.amount!);
     return (
       <div style={{ verticalAlign: "center", display: "compact" }}>
         <div
@@ -70,7 +68,9 @@ class Send extends Component<Props, State> {
           </h5>
           <h1>{addressToEmoji(cleanAddress(this.state.toAddress)!)}</h1>
         </div>
-        <h5>{copAmount}</h5>
+        {i18n.language === "es"
+          ? "($" + convertToCOP(amount, copRate) + " COP)"
+          : ""}
       </div>
     );
   };
