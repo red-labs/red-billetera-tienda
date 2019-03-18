@@ -92,33 +92,34 @@ export class AppContainer extends Container<RootState> {
   };
 
   startUsdCopRatePoll = () => {
-    let usdcop = localStorage.getItem("usdcop");
+    let usdcopStorage = localStorage.getItem("usdcop");
     let lastRateTimeStamp = localStorage.getItem("lastRateTimeStamp");
     if (
-      usdcop === null ||
+      usdcopStorage === null ||
       new Date().getTime() - parseInt(lastRateTimeStamp!) > 1000 * 60 * 60 // 1 hour in ms
     ) {
       this.fetchCOPRate()
         .then(usdcopBN => {
           if (usdcopBN) {
-            usdcop = usdcopBN.toString();
-            localStorage.setItem("usdcop", usdcop);
+            localStorage.setItem("usdcop", usdcopBN.toString());
             localStorage.setItem(
               "lastRateTimeStamp",
               new Date().getTime().toString()
             );
-          } else {
-            usdcop = "1";
+            this.setState({
+              usdcop: usdcopBN
+            });
           }
-          this.setState({
-            usdcop: bigNumberify(
-              parseFloat(usdcop)
-                .toFixed()
-                .toString()
-            )
-          });
         })
         .catch(e => console.log(`Could not fetch USD_COP rate: ${e}`));
+    } else {
+      this.setState({
+        usdcop: bigNumberify(
+          parseFloat(usdcopStorage)
+            .toFixed()
+            .toString()
+        )
+      });
     }
   };
 
