@@ -38,6 +38,25 @@ class App extends Component<Props> {
     this.props.store.startUsdCopRatePoll();
   }
 
+  displayValue = (store: AppContainer, t: Function) => {
+    if (isNaN(store.state.xDaiBalance as any)) {
+      return <h1 style={{ wordBreak: "normal" }}>{t("loading")}</h1>;
+    }
+
+    let copValue =
+      "(" +
+      roundDaiDown(store.state.xDaiBalance!.mul(store.state.usdcop!)) +
+      " COP)";
+    return (
+      <div>
+        <h1 style={{ wordBreak: "normal" }}>
+          {roundDaiDown(store.state.xDaiBalance!)}
+        </h1>
+        {i18n.language === "es" ? copValue : ""}
+      </div>
+    );
+  };
+
   render() {
     let { t, store } = this.props;
     return (
@@ -104,19 +123,7 @@ class App extends Component<Props> {
                   addressToEmoji(store.state.xDaiWallet.address)}{" "}
               </h1>
               <div style={{ verticalAlign: "middle" }}>
-                <h1 style={{ wordBreak: "normal" }}>
-                  {!isNaN(store.state.xDaiBalance as any)
-                    ? roundDaiDown(store.state.xDaiBalance!)
-                    : t("loading")}
-                </h1>
-                {!isNaN(store.state.xDaiBalance as any) &&
-                i18n.language === "es"
-                  ? "(" +
-                    roundDaiDown(
-                      store.state.xDaiBalance!.mul(store.state.usdcop!)
-                    ) +
-                    " COP)"
-                  : ""}
+                {this.displayValue(store, t)}
               </div>
             </div>
             <div
