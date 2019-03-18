@@ -44,16 +44,18 @@ class App extends Component<Props> {
       return <h1 style={{ wordBreak: "normal" }}>{t("loading")}</h1>;
     }
 
-    return (
-      <div>
-        <h1 style={{ wordBreak: "normal" }}>
-          {"$" + roundDaiDown(store.state.xDaiBalance!)}
-        </h1>
-        {i18n.language === "es"
-          ? "($" + convertToCOP(xDaiBalance!, usdcop!) + " COP)"
-          : ""}
-      </div>
-    );
+    if (xDaiBalance && usdcop) {
+      return (
+        <div>
+          <h1 style={{ wordBreak: "normal" }}>
+            {"$" + roundDaiDown(xDaiBalance)}
+          </h1>
+          {i18n.language === "es"
+            ? "($" + convertToCOP(xDaiBalance, usdcop) + " COP)"
+            : ""}
+        </div>
+      );
+    }
   };
 
   render() {
