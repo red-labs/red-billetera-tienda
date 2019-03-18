@@ -17,11 +17,17 @@ export function isNonZeroNumber(number?: string) {
 }
 
 export function formatDaiAmount(amount: BigNumber) {
-  return (
-    "$" +
-    ethers.utils.commify(
-      parseFloat(ethers.utils.formatEther(amount)).toFixed(2)
-    )
+  return ethers.utils.commify(
+    parseFloat(ethers.utils.formatEther(amount)).toFixed(2)
+  );
+}
+
+// This also removes the cents
+export function convertToCOP(amount: BigNumber, rate: BigNumber): BigNumber {
+  return utils.bigNumberify(
+    roundDaiDown(amount.mul(rate))
+      .toString()
+      .split(".")[0]
   );
 }
 
@@ -38,12 +44,12 @@ export function roundDaiDown(amount: BigNumber) {
 
   if (dec.slice(0, 2) === "00") {
     if (whole === "0") {
-      return "$" + whole + "." + dec.slice(0, 4);
+      return whole + "." + dec.slice(0, 4);
     }
-    return "$" + whole + ".00";
+    return whole + ".00";
   }
 
-  return "$" + whole + "." + dec.slice(0, 2);
+  return whole + "." + dec.slice(0, 2);
 }
 
 export function addressToEmoji(address: string) {
