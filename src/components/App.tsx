@@ -35,7 +35,7 @@ class App extends Component<Props> {
   };
   async componentDidMount() {
     this.props.store.startPolls();
-    this.props.store.startUsdCopRatePoll();
+    if (i18n.language === "es") this.props.store.startUsdCopRatePoll();
   }
 
   displayValue = (store: AppContainer, t: Function) => {
