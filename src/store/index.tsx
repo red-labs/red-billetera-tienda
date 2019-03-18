@@ -1,4 +1,5 @@
 import { ethers } from "ethers";
+import { bigNumberify, BigNumber } from "ethers/utils";
 import { Currency, Transaction } from "../types";
 import { Container } from "unstated";
 import { promiseTimeout } from "../utils";
@@ -81,36 +82,44 @@ export class AppContainer extends Container<RootState> {
     };
   }
 
-  fetchCOPRate = async (): Promise<string> => {
+  fetchCOPRate = async (): Promise<BigNumber | undefined> => {
     let res = await fetch("https://sasquatch.network/usdcop");
-    if (res.status !== 200) return "";
+    if (res.status !== 200) throw `Resposne not valid: ${res.status}`;
     const parsed = await res.json();
-    if (!parsed.success) return "";
+    if (!parsed.success) throw `Request not successful`;
     console.log("CALLED API", parsed.quotes.USDCOP);
     return parsed.quotes.USDCOP;
   };
 
-  startUsdCopRatePoll = async () => {
+  startUsdCopRatePoll = () => {
     let usdcop = localStorage.getItem("usdcop");
     let lastRateTimeStamp = localStorage.getItem("lastRateTimeStamp");
     if (
       usdcop === null ||
       new Date().getTime() - parseInt(lastRateTimeStamp!) > 1000 * 60 * 60 // 1 hour in ms
     ) {
-      usdcop = await this.fetchCOPRate();
-      localStorage.setItem("usdcop", usdcop);
-      localStorage.setItem(
-        "lastRateTimeStamp",
-        new Date().getTime().toString()
-      );
+      this.fetchCOPRate()
+        .then(usdcopBN => {
+          if (usdcopBN) {
+            usdcop = usdcopBN.toString();
+            localStorage.setItem("usdcop", usdcop);
+            localStorage.setItem(
+              "lastRateTimeStamp",
+              new Date().getTime().toString()
+            );
+          } else {
+            usdcop = "1";
+          }
+          this.setState({
+            usdcop: bigNumberify(
+              parseFloat(usdcop)
+                .toFixed()
+                .toString()
+            )
+          });
+        })
+        .catch(e => console.log(`Could not fetch USD_COP rate: ${e}`));
     }
-    this.setState({
-      usdcop: ethers.utils.bigNumberify(
-        parseFloat(usdcop)
-          .toFixed()
-          .toString()
-      )
-    });
   };
 
   updateTransactions = async () => {
