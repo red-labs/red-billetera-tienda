@@ -13,7 +13,7 @@ import {
 } from "reactstrap";
 import Advanced from "./Advanced";
 import { withI18n } from "react-i18next";
-import { addressToEmoji, formatDaiAmount, roundDaiDown } from "../utils";
+import { addressToEmoji, convertToCOP, roundDaiDown } from "../utils";
 import { Currency } from "../types";
 import { Route, AppContainer } from "../store";
 import Alert from "./Alerts";
@@ -39,20 +39,19 @@ class App extends Component<Props> {
   }
 
   displayValue = (store: AppContainer, t: Function) => {
-    if (isNaN(store.state.xDaiBalance as any)) {
+    const { xDaiBalance, usdcop } = store.state;
+    if (isNaN(xDaiBalance as any)) {
       return <h1 style={{ wordBreak: "normal" }}>{t("loading")}</h1>;
     }
 
-    let copValue =
-      "(" +
-      roundDaiDown(store.state.xDaiBalance!.mul(store.state.usdcop!)) +
-      " COP)";
     return (
       <div>
         <h1 style={{ wordBreak: "normal" }}>
-          {roundDaiDown(store.state.xDaiBalance!)}
+          {"$" + roundDaiDown(store.state.xDaiBalance!)}
         </h1>
-        {i18n.language === "es" ? copValue : ""}
+        {i18n.language === "es"
+          ? "($" + convertToCOP(xDaiBalance!, usdcop!) + " COP)"
+          : ""}
       </div>
     );
   };
