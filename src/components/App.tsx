@@ -102,7 +102,12 @@ class App extends Component<Props> {
                   <DropdownItem onClick={() => i18n.changeLanguage("en")}>
                     English (USD)
                   </DropdownItem>
-                  <DropdownItem onClick={() => i18n.changeLanguage("es")}>
+                  <DropdownItem
+                    onClick={() => {
+                      this.props.store.startUsdCopRatePoll();
+                      i18n.changeLanguage("es");
+                    }}
+                  >
                     Español (COP)
                   </DropdownItem>
                 </DropdownMenu>
