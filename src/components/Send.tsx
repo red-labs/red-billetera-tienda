@@ -57,26 +57,30 @@ class Send extends Component<Props, State> {
     return (
       <Row
         style={{
-          display: "compact",
           justifyContent: "center",
-          alignContent: "center",
           marginTop: 20,
           marginBottom: 15
         }}
       >
-        <Col sm={{ size: "auto", offset: 0 }}>{t("send")}</Col>
-        <Col sm={{ size: "auto", offset: 0 }}>
-          <Row>{" $" + formatEther(amount) + " "}</Row>
-          <Row>
+        <div style={{ margin: 5 }}>{t("send")}</div>
+        <div
+          style={{
+            margin: 5,
+            textAlign: "center",
+            fontWeight: "bold"
+          }}
+        >
+          <div>{" $" + formatEther(amount) + " "}</div>
+          <div>
             {i18n.language === "es" && copRate
               ? "($" + convertToCOP(amount, copRate) + " COP)"
               : ""}
-          </Row>
-        </Col>
-        <Col sm={{ size: "auto", offset: 0 }}>{t("to")}:</Col>
-        <Col sm={{ size: "auto", offset: 0 }} style={{ fontSize: "1.7em" }}>
+          </div>
+        </div>
+        <div style={{ margin: 5 }}>{t("to")}</div>:
+        <div style={{ fontSize: "1.6em" }}>
           {addressToEmoji(cleanAddress(this.state.toAddress)!)}
-        </Col>
+        </div>
       </Row>
     );
   };
