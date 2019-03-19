@@ -4,7 +4,9 @@ import {
   InputGroup,
   InputGroupAddon,
   FormGroup,
-  Label
+  Label,
+  Row,
+  Col
 } from "reactstrap";
 import { qr, camera } from "../utils/icons";
 import React, { Component } from "react";
@@ -53,29 +55,29 @@ class Send extends Component<Props, State> {
     }
     let amount = parseEther(this.state.amount!);
     return (
-      <div
+      <Row
         style={{
-          verticalAlign: "center",
           display: "compact",
-          marginBottom: "2rem"
+          justifyContent: "center",
+          alignContent: "center",
+          marginTop: 20,
+          marginBottom: 15
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center"
-          }}
-        >
-          <h5 style={{ marginRight: 10 }}>
-            {t("send")} {" $" + formatEther(amount) + " "} {t("to")}:
-          </h5>
-          <h1>{addressToEmoji(cleanAddress(this.state.toAddress)!)}</h1>
-        </div>
-        {i18n.language === "es"
-          ? "($" + convertToCOP(amount, copRate) + " COP)"
-          : ""}
-      </div>
+        <Col sm={{ size: "auto", offset: 0 }}>{t("send")}</Col>
+        <Col sm={{ size: "auto", offset: 0 }}>
+          <Row>{" $" + formatEther(amount) + " "}</Row>
+          <Row>
+            {i18n.language === "es"
+              ? "($" + convertToCOP(amount, copRate) + " COP)"
+              : ""}
+          </Row>
+        </Col>
+        <Col sm={{ size: "auto", offset: 0 }}>{t("to")}:</Col>
+        <Col sm={{ size: "auto", offset: 0 }} style={{ fontSize: "1.7em" }}>
+          {addressToEmoji(cleanAddress(this.state.toAddress)!)}
+        </Col>
+      </Row>
     );
   };
 
@@ -152,17 +154,7 @@ class Send extends Component<Props, State> {
               </FormGroup>
               {cleanAddress(this.state.toAddress) && (
                 <>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      marginTop: 20,
-                      marginBottom: 15
-                    }}
-                  >
-                    {this.transactionDetails(t, context.state.usdcop)}
-                  </div>
+                  {this.transactionDetails(t, context.state.usdcop)}
                   <Button
                     size="lg"
                     block
