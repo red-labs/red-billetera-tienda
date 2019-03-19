@@ -101,13 +101,16 @@ export class AppContainer extends Container<RootState> {
       this.fetchCOPRate()
         .then(usdcopBN => {
           if (usdcopBN) {
-            localStorage.setItem("usdcop", usdcopBN.toString());
+            localStorage.setItem(
+              "usdcop",
+              parseFloat(usdcopBN.toString()).toFixed(0)
+            );
             localStorage.setItem(
               "lastRateTimeStamp",
               new Date().getTime().toString()
             );
             this.setState({
-              usdcop: usdcopBN
+              usdcop: bigNumberify(parseFloat(usdcopBN.toString()).toFixed(0))
             });
           }
         })

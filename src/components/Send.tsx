@@ -54,13 +54,18 @@ class Send extends Component<Props, State> {
     }
     let amount = parseEther(this.state.amount!);
     return (
-      <div style={{ verticalAlign: "center", display: "compact" }}>
+      <div
+        style={{
+          verticalAlign: "center",
+          display: "compact",
+          marginBottom: "2rem"
+        }}
+      >
         <div
           style={{
             display: "flex",
             justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: "2rem"
+            alignItems: "center"
           }}
         >
           <h5 style={{ marginRight: 10 }}>

@@ -2,7 +2,7 @@ import { ethers } from "ethers";
 //@ts-ignore
 import baseEmoji from "base-emoji";
 import { utils } from "ethers";
-import { BigNumber } from "ethers/utils";
+import { BigNumber, formatEther, commify, bigNumberify } from "ethers/utils";
 
 export function add0x(str: string) {
   return str.substring(0, 2) === "0x" ? str : "0x" + str;
@@ -16,28 +16,24 @@ export function isNonZeroNumber(number?: string) {
   );
 }
 
-export function formatDaiAmount(amount: BigNumber) {
+export function formatDaiAmount(amount: BigNumber): string {
   return ethers.utils.commify(
     parseFloat(ethers.utils.formatEther(amount)).toFixed(2)
   );
 }
 
 // This also removes the cents
-export function convertToCOP(amount: BigNumber, rate: BigNumber): BigNumber {
-  return utils.bigNumberify(
-    roundDaiDown(amount.mul(rate))
-      .toString()
-      .split(".")[0]
-  );
+export function convertToCOP(amount: BigNumber, rate: BigNumber): string {
+  return formatEther(bigNumberify(amount.mul(rate)).toString()).split(".")[0];
 }
 
-export function roundDaiDown(amount: BigNumber) {
+export function roundDaiDown(amount: BigNumber): string {
   const cost = ethers.utils
     .bigNumberify(1000000000)
     .mul(ethers.utils.bigNumberify(21000));
 
   if (amount.sub(cost).lte(ethers.constants.Zero)) {
-    return formatDaiAmount(amount);
+    return parseFloat(ethers.utils.formatEther(amount)).toFixed(2);
   }
 
   const [whole, dec] = ethers.utils.formatEther(amount.sub(cost)).split(".");
