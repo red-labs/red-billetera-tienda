@@ -50,7 +50,7 @@ class Send extends Component<Props, State> {
   };
 
   transactionDetails = (t: Function, copRate?: BigNumber) => {
-    if (this.state.amount === "" || copRate === undefined) {
+    if (this.state.amount === "") {
       return <div />;
     }
     let amount = parseEther(this.state.amount!);
@@ -68,7 +68,7 @@ class Send extends Component<Props, State> {
         <Col sm={{ size: "auto", offset: 0 }}>
           <Row>{" $" + formatEther(amount) + " "}</Row>
           <Row>
-            {i18n.language === "es"
+            {i18n.language === "es" && copRate
               ? "($" + convertToCOP(amount, copRate) + " COP)"
               : ""}
           </Row>

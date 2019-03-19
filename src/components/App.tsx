@@ -44,13 +44,13 @@ class App extends Component<Props> {
       return <h1 style={{ wordBreak: "normal" }}>{t("loading")}</h1>;
     }
 
-    if (xDaiBalance && usdcop) {
+    if (xDaiBalance) {
       return (
         <div>
           <h1 style={{ wordBreak: "normal" }}>
             {"$" + roundDaiDown(xDaiBalance)}
           </h1>
-          {i18n.language === "es"
+          {i18n.language === "es" && usdcop
             ? "($" + convertToCOP(xDaiBalance, usdcop) + " COP)"
             : ""}
         </div>
