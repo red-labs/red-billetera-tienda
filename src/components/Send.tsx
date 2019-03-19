@@ -20,7 +20,6 @@ import {
 } from "../utils";
 import { AppContainer } from "../store";
 import { Subscribe } from "unstated";
-import { ethers } from "ethers";
 import { commify, BigNumber, formatEther, parseEther } from "ethers/utils";
 import i18n from "i18next";
 
@@ -182,7 +181,7 @@ class Send extends Component<Props, State> {
                           let txn = await context.sendTx(
                             this.props.currency,
                             address,
-                            ethers.utils.parseEther(this.state.amount!)
+                            parseEther(this.state.amount!)
                           );
                           if (txn.hash) {
                             context.state.xDaiProvider.once(txn.hash, () => {
