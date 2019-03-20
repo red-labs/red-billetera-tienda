@@ -31,10 +31,10 @@ export function convertToCOP(amount: BigNumber, rate: BigNumber): string {
 export function formatToDollars(amount: BigNumber): string {
   const [whole, dec] = formatEther(amount).split(".");
   let decimals: number = 0;
-  if (dec[1]) decimals = 2;
-  // format Ether still gives a 0 after the decimal point
+  if (dec[1] && dec.slice(0, 2) !== "00") decimals = 2;
+  // formatEther still gives a 0 after the decimal point
+  // so using an undefined check doesn't work.
   if (dec[0] !== "0" && !dec[1]) decimals = 1;
-  if (dec.slice(0, 2) === "00") decimals = 0;
   return parseFloat(whole + "." + dec.slice(0, 2)).toFixed(decimals);
 }
 
