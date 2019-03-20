@@ -96,7 +96,7 @@ export class AppContainer extends Container<RootState> {
     let lastRateTimeStamp = localStorage.getItem("lastRateTimeStamp");
     if (
       usdcopStorage === null ||
-      new Date().getTime() - parseInt(lastRateTimeStamp!) > 1000 * 60 * 60 // 1 hour in ms
+      new Date().getTime() - parseInt(lastRateTimeStamp!) > 1000 * 60 * 60 * 24 // 1 day
     ) {
       this.fetchCOPRate()
         .then(usdcopBN => {
