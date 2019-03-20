@@ -166,14 +166,7 @@ class Send extends Component<Props, State> {
                     block
                     onClick={async () => {
                       context.setState({ txSendingAlert: true });
-                      console.log(
-                        this.state,
-                        isNonZeroNumber(this.state.amount),
-                        cleanAddress(this.state.toAddress)
-                      );
-
                       const address = cleanAddress(this.state.toAddress);
-
                       if (isNonZeroNumber(this.state.amount) && address) {
                         try {
                           let txn = await context.sendTx(
