@@ -18,11 +18,12 @@ import {
   cleanAddress,
   addressToEmoji,
   isNonZeroNumber,
-  convertToCOP
+  convertToCOP,
+  formatToDollars
 } from "../utils";
 import { AppContainer } from "../store";
 import { Subscribe } from "unstated";
-import { commify, BigNumber, formatEther, parseEther } from "ethers/utils";
+import { formatEther, BigNumber, parseEther } from "ethers/utils";
 import i18n from "i18next";
 
 interface Props {
@@ -54,6 +55,7 @@ class Send extends Component<Props, State> {
       return <div />;
     }
     let amount = parseEther(this.state.amount!);
+
     return (
       <Row
         style={{
@@ -70,7 +72,7 @@ class Send extends Component<Props, State> {
             fontWeight: "bold"
           }}
         >
-          <div>{" $" + formatEther(amount) + " "}</div>
+          <div>{" $" + formatToDollars(amount) + " "}</div>
           <div>
             {i18n.language === "es" && copRate
               ? "($" + convertToCOP(amount, copRate) + " COP)"

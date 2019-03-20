@@ -28,6 +28,17 @@ export function convertToCOP(amount: BigNumber, rate: BigNumber): string {
   return formatEther(bigNumberify(amount.mul(rate)).toString()).split(".")[0];
 }
 
+export function formatToDollars(amount: BigNumber): string {
+  const [whole, dec] = formatEther(amount).split(".");
+  let decimals: number = 0;
+  if (dec[1]) decimals = 2;
+  // format Ether still gives a 0 after the decimal point
+  if (dec[0] !== "0" && !dec[1]) decimals = 1;
+  if (dec.slice(0, 2) === "00") decimals = 0;
+  return parseFloat(whole + "." + dec.slice(0, 2)).toFixed(decimals);
+}
+
+// this also removes the txn cost from the display value
 export function roundDaiDown(amount: BigNumber): string {
   const cost = bigNumberify(1000000000).mul(bigNumberify(21000));
 
