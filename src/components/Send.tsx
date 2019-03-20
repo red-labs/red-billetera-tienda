@@ -50,11 +50,11 @@ class Send extends Component<Props, State> {
     amount: ""
   };
 
-  transactionDetails = (t: Function, copRate?: BigNumber) => {
+  transactionDetails = (t: Function, foreignCurrencyRate?: BigNumber) => {
     if (this.state.amount === "") {
       return <div />;
     }
-    let amount = parseEther(this.state.amount!);
+    let amount = parseEther(this.state.amount);
 
     return (
       <Row
@@ -74,8 +74,8 @@ class Send extends Component<Props, State> {
         >
           <div>{" $" + formatToDollars(amount) + " "}</div>
           <div>
-            {i18n.language === "es" && copRate
-              ? "($" + convertToCOP(amount, copRate) + " COP)"
+            {i18n.language === "es" && foreignCurrencyRate
+              ? "($" + convertToCOP(amount, foreignCurrencyRate) + " COP)"
               : ""}
           </div>
         </div>
@@ -172,7 +172,7 @@ class Send extends Component<Props, State> {
                           let txn = await context.sendTx(
                             this.props.currency,
                             address,
-                            parseEther(this.state.amount!)
+                            parseEther(this.state.amount)
                           );
                           if (txn.hash) {
                             context.state.xDaiProvider.once(txn.hash, () => {
