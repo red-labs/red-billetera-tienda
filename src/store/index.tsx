@@ -84,7 +84,7 @@ export class AppContainer extends Container<RootState> {
 
   fetchCOPRate = async (): Promise<BigNumber | undefined> => {
     let res = await fetch("https://sasquatch.network/usdcop");
-    if (res.status !== 200) throw `Resposne not valid: ${res.status}`;
+    if (res.status !== 200) throw `Invalid response code: ${res.status}`;
     const parsed = await res.json();
     if (!parsed.success) throw `Request not successful`;
     console.log("CALLED API", parsed.quotes.USDCOP);
