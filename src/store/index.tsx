@@ -2,6 +2,7 @@ import { ethers } from "ethers";
 import { Currency, Transaction } from "../types";
 import { Container } from "unstated";
 import { promiseTimeout } from "../utils";
+import React from "react";
 
 // This is a simplified ABI that only has the functions
 // that the app might care about.
@@ -53,6 +54,15 @@ export class AppContainer extends Container<RootState> {
     const xDaiProvider = new ethers.providers.JsonRpcProvider(
       "https://dai.poa.network"
     );
+
+    window.addEventListener("load", function() {
+      window.history.pushState({}, "");
+    });
+
+    const _that = this;
+    window.addEventListener("popstate", function() {
+      _that.setRoute(Route.Main);
+    });
 
     const ethProvider = ethers.getDefaultProvider();
     const xDaiWallet = new ethers.Wallet(privateKey, xDaiProvider);
