@@ -28,28 +28,31 @@ export function convertToCOP(amount: BigNumber, rate: BigNumber): string {
   return formatEther(bigNumberify(amount.mul(rate)).toString()).split(".")[0];
 }
 
-export function formatToDollars(amount: BigNumber): string {
-  return parseFloat(formatEther(amount)).toFixed(2);
+export function subtractTxnCost(amount: BigNumber): BigNumber {
+  const cost = bigNumberify(1000000000).mul(bigNumberify(21000));
+  if(amount.sub(cost).lte(Zero)) {
+    return Zero
+  }
+  return amount.sub(cost);
 }
 
 // this also removes the txn cost from the display value
-export function roundDaiDown(amount: BigNumber): string {
-  const cost = bigNumberify(1000000000).mul(bigNumberify(21000));
+export function formatToDollars(amount: BigNumber): string {
 
-  if (amount.sub(cost).lte(Zero)) {
-    return parseFloat(formatEther(amount)).toFixed(2);
+  const [dollars, cents] = formatEther(amount).split(".");
+
+  if (!cents[1]) {
+    return dollars + "." + cents + "0"
   }
 
-  const [whole, dec] = formatEther(amount.sub(cost)).split(".");
-
-  if (dec.slice(0, 2) === "00") {
-    if (whole === "0") {
-      return whole + "." + dec.slice(0, 4);
+  if (cents.slice(0, 2) === "00") {
+    if (dollars === "0") {
+      return dollars + "." + cents.slice(0, 4);
     }
-    return whole + ".00";
+    return dollars + ".00";
   }
 
-  return whole + "." + dec.slice(0, 2);
+  return dollars + "." + cents.slice(0, 2);
 }
 
 export function addressToEmoji(address: string) {
