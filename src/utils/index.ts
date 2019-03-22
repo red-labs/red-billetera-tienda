@@ -29,13 +29,7 @@ export function convertToCOP(amount: BigNumber, rate: BigNumber): string {
 }
 
 export function formatToDollars(amount: BigNumber): string {
-  const [whole, dec] = formatEther(amount).split(".");
-  let decimals: number = 0;
-  if (dec[1] && dec.slice(0, 2) !== "00") decimals = 2;
-  // formatEther still gives a 0 after the decimal point
-  // so using an undefined for dec[0] check doesn't work.
-  if (dec[0] !== "0" && !dec[1]) decimals = 1;
-  return parseFloat(whole + "." + dec.slice(0, 2)).toFixed(decimals);
+  return parseFloat(formatEther(amount)).toFixed(2);
 }
 
 // this also removes the txn cost from the display value
