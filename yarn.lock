@@ -926,6 +926,14 @@
     "@svgr/core" "^2.4.1"
     loader-utils "^1.1.0"
 
+"@types/blue-tape@^0.1.32":
+  version "0.1.32"
+  resolved "https://registry.yarnpkg.com/@types/blue-tape/-/blue-tape-0.1.32.tgz#944cc454cd53690a6a03c791ab82cb1ee83a7b2e"
+  integrity sha512-2kWAlqlSdq0ySnjVM7rxX9t9pnNYaCqFf23uRZf6kHc/YZDKbwgIBNww2YbW9EfIKuG710VTczkMNvkSL7ldSQ==
+  dependencies:
+    "@types/node" "*"
+    "@types/tape" "*"
+
 "@types/i18next@^12.1.0":
   version "12.1.0"
   resolved "https://registry.yarnpkg.com/@types/i18next/-/i18next-12.1.0.tgz#7c3fd3dbe03f9531147033773bbd0ca4f474a180"
@@ -935,6 +943,11 @@
   version "23.3.13"
   resolved "https://registry.yarnpkg.com/@types/jest/-/jest-23.3.13.tgz#c81484b6f4ca007bb09887ed15ecb3286d58f928"
   integrity sha512-ePl4l+7dLLmCucIwgQHAgjiepY++qcI6nb8eAwGNkB6OxmTe3Z9rQU3rSpomqu42PCCnlThZbOoxsf+qylJsLA==
+
+"@types/node@*":
+  version "11.11.6"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-11.11.6.tgz#df929d1bb2eee5afdda598a41930fe50b43eaa6a"
+  integrity sha512-Exw4yUWMBXM3X+8oqzJNRqZSwUAaS4+7NdvHqQuFi/d+synz++xmX3QIf+BFqneW8N31R8Ky+sikfZUXq07ggQ==
 
 "@types/node@10.12.18":
   version "10.12.18"
@@ -1012,6 +1025,13 @@
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@types/tapable/-/tapable-1.0.2.tgz#e13182e1b69871a422d7863e11a4a6f5b814a4bd"
   integrity sha512-42zEJkBpNfMEAvWR5WlwtTH22oDzcMjFsL9gDGExwF8X8WvAiw7Vwop7hPw03QT8TKfec83LwbHj6SvpqM4ELQ==
+
+"@types/tape@*":
+  version "4.2.33"
+  resolved "https://registry.yarnpkg.com/@types/tape/-/tape-4.2.33.tgz#3583953eaff5f8a77e65ad6ff197741457aaaab9"
+  integrity sha512-ltfyuY5BIkYlGuQfwqzTDT8f0q8Z5DGppvUnWGs39oqDmMd6/UWhNpX3ZMh/VYvfxs3rFGHMrLC/eGRdLiDGuw==
+  dependencies:
+    "@types/node" "*"
 
 "@webassemblyjs/ast@1.7.6":
   version "1.7.6"

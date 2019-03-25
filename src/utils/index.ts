@@ -19,10 +19,6 @@ export function isNonZeroNumber(number?: string) {
   return !!(number && !isNaN(number as any) && !parseEther(number).eq(Zero));
 }
 
-export function formatDaiAmount(amount: BigNumber): string {
-  return commify(parseFloat(formatEther(amount)).toFixed(2));
-}
-
 // This also removes the cents
 export function convertToCOP(amount: BigNumber, rate: BigNumber): string {
   return formatEther(bigNumberify(amount.mul(rate)).toString()).split(".")[0];
@@ -30,19 +26,18 @@ export function convertToCOP(amount: BigNumber, rate: BigNumber): string {
 
 export function subtractTxnCost(amount: BigNumber): BigNumber {
   const cost = bigNumberify(1000000000).mul(bigNumberify(21000));
-  if(amount.sub(cost).lte(Zero)) {
-    return Zero
+  if (amount.sub(cost).lte(Zero)) {
+    return Zero;
   }
   return amount.sub(cost);
 }
 
 // this also removes the txn cost from the display value
 export function formatToDollars(amount: BigNumber): string {
-
   const [dollars, cents] = formatEther(amount).split(".");
 
   if (!cents[1]) {
-    return dollars + "." + cents + "0"
+    return dollars + "." + cents + "0";
   }
 
   if (cents.slice(0, 2) === "00") {

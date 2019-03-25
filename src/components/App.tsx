@@ -13,7 +13,7 @@ import {
 } from "reactstrap";
 import Advanced from "./Advanced";
 import { withI18n } from "react-i18next";
-import { addressToEmoji, convertToCOP, roundDaiDown } from "../utils";
+import { addressToEmoji, convertToCOP, formatToDollars } from "../utils";
 import { Currency } from "../types";
 import { Route, AppContainer } from "../store";
 import Alert from "./Alerts";
@@ -48,7 +48,7 @@ class App extends Component<Props> {
       return (
         <div>
           <h1 style={{ wordBreak: "normal" }}>
-            {"$" + roundDaiDown(xDaiBalance)}
+            {"$" + formatToDollars(xDaiBalance)}
           </h1>
           {i18n.language === "es" && usdcop
             ? "($" + convertToCOP(xDaiBalance, usdcop) + " COP)"
