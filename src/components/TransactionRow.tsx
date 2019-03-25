@@ -47,7 +47,7 @@ function TransactionRow(props: Props) {
               amount: "$" + formatToDollars(tx.value) + " "
             })}
             {i18n.language === "es" && rate
-              ? "($" + convertToCOP(tx.value, rate) + " COP)"
+              ? " ($" + convertToCOP(tx.value, rate) + " COP)"
               : ""}
             <span style={{ whiteSpace: "nowrap" }}>
               {" " + t("to")} {addressToEmoji(tx.to)}
