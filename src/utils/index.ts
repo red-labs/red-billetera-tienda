@@ -21,7 +21,9 @@ export function isNonZeroNumber(number?: string) {
 
 // This also removes the cents
 export function convertToCOP(amount: BigNumber, rate: BigNumber): string {
-  return formatEther(bigNumberify(amount.mul(rate)).toString()).split(".")[0];
+  return commify(
+    formatEther(bigNumberify(amount.mul(rate)).toString()).split(".")[0]
+  );
 }
 
 export function subtractTxnCost(amount: BigNumber): BigNumber {

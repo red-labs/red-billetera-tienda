@@ -34,6 +34,7 @@ class Transactions extends Component<Props> {
                       onClick={() => null}
                       address={context.state.xDaiWallet.address}
                       key={i}
+                      rate={context.state.usdcop}
                     />
                   ))}
               </ListGroup>
