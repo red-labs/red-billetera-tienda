@@ -1,7 +1,7 @@
 import React from "react";
 import { ListGroupItem } from "reactstrap";
 import { withI18n } from "react-i18next";
-import { addressToEmoji, formatDaiAmount } from "../utils";
+import { addressToEmoji, formatToDollars } from "../utils";
 import { distanceInWordsStrict } from "date-fns";
 import i18n from "i18next";
 import es from "date-fns/locale/es";
@@ -30,7 +30,7 @@ function TransactionRow(props: Props) {
         {tx.to.toLowerCase() === address.toLowerCase() ? (
           <>
             {t("received", {
-              amount: formatDaiAmount(tx.value) + " "
+              amount: "$" + formatToDollars(tx.value) + " "
             })}
             <span style={{ whiteSpace: "nowrap" }}>
               {" " + t("from")} {addressToEmoji(tx.from)}
@@ -39,7 +39,7 @@ function TransactionRow(props: Props) {
         ) : (
           <>
             {t("sent", {
-              amount: formatDaiAmount(tx.value) + " "
+              amount: "$" + formatToDollars(tx.value) + " "
             })}
             <span style={{ whiteSpace: "nowrap" }}>
               {" " + t("to")} {addressToEmoji(tx.to)}

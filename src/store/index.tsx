@@ -1,4 +1,5 @@
 import { ethers } from "ethers";
+import { bigNumberify, BigNumber } from "ethers/utils";
 import { Currency, Transaction } from "../types";
 import { Container } from "unstated";
 import { promiseTimeout } from "../utils";
@@ -37,6 +38,7 @@ export interface RootState {
   pleaseWaitAlertOpen: boolean;
   addressCopiedAlertOpen: boolean;
   addressCopiedEmojiAlertOpen: boolean;
+  usdcop?: ethers.utils.BigNumber;
 }
 
 const DAI = "0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359";
@@ -79,6 +81,50 @@ export class AppContainer extends Container<RootState> {
       addressCopiedEmojiAlertOpen: false
     };
   }
+
+  fetchCOPRate = async (): Promise<BigNumber | undefined> => {
+    let res = await fetch("https://sasquatch.network/usdcop");
+    if (res.status !== 200) throw `Invalid response code: ${res.status}`;
+    const parsed = await res.json();
+    if (!parsed.success) throw `Request not successful`;
+    console.log("CALLED API", parsed.quotes.USDCOP);
+    return parsed.quotes.USDCOP;
+  };
+
+  startUsdCopRatePoll = () => {
+    let usdcopStorage = localStorage.getItem("usdcop");
+    let lastRateTimeStamp = localStorage.getItem("lastRateTimeStamp");
+    if (
+      usdcopStorage === null ||
+      new Date().getTime() - parseInt(lastRateTimeStamp!) > 1000 * 60 * 60 * 24 // 1 day
+    ) {
+      this.fetchCOPRate()
+        .then(usdcopBN => {
+          if (usdcopBN) {
+            localStorage.setItem(
+              "usdcop",
+              parseFloat(usdcopBN.toString()).toFixed(0)
+            );
+            localStorage.setItem(
+              "lastRateTimeStamp",
+              new Date().getTime().toString()
+            );
+            this.setState({
+              usdcop: bigNumberify(parseFloat(usdcopBN.toString()).toFixed(0))
+            });
+          }
+        })
+        .catch(e => console.log(`Could not fetch USD_COP rate: ${e}`));
+    } else {
+      this.setState({
+        usdcop: bigNumberify(
+          parseFloat(usdcopStorage)
+            .toFixed()
+            .toString()
+        )
+      });
+    }
+  };
 
   updateTransactions = async () => {
     const url: String = `https://blockscout.com/poa/dai/api?module=account&action=txlist&address=`;

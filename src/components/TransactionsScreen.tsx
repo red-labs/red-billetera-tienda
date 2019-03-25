@@ -7,7 +7,6 @@ import { Subscribe } from "unstated";
 import { Screen, ScreenHeader, ScreenBody } from "./Screen";
 import TransactionRow from "./TransactionRow";
 import copy from "clipboard-copy";
-import ethers from "ethers";
 import { addressToEmoji } from "../utils";
 
 interface Props {

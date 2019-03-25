@@ -1,53 +1,57 @@
-import { ethers } from "ethers";
 //@ts-ignore
 import baseEmoji from "base-emoji";
-import { utils } from "ethers";
-import { BigNumber } from "ethers/utils";
+import {
+  BigNumber,
+  formatEther,
+  commify,
+  bigNumberify,
+  parseEther,
+  keccak256,
+  getAddress
+} from "ethers/utils";
+import { Zero } from "ethers/constants";
 
 export function add0x(str: string) {
   return str.substring(0, 2) === "0x" ? str : "0x" + str;
 }
 
 export function isNonZeroNumber(number?: string) {
-  return !!(
-    number &&
-    !isNaN(number as any) &&
-    !ethers.utils.parseEther(number).eq(ethers.constants.Zero)
-  );
+  return !!(number && !isNaN(number as any) && !parseEther(number).eq(Zero));
 }
 
-export function formatDaiAmount(amount: BigNumber) {
-  return (
-    "$" +
-    ethers.utils.commify(
-      parseFloat(ethers.utils.formatEther(amount)).toFixed(2)
-    )
-  );
+// This also removes the cents
+export function convertToCOP(amount: BigNumber, rate: BigNumber): string {
+  return formatEther(bigNumberify(amount.mul(rate)).toString()).split(".")[0];
 }
 
-export function roundDaiDown(amount: BigNumber) {
-  const cost = ethers.utils
-    .bigNumberify(1000000000)
-    .mul(ethers.utils.bigNumberify(21000));
+export function subtractTxnCost(amount: BigNumber): BigNumber {
+  const cost = bigNumberify(1000000000).mul(bigNumberify(21000));
+  if (amount.sub(cost).lte(Zero)) {
+    return Zero;
+  }
+  return amount.sub(cost);
+}
 
-  if (amount.sub(cost).lte(ethers.constants.Zero)) {
-    return formatDaiAmount(amount);
+// this also removes the txn cost from the display value
+export function formatToDollars(amount: BigNumber): string {
+  const [dollars, cents] = formatEther(amount).split(".");
+
+  if (!cents[1]) {
+    return dollars + "." + cents + "0";
   }
 
-  const [whole, dec] = ethers.utils.formatEther(amount.sub(cost)).split(".");
-
-  if (dec.slice(0, 2) === "00") {
-    if (whole === "0") {
-      return "$" + whole + "." + dec.slice(0, 4);
+  if (cents.slice(0, 2) === "00") {
+    if (dollars === "0") {
+      return dollars + "." + cents.slice(0, 4);
     }
-    return "$" + whole + ".00";
+    return dollars + ".00";
   }
 
-  return "$" + whole + "." + dec.slice(0, 2);
+  return dollars + "." + cents.slice(0, 2);
 }
 
 export function addressToEmoji(address: string) {
-  const hash = utils.keccak256(address);
+  const hash = keccak256(address);
   const last2bytes = hash.slice(-4);
   const buf = new Buffer(last2bytes, "hex");
   return baseEmoji.toUnicode(buf);
@@ -75,7 +79,7 @@ export function randomHex(size: number) {
 
 export function cleanAddress(address: string): string | undefined {
   try {
-    return ethers.utils.getAddress(address);
+    return getAddress(address);
   } catch (e) {
     return undefined;
   }

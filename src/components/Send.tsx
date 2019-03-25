@@ -4,7 +4,9 @@ import {
   InputGroup,
   InputGroupAddon,
   FormGroup,
-  Label
+  Label,
+  Row,
+  Col
 } from "reactstrap";
 import { qr, camera } from "../utils/icons";
 import React, { Component } from "react";
@@ -16,12 +18,13 @@ import {
   cleanAddress,
   addressToEmoji,
   isNonZeroNumber,
-  formatDaiAmount
+  convertToCOP,
+  formatToDollars
 } from "../utils";
 import { AppContainer } from "../store";
 import { Subscribe } from "unstated";
-import { ethers } from "ethers";
-import Alert from "./Alerts";
+import { formatEther, BigNumber, parseEther } from "ethers/utils";
+import i18n from "i18next";
 
 interface Props {
   open: boolean;
@@ -33,7 +36,7 @@ interface Props {
 interface State {
   qrReading: boolean;
   toAddress: string;
-  amount?: string;
+  amount: string;
 }
 
 class Send extends Component<Props, State> {
@@ -44,7 +47,44 @@ class Send extends Component<Props, State> {
   state = {
     qrReading: false,
     toAddress: "",
-    amount: undefined
+    amount: ""
+  };
+
+  transactionDetails = (t: Function, foreignCurrencyRate?: BigNumber) => {
+    if (this.state.amount === "") {
+      return <div />;
+    }
+    let amount = parseEther(this.state.amount);
+
+    return (
+      <Row
+        style={{
+          justifyContent: "center",
+          marginTop: 20,
+          marginBottom: 15
+        }}
+      >
+        <div style={{ margin: 5 }}>{t("send")}</div>
+        <div
+          style={{
+            margin: 5,
+            textAlign: "center",
+            fontWeight: "bold"
+          }}
+        >
+          <div>{" $" + formatToDollars(amount) + " "}</div>
+          <div>
+            {i18n.language === "es" && foreignCurrencyRate
+              ? "($" + convertToCOP(amount, foreignCurrencyRate) + " COP)"
+              : ""}
+          </div>
+        </div>
+        <div style={{ margin: 5 }}>{t("to")}</div>:
+        <div style={{ fontSize: "1.6em" }}>
+          {addressToEmoji(cleanAddress(this.state.toAddress)!)}
+        </div>
+      </Row>
+    );
   };
 
   render() {
@@ -120,51 +160,19 @@ class Send extends Component<Props, State> {
               </FormGroup>
               {cleanAddress(this.state.toAddress) && (
                 <>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      marginTop: 20,
-                      marginBottom: 15
-                    }}
-                  >
-                    <h5 style={{ marginRight: 10 }}>
-                      {t("send")}{" "}
-                      {this.state.amount &&
-                        !isNaN(this.state.amount as any) &&
-                        ethers.utils
-                          .parseEther(this.state.amount!)
-                          .toString() !== "0" &&
-                        formatDaiAmount(
-                          ethers.utils.parseEther(this.state.amount!)
-                        )}{" "}
-                      {t("to")}:
-                    </h5>
-
-                    <h1>
-                      {addressToEmoji(cleanAddress(this.state.toAddress)!)}
-                    </h1>
-                  </div>
+                  {this.transactionDetails(t, context.state.usdcop)}
                   <Button
                     size="lg"
                     block
                     onClick={async () => {
                       context.setState({ txSendingAlert: true });
-                      console.log(
-                        this.state,
-                        isNonZeroNumber(this.state.amount),
-                        cleanAddress(this.state.toAddress)
-                      );
-
                       const address = cleanAddress(this.state.toAddress);
-
                       if (isNonZeroNumber(this.state.amount) && address) {
                         try {
                           let txn = await context.sendTx(
                             this.props.currency,
                             address,
-                            ethers.utils.parseEther(this.state.amount!)
+                            parseEther(this.state.amount)
                           );
                           if (txn.hash) {
                             context.state.xDaiProvider.once(txn.hash, () => {

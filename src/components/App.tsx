@@ -13,10 +13,16 @@ import {
 } from "reactstrap";
 import Advanced from "./Advanced";
 import { withI18n } from "react-i18next";
-import { addressToEmoji, formatDaiAmount, roundDaiDown } from "../utils";
+import {
+  addressToEmoji,
+  convertToCOP,
+  formatToDollars,
+  subtractTxnCost
+} from "../utils";
 import { Currency } from "../types";
 import { Route, AppContainer } from "../store";
 import Alert from "./Alerts";
+import i18n from "i18next";
 
 interface Props {
   i18n: any;
@@ -34,10 +40,33 @@ class App extends Component<Props> {
   };
   async componentDidMount() {
     this.props.store.startPolls();
+    if (i18n.language === "es") this.props.store.startUsdCopRatePoll();
   }
 
+  displayValue = (store: AppContainer, t: Function) => {
+    const { xDaiBalance, usdcop } = store.state;
+    if (isNaN(xDaiBalance as any)) {
+      return <h1 style={{ wordBreak: "normal" }}>{t("loading")}</h1>;
+    }
+
+    if (xDaiBalance) {
+      return (
+        <div>
+          <h1 style={{ wordBreak: "normal" }}>
+            {"$" + formatToDollars(subtractTxnCost(xDaiBalance))}
+          </h1>
+          {i18n.language === "es" && usdcop
+            ? "($" +
+              convertToCOP(subtractTxnCost(xDaiBalance), usdcop) +
+              " COP)"
+            : ""}
+        </div>
+      );
+    }
+  };
+
   render() {
-    let { i18n, t, store } = this.props;
+    let { t, store } = this.props;
     return (
       <div style={{ height: "100vh", display: "flex", alignItems: "center" }}>
         <div
@@ -65,6 +94,9 @@ class App extends Component<Props> {
             <h1 style={{ fontWeight: "normal" }}>{t("efectivo")}</h1>
             <div>
               <ButtonDropdown
+                style={{
+                  width: 159
+                }}
                 isOpen={this.state.languageDropdownOpen}
                 toggle={() =>
                   this.setState({
@@ -75,10 +107,15 @@ class App extends Component<Props> {
                 <DropdownToggle caret>{t("language")}</DropdownToggle>
                 <DropdownMenu className="dropdown-menu-right">
                   <DropdownItem onClick={() => i18n.changeLanguage("en")}>
-                    English
+                    English (USD)
                   </DropdownItem>
-                  <DropdownItem onClick={() => i18n.changeLanguage("es")}>
-                    Español
+                  <DropdownItem
+                    onClick={() => {
+                      this.props.store.startUsdCopRatePoll();
+                      i18n.changeLanguage("es");
+                    }}
+                  >
+                    Español (COP)
                   </DropdownItem>
                 </DropdownMenu>
               </ButtonDropdown>
@@ -98,13 +135,10 @@ class App extends Component<Props> {
                 {store.state.xDaiWallet &&
                   addressToEmoji(store.state.xDaiWallet.address)}{" "}
               </h1>
-              <h1 style={{ wordBreak: "normal" }}>
-                {!isNaN(store.state.xDaiBalance as any)
-                  ? roundDaiDown(store.state.xDaiBalance!)
-                  : t("loading")}
-              </h1>
+              <div style={{ verticalAlign: "middle" }}>
+                {this.displayValue(store, t)}
+              </div>
             </div>
-
             <div
               style={{
                 display: "flex",
