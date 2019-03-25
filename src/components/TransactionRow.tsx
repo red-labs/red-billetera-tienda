@@ -1,22 +1,24 @@
 import React from "react";
 import { ListGroupItem } from "reactstrap";
 import { withI18n } from "react-i18next";
-import { addressToEmoji, formatToDollars } from "../utils";
+import { convertToCOP, addressToEmoji, formatToDollars } from "../utils";
 import { distanceInWordsStrict } from "date-fns";
 import i18n from "i18next";
 import es from "date-fns/locale/es";
 import en from "date-fns/locale/en";
 import { Transaction } from "../types";
+import { BigNumber } from "ethers/utils";
 
 interface Props {
   tx: Transaction;
   t: Function;
   onClick: () => void;
   address: string;
+  rate?: BigNumber;
 }
 
 function TransactionRow(props: Props) {
-  let { t, tx, address } = props;
+  let { t, tx, address, rate } = props;
   return (
     <ListGroupItem
       style={{
@@ -32,6 +34,9 @@ function TransactionRow(props: Props) {
             {t("received", {
               amount: "$" + formatToDollars(tx.value) + " "
             })}
+            {i18n.language === "es" && rate
+              ? " ($" + convertToCOP(tx.value, rate) + " COP)"
+              : ""}
             <span style={{ whiteSpace: "nowrap" }}>
               {" " + t("from")} {addressToEmoji(tx.from)}
             </span>
@@ -41,6 +46,9 @@ function TransactionRow(props: Props) {
             {t("sent", {
               amount: "$" + formatToDollars(tx.value) + " "
             })}
+            {i18n.language === "es" && rate
+              ? "($" + convertToCOP(tx.value, rate) + " COP)"
+              : ""}
             <span style={{ whiteSpace: "nowrap" }}>
               {" " + t("to")} {addressToEmoji(tx.to)}
             </span>

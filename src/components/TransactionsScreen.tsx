@@ -58,6 +58,7 @@ class Transactions extends Component<Props, State> {
                         tx={tx}
                         onClick={() => this.copy(context, tx)}
                         address={context.state.xDaiWallet.address}
+                        rate={context.state.usdcop}
                       />
                     </div>
                   ))}
