@@ -21,8 +21,8 @@ body {
 
 /* This changes font color for the navbar*/
 
-h5 {
-    color: #ffffff;
+.h5, h5 {
+    color: white;
 }
 
 /* This is for the main buttons */
