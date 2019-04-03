@@ -19,6 +19,12 @@ body {
     padding-top: 1em;
 }
 
+/* This changes font color for the navbar*/
+
+h5 {
+    color: #ffffff;
+}
+
 /* This is for the main buttons */
 
 .btn {
