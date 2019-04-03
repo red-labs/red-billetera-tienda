@@ -1,7 +1,7 @@
 {
-  "name": "red-billetera",
+    "name": "efectivo-web",
   "version": "0.1.0",
-  "homepage": "https://forrestheath3.github.io/red-billetera/",
+  "homepage": "http://efectivo.cc",
   "dependencies": {
     "@types/blue-tape": "^0.1.32",
     "@types/i18next": "^12.1.0",
