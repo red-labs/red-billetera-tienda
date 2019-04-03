@@ -1,7 +1,7 @@
 {
     "name": "efectivo-web",
   "version": "0.1.0",
-  "homepage": "http://efectivo.cc",
+  "homepage": "http://billetera.cc/",
   "dependencies": {
     "@types/blue-tape": "^0.1.32",
     "@types/i18next": "^12.1.0",
