@@ -91,7 +91,7 @@ class App extends Component<Props> {
               alignItems: "center"
             }}
           >
-            <h1 style={{ fontWeight: "normal" }}>{t("efectivo")}</h1>
+            <h1 style={{ fontWeight: "normal" }}>    {t("billeta")}</h1>
             <div>
               <ButtonDropdown
                 style={{
