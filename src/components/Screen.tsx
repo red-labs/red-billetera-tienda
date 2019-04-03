@@ -78,7 +78,7 @@ export function ScreenHeader(props: { children: any; toggle: () => void }) {
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        backgroundColor: "#f8f9fa"
+        backgroundColor: "#252525"
       }}
     >
       <div
@@ -91,7 +91,7 @@ export function ScreenHeader(props: { children: any; toggle: () => void }) {
         }}
         onClick={props.toggle}
       >
-        {leftChevron("#000", 30, 30)}
+        {leftChevron("#ffffff", 30, 30)}
       </div>{" "}
       <h5 style={{ marginBottom: 0 }}>{props.children}</h5>
       <div
