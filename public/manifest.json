@@ -1,15 +1,15 @@
 {
-  "short_name": "Efectivo",
-  "name": "Efectivo",
+  "short_name": "red_billeta",
+  "name": "red_billeta",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "red_favicon.png",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     }
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
+  "theme_color": "#252525",
   "background_color": "#ffffff"
 }
