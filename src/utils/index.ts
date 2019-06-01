@@ -26,6 +26,13 @@ export function convertToCOP(amount: BigNumber, rate: BigNumber): string {
   );
 }
 
+export function convertFromCOP(amount: string, rate: BigNumber): number {
+  const inverseCOPRate = 1 / rate.toNumber();
+  return isNaN(parseInt(amount, 10))
+    ? 0
+    : parseInt(amount, 10) * inverseCOPRate;
+}
+
 export function subtractTxnCost(amount: BigNumber): BigNumber {
   const cost = bigNumberify(1000000000).mul(bigNumberify(21000));
   if (amount.sub(cost).lte(Zero)) {
@@ -34,14 +41,34 @@ export function subtractTxnCost(amount: BigNumber): BigNumber {
   return amount.sub(cost);
 }
 
-// this also removes the txn cost from the display value
-export function formatToDollars(amount: BigNumber): string {
-  const [dollars, cents] = formatEther(amount).split(".");
+export function toWei(amount: number): BigNumber {
+  return parseEther(amount.toString());
+}
 
+// this also removes the txn cost from the display value
+export function formatToDollars(
+  amount: BigNumber | number,
+  wei = true
+): string {
+  let [dollars, cents] = (wei ? formatEther(amount) : amount.toString()).split(
+    "."
+  );
+
+  if (!cents) {
+    cents = "00";
+  }
+
+  if (!dollars) {
+    dollars = "0";
+  }
+
+  // Turn stuff like 3.2 into 3.20
   if (!cents[1]) {
     return dollars + "." + cents + "0";
   }
 
+  // Show extra decimals for very small amounts under 1. Over one, show 00.
+  // i.e. 0.0002 -> 0.0002 and 1.0002 -> 1.00
   if (cents.slice(0, 2) === "00") {
     if (dollars === "0") {
       return dollars + "." + cents.slice(0, 4);
