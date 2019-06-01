@@ -13,7 +13,8 @@ export interface Transaction {
 export enum Currency {
   XDAI,
   ETH,
-  DAI
+  DAI,
+  COP
 }
 
 export function currencyToSymbol(currency: Currency) {
@@ -25,6 +26,9 @@ export function currencyToSymbol(currency: Currency) {
       return "ETH";
       break;
     case Currency.XDAI:
+      return "$";
+      break;
+    case Currency.COP:
       return "$";
       break;
   }
@@ -40,6 +44,9 @@ export function currencyToName(currency: Currency) {
       break;
     case Currency.XDAI:
       return "xDAI";
+      break;
+    case Currency.COP:
+      return "COP";
       break;
   }
 }
