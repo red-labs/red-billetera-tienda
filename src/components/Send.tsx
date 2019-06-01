@@ -19,7 +19,9 @@ import {
   addressToEmoji,
   isNonZeroNumber,
   convertToCOP,
-  formatToDollars
+  convertFromCOP,
+  formatToDollars,
+  toWei
 } from "../utils";
 import { AppContainer } from "../store";
 import { Subscribe } from "unstated";
@@ -64,22 +66,7 @@ class Send extends Component<Props, State> {
           marginBottom: 15
         }}
       >
-        <div style={{ margin: 5 }}>{t("send")}</div>
-        <div
-          style={{
-            margin: 5,
-            textAlign: "center",
-            fontWeight: "bold"
-          }}
-        >
-          <div>{" $" + formatToDollars(amount) + " "}</div>
-          <div>
-            {i18n.language === "es" && foreignCurrencyRate
-              ? "($" + convertToCOP(amount, foreignCurrencyRate) + " COP)"
-              : ""}
-          </div>
-        </div>
-        <div style={{ margin: 5 }}>{t("to")}</div>:
+        <div style={{ margin: 5 }}>{t("to")}</div>
         <div style={{ fontSize: "1.6em" }}>
           {addressToEmoji(cleanAddress(this.state.toAddress)!)}
         </div>
@@ -94,9 +81,7 @@ class Send extends Component<Props, State> {
       <Subscribe to={[AppContainer]}>
         {(context: AppContainer) => (
           <Screen isOpen={this.props.open} toggle={this.props.toggle}>
-            <ScreenHeader toggle={this.props.toggle}>
-              {t("send")} {currencyToName(this.props.currency)}
-            </ScreenHeader>
+            <ScreenHeader toggle={this.props.toggle}>{t("send")}</ScreenHeader>
             <ScreenBody>
               <FormGroup>
                 <Label for="sendToAddress">{t("sendToAddress")}</Label>
@@ -116,7 +101,6 @@ class Send extends Component<Props, State> {
                     value={this.state.toAddress}
                     style={{ flexGrow: 1, marginRight: 5 }}
                   />
-
                   <Button
                     onClick={() => this.setState({ qrReading: true })}
                     style={{ flexGrow: 1, marginLeft: 5 }}
@@ -157,6 +141,18 @@ class Send extends Component<Props, State> {
                     {currencyToName(this.props.currency)}
                   </InputGroupAddon>
                 </InputGroup>
+                {i18n.language === "es" && context.state.usdcop ? (
+                  <div style={{ textAlign: "right" }}>
+                    ($
+                    {formatToDollars(
+                      convertFromCOP(this.state.amount, context.state.usdcop),
+                      false
+                    )}
+                    <small> USD</small>)
+                  </div>
+                ) : (
+                  <></>
+                )}
               </FormGroup>
               {cleanAddress(this.state.toAddress) && (
                 <>
@@ -165,14 +161,35 @@ class Send extends Component<Props, State> {
                     size="lg"
                     block
                     onClick={async () => {
-                      context.setState({ txSendingAlert: true });
                       const address = cleanAddress(this.state.toAddress);
-                      if (isNonZeroNumber(this.state.amount) && address) {
+
+                      if (
+                        isNonZeroNumber(this.state.amount) &&
+                        address &&
+                        // Only check for the exchange rate if the language is
+                        // Spanish
+                        (this.props.currency === Currency.COP
+                          ? context.state.usdcop
+                          : true)
+                      ) {
+                        context.setState({ txSendingAlert: true });
+
+                        const amountToSend =
+                          this.props.currency === Currency.COP &&
+                          context.state.usdcop // checking for usdcop just to make typescript happy
+                            ? parseEther(
+                                convertFromCOP(
+                                  this.state.amount,
+                                  context.state.usdcop
+                                ).toString()
+                              )
+                            : parseEther(this.state.amount);
+
                         try {
                           let txn = await context.sendTx(
                             this.props.currency,
                             address,
-                            parseEther(this.state.amount)
+                            amountToSend
                           );
                           if (txn.hash) {
                             context.state.xDaiProvider.once(txn.hash, () => {
