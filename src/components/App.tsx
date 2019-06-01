@@ -4,6 +4,7 @@ import Receive from "./Receive";
 import Save from "./Save";
 import Transactions from "./Transactions";
 import TransactionsScreen from "./TransactionsScreen";
+import { downArrow, rightArrow } from "../utils/icons";
 import {
   Button,
   ButtonDropdown,
@@ -50,25 +51,37 @@ class App extends Component<Props> {
     }
 
     if (xDaiBalance) {
-      return (
-        <div>
-          <h1 style={{ wordBreak: "normal" }}>
-            {"$" + formatToDollars(subtractTxnCost(xDaiBalance))}
-          </h1>
-          {i18n.language === "es" && usdcop
-            ? "($" +
-              convertToCOP(subtractTxnCost(xDaiBalance), usdcop) +
-              " COP)"
-            : ""}
-        </div>
-      );
+      if (i18n.language === "es" && usdcop) {
+        return (
+          <div>
+            <div>
+              <h2 style={{ display: "inline-block", wordBreak: "normal" }}>
+                {"$" + convertToCOP(subtractTxnCost(xDaiBalance), usdcop)}
+              </h2>
+              {" COP"}
+            </div>
+            <div style={{ textAlign: "right" }}>
+              {"$" + formatToDollars(subtractTxnCost(xDaiBalance))}
+              <small> USD</small>
+            </div>
+          </div>
+        );
+      } else {
+        return (
+          <div>
+            <h1 style={{ wordBreak: "normal" }}>
+              {"$" + formatToDollars(subtractTxnCost(xDaiBalance))}
+            </h1>
+          </div>
+        );
+      }
     }
   };
 
   render() {
     let { t, store } = this.props;
     return (
-      <div style={{ height: "100vh", display: "flex", alignItems: "center" }}>
+      <div style={{ height: "90vh", display: "flex", alignItems: "center" }}>
         <div
           style={{
             display: "flex",
@@ -91,12 +104,9 @@ class App extends Component<Props> {
               alignItems: "center"
             }}
           >
-            <h1 style={{ fontWeight: "normal" }}>    {t("billetera")}</h1>
+            <h1 style={{ fontWeight: "normal" }}>{t("efectivo")}</h1>
             <div>
               <ButtonDropdown
-                style={{
-                  width: 159
-                }}
                 isOpen={this.state.languageDropdownOpen}
                 toggle={() =>
                   this.setState({
@@ -150,14 +160,14 @@ class App extends Component<Props> {
                 style={{ flex: "1 1 0", marginRight: "1rem" }}
                 size="lg"
               >
-                {t("receive")}
+                {t("receive")} {downArrow()}
               </Button>
               <Button
                 onClick={() => store.setRoute(Route.Send)}
                 style={{ flex: "1 1 0" }}
                 size="lg"
               >
-                {t("send")}
+                {t("send")} {rightArrow()}
               </Button>
             </div>
           </div>
@@ -189,7 +199,7 @@ class App extends Component<Props> {
         <Send
           toggle={() => store.setRoute(Route.Main)}
           open={store.state.route === Route.Send}
-          currency={Currency.XDAI}
+          currency={i18n.language === "es" ? Currency.COP : Currency.XDAI}
         />
         <Receive
           toggle={() => store.setRoute(Route.Main)}
@@ -261,20 +271,3 @@ class App extends Component<Props> {
 }
 
 export default withI18n()(App);
-
-/* <div className="d-flex w-100 text-center justify-content-center">
-            <Button
-              onClick={() => i18n.changeLanguage("en")}
-              style={{ flex: "1 1 0", maxWidth: 200, margin: 5 }}
-              size="lg"
-            >
-              English
-            </Button>
-            <Button
-              onClick={() => i18n.changeLanguage("es")}
-              style={{ flex: "1 1 0", maxWidth: 200, margin: 5 }}
-              size="lg"
-            >
-              Español
-            </Button>
-          </div> */
