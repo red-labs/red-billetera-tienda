@@ -138,7 +138,7 @@ class Send extends Component<Props, State> {
                     value={this.state.amount}
                   />
                   <InputGroupAddon addonType="append">
-                    {currencyToName(this.props.currency)}
+                    {"pesos"}
                   </InputGroupAddon>
                 </InputGroup>
                 {i18n.language === "es" && context.state.usdcop ? (
@@ -148,7 +148,7 @@ class Send extends Component<Props, State> {
                       convertFromCOP(this.state.amount, context.state.usdcop),
                       false
                     )}
-                    <small> USD</small>)
+                    <small> xDAI</small>)
                   </div>
                 ) : (
                   <></>

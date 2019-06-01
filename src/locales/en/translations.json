@@ -21,7 +21,7 @@
   "pleaseWait": "Please wait...",
   "privateKeyCopied": "Private key copied to clipboard",
   "privateKeyRestored": "Private key restored",
-  "privateKeySecurity": "Your private key lets you restore your account. We recommend that you copy it and back it up by saving it somewhere on your phone, or texting or emailing it to yourself. But don't let anyone else see it. If someone else has your private key they will be able to access the money in this wallet.",
+  "privateKeySecurity": "Your password allows you to enter your account. Every account has a unique password. We recommend that you copy and back up the password in TWO locations that will remain secure even if you lose your phone, like a Facebook message sent to yourself and an email sent to yourself. Do not let anyone else see or have access to your password, because doing so will give this person complete access to the money that you store in your Billetera account.",
   "receive": "Receive",
   "received": "Received {{amount}}",
   "restorePrivateKey": "Restore private key",

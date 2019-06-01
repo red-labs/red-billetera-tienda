@@ -58,11 +58,11 @@ class App extends Component<Props> {
               <h2 style={{ display: "inline-block", wordBreak: "normal" }}>
                 {"$" + convertToCOP(subtractTxnCost(xDaiBalance), usdcop)}
               </h2>
-              {" COP"}
+              {" pesos"}
             </div>
             <div style={{ textAlign: "right" }}>
               {"$" + formatToDollars(subtractTxnCost(xDaiBalance))}
-              <small> USD</small>
+              <small> xDAI</small>
             </div>
           </div>
         );
@@ -104,7 +104,7 @@ class App extends Component<Props> {
               alignItems: "center"
             }}
           >
-            <h1 style={{ fontWeight: "normal" }}>{t("efectivo")}</h1>
+            <h1 style={{ fontWeight: "normal" }}>{t("Billetera")}</h1>
             <div>
               <ButtonDropdown
                 isOpen={this.state.languageDropdownOpen}
@@ -117,7 +117,7 @@ class App extends Component<Props> {
                 <DropdownToggle caret>{t("language")}</DropdownToggle>
                 <DropdownMenu className="dropdown-menu-right">
                   <DropdownItem onClick={() => i18n.changeLanguage("en")}>
-                    English (USD)
+                    English
                   </DropdownItem>
                   <DropdownItem
                     onClick={() => {
@@ -125,7 +125,7 @@ class App extends Component<Props> {
                       i18n.changeLanguage("es");
                     }}
                   >
-                    Español (COP)
+                    Español
                   </DropdownItem>
                 </DropdownMenu>
               </ButtonDropdown>
