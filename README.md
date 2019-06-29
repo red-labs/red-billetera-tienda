@@ -1,3 +1,6 @@
+This is the repo for the client facing version of the billetera app
+
+
 Communal wallets for testing:
 
 - Milk door
