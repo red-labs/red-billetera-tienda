@@ -1,7 +1,7 @@
 {
     "name": "red_billetera",
   "version": "0.1.0",
-  "homepage": "tienda.billetera.cc",
+  "homepage": "https://tienda.billetera.cc/",
   "dependencies": {
     "@types/blue-tape": "^0.1.32",
     "@types/i18next": "^12.1.0",
