@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Send from "./Send";
-import Receive from "./Receive";
 import Save from "./Save";
 import Transactions from "./Transactions";
 import TransactionsScreen from "./TransactionsScreen";
@@ -155,13 +154,7 @@ class App extends Component<Props> {
                 justifyContent: "center"
               }}
             >
-              <Button
-                onClick={() => store.setRoute(Route.Receive)}
-                style={{ flex: "1 1 0", marginRight: "1rem" }}
-                size="lg"
-              >
-                {t("receive")} {downArrow()}
-              </Button>
+              
               <Button
                 onClick={() => store.setRoute(Route.Send)}
                 style={{ flex: "1 1 0" }}
@@ -201,10 +194,7 @@ class App extends Component<Props> {
           open={store.state.route === Route.Send}
           currency={i18n.language === "es" ? Currency.COP : Currency.XDAI}
         />
-        <Receive
-          toggle={() => store.setRoute(Route.Main)}
-          open={store.state.route === Route.Receive}
-        />
+
         <Save
           toggle={() => store.setRoute(Route.Main)}
           open={store.state.route === Route.Save}
