@@ -6,10 +6,9 @@ i18n
   .use(LanguageDetector)
   .use(reactI18nextModule)
   .init({
-    fallbackLng: "en",
+    fallbackLng: "es",
 
     resources: {
-      en: { translations: require("../locales/en/translations.json") },
       es: { translations: require("../locales/es/translations.json") }
     },
 
