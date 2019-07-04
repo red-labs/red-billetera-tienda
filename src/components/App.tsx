@@ -115,6 +115,10 @@ class App extends Component<Props> {
                     onClick={() => store.setRoute(Route.Recover)}>
                     Recuperar
                   </DropdownItem>
+                  <DropdownItem
+                    onClick={() => store.setRoute(Route.Receive)}>
+                    Recibir
+                  </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
             </div>
