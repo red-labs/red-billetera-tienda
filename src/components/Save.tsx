@@ -37,7 +37,7 @@ class Save extends Component<Props, State> {
         {(context: AppContainer) => (
           <Screen isOpen={this.props.open} toggle={this.props.toggle}>
             <ScreenHeader toggle={this.props.toggle}>
-              {t("saveRestore")}
+              {t("Guardar")}
             </ScreenHeader>
             <ScreenBody>
               <div style={{ marginBottom: "1rem" }}>
@@ -62,50 +62,10 @@ class Save extends Component<Props, State> {
               </Button>
 
               <p />
-              <div style={{ marginBottom: "1rem" }}>{t("pastePrivateKey")}</div>
 
-              <FormGroup>
-                <Input
-                  name="restorePrivateKey"
-                  id="restorePrivateKey"
-                  placeholder="0x..."
-                  onChange={event => {
-                    this.setState({ inputValue: event.target.value.trim() });
-                  }}
-                  value={this.state.inputValue}
-                />
-              </FormGroup>
-              <Button
-                onClick={async () => {
-                  if (
-                    this.state.inputValue !==
-                    context.state.xDaiWallet.privateKey
-                  ) {
-                    try {
-                      context.setState({ pleaseWaitAlertOpen: true });
-                      await context.restorePrivateKey(this.state.inputValue);
-                      context.setState({ pleaseWaitAlertOpen: false });
-                      window.location.reload();
-                    } catch (e) {
-                      console.error(e);
-                      context.setState({
-                        pleaseWaitAlertOpen: false,
-                        failedRestoreAlertOpen: true
-                      });
-                      setTimeout(() => {
-                        context.setState({ failedRestoreAlertOpen: false });
-                      }, 10000);
-                    }
-                  } else {
-                    this.props.toggle();
-                  }
-                }}
-                block
-                size="lg"
-                style={{ marginBottom: "1rem" }}
-              >
-                {t("restorePrivateKey")}
-              </Button>
+
+
+
             </ScreenBody>
           </Screen>
         )}

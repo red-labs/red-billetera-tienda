@@ -36,7 +36,7 @@ export function Screen(props: {
     <div
       style={{
         ...{
-          position: "fixed",
+           position: "fixed",
           left: 0,
           top: 0,
           width: "100vw",
@@ -45,6 +45,7 @@ export function Screen(props: {
           alignItems: "center",
           transform: "translateX(-100vw) translateY(20px)",
           transition: "all .1s ease"
+
         },
         ...(props.isOpen
           ? {
@@ -55,7 +56,7 @@ export function Screen(props: {
     >
       <div
         style={{
-          background: "white", //"rgba(255,255,255,0.5)"
+          background: "#F3F4FA", //"rgba(255,255,255,0.5)"
           flex: 1,
           maxWidth: 450,
           maxHeight: 900,
@@ -77,7 +78,8 @@ export function ScreenHeader(props: { children: any; toggle: () => void }) {
       style={{
         display: "flex",
         alignItems: "center",
-        justifyContent: "space-between",
+        color: "white",
+      justifyContent: "space-between",
         backgroundColor: "#252525"
       }}
     >

@@ -21,7 +21,7 @@ class Transactions extends Component<Props> {
             <div
               style={{
                 position: "relative",
-                height: "30vh",
+                height: "20vh",
                 overflow: "hidden"
               }}
             >
@@ -48,10 +48,10 @@ class Transactions extends Component<Props> {
                   flexDirection: "column",
                   justifyContent: "flex-end",
                   background:
-                    "linear-gradient(to bottom, rgba(255,255,255,0) 0%,rgba(255,255,255,.7) 40%,rgba(255,255,255,1) 55%)"
+                     "linear-gradient(to bottom, rgb(243,244,250, 0) 0%,rgba(243,244,250,.7) 40%,rgba(243,244,250,1) 55%)"
                 }}
               >
-                <Button onClick={this.props.viewTransactions} color="link">
+                <Button className="transaction-button" onClick={this.props.viewTransactions} >
                   {t("allTransactions")}
                 </Button>
               </div>

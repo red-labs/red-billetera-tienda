@@ -12,6 +12,7 @@ export enum Route {
   Main,
   Send,
   Receive,
+  Recover,
   Save,
   Advanced,
   Transactions

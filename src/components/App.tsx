@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import Send from "./Send";
+import Receive from "./Recieve";
 import Save from "./Save";
+import Recover from "./Recover";
 import Transactions from "./Transactions";
 import TransactionsScreen from "./TransactionsScreen";
-import { downArrow, rightArrow } from "../utils/icons";
+import { downArrow, rightArrow, whatsAppIcon } from "../utils/icons";
 import {
   Button,
-  ButtonDropdown,
+  Dropdown,
   DropdownToggle,
   DropdownItem,
   DropdownMenu
@@ -59,10 +61,6 @@ class App extends Component<Props> {
               </h2>
               {" pesos"}
             </div>
-            <div style={{ textAlign: "right" }}>
-              {"$" + formatToDollars(subtractTxnCost(xDaiBalance))}
-              <small> xDAI</small>
-            </div>
           </div>
         );
       } else {
@@ -87,8 +85,6 @@ class App extends Component<Props> {
             flex: 1,
             flexDirection: "column",
             justifyContent: "space-between",
-            paddingLeft: "1rem",
-            paddingRight: "1rem",
             maxWidth: 450,
             height: "100%",
             maxHeight: 900,
@@ -96,16 +92,13 @@ class App extends Component<Props> {
             overflow: "hidden"
           }}
         >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center"
-            }}
+          <div className="branding-container"
+
           >
-            <h1 style={{ fontWeight: "normal" }}>{t("Billetera")}</h1>
-            <div>
-              <ButtonDropdown
+
+            <h1 className="branding">Billetera</h1>
+            <div >
+              <Dropdown
                 isOpen={this.state.languageDropdownOpen}
                 toggle={() =>
                   this.setState({
@@ -113,26 +106,22 @@ class App extends Component<Props> {
                   })
                 }
               >
-                <DropdownToggle caret>{t("language")}</DropdownToggle>
+                <DropdownToggle >{t("⋮")}</DropdownToggle>
                 <DropdownMenu className="dropdown-menu-right">
-                  <DropdownItem onClick={() => i18n.changeLanguage("en")}>
-                    English
+                  <DropdownItem onClick={() => store.setRoute(Route.Save)}>
+                    Guardar
                   </DropdownItem>
                   <DropdownItem
-                    onClick={() => {
-                      this.props.store.startUsdCopRatePoll();
-                      i18n.changeLanguage("es");
-                    }}
-                  >
-                    Español
+                    onClick={() => store.setRoute(Route.Recover)}>
+                    Recuperar
                   </DropdownItem>
                 </DropdownMenu>
-              </ButtonDropdown>
+              </Dropdown>
             </div>
           </div>
-
-          <div>
-            <div
+<div className="top-container">
+          <div >
+            <div className="account-card"
               style={{
                 display: "flex",
                 justifyContent: "space-between",
@@ -154,30 +143,49 @@ class App extends Component<Props> {
                 justifyContent: "center"
               }}
             >
-              
-              <Button
+              <Button className="receive-button"
                 onClick={() => store.setRoute(Route.Send)}
                 style={{ flex: "1 1 0" }}
                 size="lg"
               >
-                {t("send")} {rightArrow()}
+                enviar
               </Button>
+
+
             </div>
           </div>
-
-          <Transactions
-            viewTransactions={() => store.setRoute(Route.Transactions)}
-          />
+          </div>
+         <div className="content-container">
+            <div className="transaction-items">
+                <Transactions
+                  viewTransactions={() => store.setRoute(Route.Transactions)}
+                />
+             </div>
 
           <div>
-            <Button
-              style={{ marginBottom: "1rem" }}
+          {/* the below navigation was moved to the menu at the top */}
+            {/*<Button
+               className="save"
               onClick={() => store.setRoute(Route.Save)}
               size="lg"
               block
             >
               {t("saveRestore")}
             </Button>
+            <Button
+               className="save"
+              onClick={() => store.setRoute(Route.Recover)}
+              size="lg"
+              block
+            >
+              {t("Recover")}
+            </Button>*/}
+               <Button
+               size="lg"
+               block
+               className="whatsapp-button" href="https://www.whatsapp.com/business/"
+               >
+               Contacto en  {whatsAppIcon()} </Button>
 
             {/* <div style={{ height: 75 }} /> */}
             {/* <Button
@@ -189,16 +197,26 @@ class App extends Component<Props> {
             </Button> */}
           </div>
         </div>
+        </div>
+
+
         <Send
           toggle={() => store.setRoute(Route.Main)}
           open={store.state.route === Route.Send}
           currency={i18n.language === "es" ? Currency.COP : Currency.XDAI}
         />
-
+        <Receive
+          toggle={() => store.setRoute(Route.Main)}
+          open={store.state.route === Route.Receive}
+        />
         <Save
           toggle={() => store.setRoute(Route.Main)}
           open={store.state.route === Route.Save}
         />
+        <Recover
+        toggle={() => store.setRoute(Route.Main)}
+        open={store.state.route === Route.Recover}
+      />
         <TransactionsScreen
           toggle={() => store.setRoute(Route.Main)}
           open={store.state.route === Route.Transactions}

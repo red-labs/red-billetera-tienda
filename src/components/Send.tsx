@@ -143,12 +143,8 @@ class Send extends Component<Props, State> {
                 </InputGroup>
                 {i18n.language === "es" && context.state.usdcop ? (
                   <div style={{ textAlign: "right" }}>
-                    ($
-                    {formatToDollars(
-                      convertFromCOP(this.state.amount, context.state.usdcop),
-                      false
-                    )}
-                    <small> xDAI</small>)
+                    
+
                   </div>
                 ) : (
                   <></>
