@@ -52,7 +52,7 @@ class Transactions extends Component<Props> {
                 }}
               >
                 <Button className="transaction-button" onClick={this.props.viewTransactions} >
-                  {t("allTransactions")}
+                  {t("Ver todas las transacciones")}
                 </Button>
               </div>
             </div>

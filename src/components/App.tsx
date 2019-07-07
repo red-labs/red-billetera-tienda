@@ -51,6 +51,7 @@ class App extends Component<Props> {
       return <h1 style={{ wordBreak: "normal" }}>{t("loading")}</h1>;
     }
 
+
     if (xDaiBalance) {
       if (i18n.language === "es" && usdcop) {
         return (
@@ -73,6 +74,7 @@ class App extends Component<Props> {
         );
       }
     }
+
   };
 
   render() {
@@ -96,31 +98,46 @@ class App extends Component<Props> {
 
           >
 
-            <h1 className="branding">Billetera</h1>
+            <h1 className="branding">Billetera 💰</h1>
             <div >
-              <Dropdown
-                isOpen={this.state.languageDropdownOpen}
-                toggle={() =>
-                  this.setState({
-                    languageDropdownOpen: !this.state.languageDropdownOpen
-                  })
-                }
-              >
-                <DropdownToggle >{t("⋮")}</DropdownToggle>
-                <DropdownMenu className="dropdown-menu-right">
-                  <DropdownItem onClick={() => store.setRoute(Route.Save)}>
-                    Guardar
-                  </DropdownItem>
-                  <DropdownItem
-                    onClick={() => store.setRoute(Route.Recover)}>
-                    Recuperar
-                  </DropdownItem>
-                  <DropdownItem
-                    onClick={() => store.setRoute(Route.Receive)}>
-                    Recibir
-                  </DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
+            <Dropdown
+                            isOpen={this.state.languageDropdownOpen}
+                            toggle={() =>
+                              this.setState({
+                                languageDropdownOpen: !this.state.languageDropdownOpen
+                              })
+                            }
+                          >
+                            <DropdownToggle>{t("⋮")}</DropdownToggle>
+                            <DropdownMenu className="dropdown-menu-right">
+                              <DropdownItem onClick={() => i18n.changeLanguage("en")}>
+                                English
+                              </DropdownItem>
+                              <DropdownItem
+                                onClick={() => {
+                                  this.props.store.startUsdCopRatePoll();
+                                  i18n.changeLanguage("es");
+                                }}
+                              >
+                                Español
+                              </DropdownItem>
+                              <DropdownItem onClick={() => store.setRoute(Route.Save)}>
+                                Guardar
+                              </DropdownItem>
+                              <DropdownItem
+                                onClick={() => store.setRoute(Route.Recover)}>
+                                Recuperar
+                              </DropdownItem>
+                              <DropdownItem
+                                onClick={() => store.setRoute(Route.Receive)}>
+                                Recibir
+                              </DropdownItem>
+                            </DropdownMenu>
+                          </Dropdown>
+
+
+
+
             </div>
           </div>
 <div className="top-container">
@@ -187,9 +204,9 @@ class App extends Component<Props> {
                <Button
                size="lg"
                block
-               className="whatsapp-button" href="https://www.whatsapp.com/business/"
+               className="whatsapp-button" href="https://wa.me/17866673227"
                >
-               Contacto en  {whatsAppIcon()} </Button>
+               Contáctenos en en  {whatsAppIcon()} </Button>
 
             {/* <div style={{ height: 75 }} /> */}
             {/* <Button
