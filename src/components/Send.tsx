@@ -66,7 +66,7 @@ class Send extends Component<Props, State> {
           marginBottom: 15
         }}
       >
-        <div style={{ margin: 5 }}>{t("to")}</div>
+        <div style={{ }}>{t("to")}</div>
         <div style={{ fontSize: "1.6em" }}>
           {addressToEmoji(cleanAddress(this.state.toAddress)!)}
         </div>
@@ -83,8 +83,15 @@ class Send extends Component<Props, State> {
           <Screen isOpen={this.props.open} toggle={this.props.toggle}>
             <ScreenHeader toggle={this.props.toggle}>{t("send")}</ScreenHeader>
             <ScreenBody>
-              <FormGroup>
-                <Label for="sendToAddress">{t("sendToAddress")}</Label>
+            <div
+             style={{
+                display: "flex",
+                alignItems: "center",
+                flexDirection: "column"
+             }}
+            >
+
+                <h1 className="receive-title"> Enviar</h1>
                 <div
                   style={{
                     display: "flex",
@@ -99,24 +106,29 @@ class Send extends Component<Props, State> {
                       this.setState({ toAddress: event.target.value.trim() });
                     }}
                     value={this.state.toAddress}
-                    style={{ flexGrow: 1, marginRight: 5 }}
+                    style={{ flexGrow: 1,  }}
                   />
-                  <Button
-                    onClick={() => this.setState({ qrReading: true })}
-                    style={{ flexGrow: 1, marginLeft: 5 }}
-                  >
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "center"
-                      }}
-                    >
-                      {camera("#fff")}
-                      {qr("#fff")}
-                    </div>
-                  </Button>
+
                 </div>
-              </FormGroup>
+
+              <Button className="qr-button"
+              size="lg"
+             style={{ flex: "1 1 0" }}
+                onClick={() => this.setState({ qrReading: true })}
+
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center"
+                  }}
+                >
+                  {camera("#fff")}
+                  {qr("#fff")}
+                </div>
+              </Button>
+              </div>
+
               <FormGroup>
                 <Label for="amountToSend">{t("sendAmount")}</Label>
                 <InputGroup>
@@ -143,7 +155,7 @@ class Send extends Component<Props, State> {
                 </InputGroup>
                 {i18n.language === "es" && context.state.usdcop ? (
                   <div style={{ textAlign: "right" }}>
-                    
+
 
                   </div>
                 ) : (

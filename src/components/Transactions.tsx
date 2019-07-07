@@ -21,7 +21,7 @@ class Transactions extends Component<Props> {
             <div
               style={{
                 position: "relative",
-                height: "20vh",
+                height: "25vh",
                 overflow: "hidden"
               }}
             >
@@ -52,7 +52,7 @@ class Transactions extends Component<Props> {
                 }}
               >
                 <Button className="transaction-button" onClick={this.props.viewTransactions} >
-                  {t("Ver todas las transacciones")}
+                  {t("allTransactions")}
                 </Button>
               </div>
             </div>

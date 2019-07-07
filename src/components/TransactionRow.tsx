@@ -22,10 +22,12 @@ function TransactionRow(props: Props) {
   return (
     <ListGroupItem
       style={{
-        padding: "0.5rem 0",
+        padding: "0.75rem 0",
         display: "flex",
         justifyContent: "space-between",
-        backgroundColor: "#F3F4FA"
+        backgroundColor: "#F3F4FA",
+        fontFamily: "Helvetica",
+        fontWeight: 'bold'
       }}
       onClick={() => props.onClick()}
     >

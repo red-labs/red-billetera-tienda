@@ -38,17 +38,20 @@ class Receive extends Component<Props> {
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  flexDirection: "column"
+                  flexDirection: "column",
+
                 }}
               >
+              <h1 className="receive-title"> Tu Codigo</h1>
+              <div className="qr-code">
                 <QRCode
                   size={240}
                   renderAs="svg"
                   value={context.state.xDaiWallet.address}
                 />
-
+                </div>
                 <Input
-                  style={{ marginTop: 10, marginBottom: 10 }}
+                  style={{ marginTop: 100, marginBottom: 10 }}
                   value={context.state.xDaiWallet.address}
                   readOnly
                 />

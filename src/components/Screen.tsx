@@ -78,24 +78,19 @@ export function ScreenHeader(props: { children: any; toggle: () => void }) {
       style={{
         display: "flex",
         alignItems: "center",
-        color: "white",
+        color: "#F23C22",
       justifyContent: "space-between",
-        backgroundColor: "#252525"
+      textAlign: "left"
+
       }}
     >
-      <div
-        style={{
-          height: 50,
-          width: 50,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center"
-        }}
+      <div className="back-click"
+
         onClick={props.toggle}
       >
-        {leftChevron("#ffffff", 30, 30)}
-      </div>{" "}
-      <h5 style={{ marginBottom: 0 }}>{props.children}</h5>
+        {leftChevron("#F23C22", 30, 30)} Atrás
+      </div>
+
       <div
         style={{
           height: 50,

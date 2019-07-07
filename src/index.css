@@ -23,6 +23,10 @@ body {
 
 }
 
+.small {
+   font-weight: 600;
+}
+
 .branding-container {
 
    display: flex;
@@ -32,7 +36,6 @@ body {
    display: flex;
    justify-content: space-between;
    align-items: center;
-
 
 }
 
@@ -49,6 +52,135 @@ padding: 1.5rem 1rem;
 
 }
 
+.back-click {
+   height: 50;
+   width: 50;
+   font-size: 1.5rem;
+   font-weight: 600;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
+
+
+.receive-title {
+
+   padding: 2.5rem 1rem;
+   font-size: 3rem;
+   line-height: 1.5;
+   font-weight: 600;
+
+}
+
+
+
+.qr-code {
+   background-color: white;
+   padding: 1.5rem 1rem;
+   font-size: 1.25rem;
+   line-height: 1.5;
+   border-radius: 10px;
+    box-shadow: 0 0.5px 0 0 #ffffff inset, 0 1px 2px 0 #B3B3B3;
+
+}
+
+.alert-container {
+   border-radius: 10px;
+    box-shadow: 0 0.5px 0 0 #ffffff inset, 0 1px 2px 0 #B3B3B3;
+}
+
+.qr-button {
+
+   color: white;
+   font-size: 1.25rem;
+   line-height: 1.5;
+   border-radius: 10px;
+   font-family:  Helvetica ;
+   font-weight: 600;
+   transition: all .2s ease-in-out;
+   background-color: #F23C22;
+   border-color: #F23C22;
+
+   background-color: white;
+
+   margin:  1.5rem 1rem;
+   font-size:5.25rem;
+   line-height: 5;
+   border-radius: 10px;
+
+
+}
+
+
+.qr-button:hover {
+   box-shadow: 0 1px 6px 0 rgba(32,33,36,0.28);
+   transform: scale(1.05);
+   background-color: #5a6268;
+    border-color: #5a6268;
+}
+
+
+.input-group {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 0.5px 0 0 #ffffff inset, 0 1px 2px 0 #B3B3B3;
+}
+
+.input-group-text {
+    display: flex;
+    align-items: center;
+    padding: .375rem .75rem;
+    margin-bottom: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5;
+    color: #252525;
+
+    background-color: white;
+     border: 0px solid #ced4da; 
+    border-radius: 10px;
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    height: calc(1.5em + .75rem + 2px);
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5;
+    color: #252525;
+    transition: all .2s ease-in-out;
+    background-clip: padding-box;
+    border: 0px solid #ced4da;
+    border-radius: 10px;
+    -webkit-transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.form-control:disabled, .form-control[readonly] {
+     background-color: white;
+    opacity: 1;
+}
+
+.form-control:focus {
+    color: #495057;
+    box-shadow: 0 1px 6px 0 rgba(32,33,36,0.28);
+    transform: scale(1.05);
+    background-color: #fff;
+    outline: 0;
+}
+
+article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
+    display: block;
+    border-radius: 10px;
+}
+
 /* This is cotainer for the emojis and the acount balance */
 .account-card {
 
@@ -60,6 +192,27 @@ padding: 1.5rem 1rem;
     box-shadow: 0 0.5px 0 0 #ffffff inset, 0 1px 2px 0 #B3B3B3;
 
 }
+
+@media only screen and (max-device-width: 360px) {
+   .account-card {
+
+      background-color: white;
+      padding: 1rem 1rem;
+      font-size: 1rem;
+      line-height: 1;
+      border-radius: 10px;
+       box-shadow: 0 0.5px 0 0 #ffffff inset, 0 1px 2px 0 #B3B3B3;
+
+   }
+
+   h1 {
+      font-size: 2rem;
+   }
+   h2 {
+      font-size: 1.5rem;
+   }
+    }
+
 .transaction-items {
 
 }
@@ -96,6 +249,17 @@ padding: 1.5rem 1rem;
 
 }
 
+@media only screen and (max-device-width: 360px) {
+
+   .btn-secondary {
+      padding: .5rem .5rem;
+      font-size: .90rem;
+      line-height: 1;
+      border-radius: 10px;
+
+   }
+}
+
 .btn-secondary:hover {
    background: #F23C22;
    border-color: #F23C22;
@@ -124,6 +288,19 @@ padding: 1.5rem 1rem;
    background-color: #5a6268;
     border-color: #5a6268;
 }
+
+@media only screen and (max-device-width: 360px) {
+
+   .receive-button {
+
+      padding: 1rem 1rem;
+      font-size: 1rem;
+      line-height: 1;
+      border-radius: 10px;
+
+   }
+}
+
 
 .list-group-item {
    font-family:  Helvetica;
@@ -160,6 +337,18 @@ color: #252525;
    border-color: #252525;
 
    }
+
+@media only screen and (max-device-width: 360px) {
+   .whatsapp-button {
+      padding: .5rem .5rem;
+      font-size: 1rem;
+      line-height: 1;
+      border-radius: 10px;
+
+      }
+
+}
+
 
 .whatsapp-button:hover
 {

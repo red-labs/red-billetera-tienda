@@ -159,7 +159,7 @@ class App extends Component<Props> {
                 style={{ flex: "1 1 0" }}
                 size="lg"
               >
-                enviar
+                Enviar
               </Button>
 
 

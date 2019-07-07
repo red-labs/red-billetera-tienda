@@ -1,6 +1,6 @@
 import React from "react";
 
-export function qr(fill = "#fff", width = 24, height = 24) {
+export function qr(fill = "#fff", width = 54, height = 54) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -16,7 +16,7 @@ export function qr(fill = "#fff", width = 24, height = 24) {
   );
 }
 
-export function camera(fill = "#fff", width = 24, height = 24) {
+export function camera(fill = "#fff", width = 54, height = 54) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
