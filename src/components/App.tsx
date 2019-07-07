@@ -110,17 +110,7 @@ class App extends Component<Props> {
                           >
                             <DropdownToggle>{t("⋮")}</DropdownToggle>
                             <DropdownMenu className="dropdown-menu-right">
-                              <DropdownItem onClick={() => i18n.changeLanguage("en")}>
-                                English
-                              </DropdownItem>
-                              <DropdownItem
-                                onClick={() => {
-                                  this.props.store.startUsdCopRatePoll();
-                                  i18n.changeLanguage("es");
-                                }}
-                              >
-                                Español
-                              </DropdownItem>
+
                               <DropdownItem onClick={() => store.setRoute(Route.Save)}>
                                 Guardar
                               </DropdownItem>
@@ -206,7 +196,7 @@ class App extends Component<Props> {
                block
                className="whatsapp-button" href="https://wa.me/17866673227"
                >
-               Contáctenos en en  {whatsAppIcon()} </Button>
+               Contáctenos en {whatsAppIcon()} </Button>
 
             {/* <div style={{ height: 75 }} /> */}
             {/* <Button
