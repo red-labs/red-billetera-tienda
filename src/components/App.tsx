@@ -80,7 +80,7 @@ class App extends Component<Props> {
   render() {
     let { t, store } = this.props;
     return (
-      <div style={{ height: "90vh", display: "flex", alignItems: "center" }}>
+      <div style={{ height: "100vh", display: "flex", alignItems: "center" }}>
         <div
           style={{
             display: "flex",
@@ -122,6 +122,14 @@ class App extends Component<Props> {
                                 onClick={() => store.setRoute(Route.Receive)}>
                                 Recibir
                               </DropdownItem>
+                              <DropdownItem
+                    onClick={() => {
+                      this.props.store.startUsdCopRatePoll();
+                      i18n.changeLanguage("es");
+                    }}
+                  >
+                    Español
+                  </DropdownItem>
                             </DropdownMenu>
                           </Dropdown>
 
