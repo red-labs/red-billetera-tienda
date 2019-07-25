@@ -202,7 +202,7 @@ class App extends Component<Props> {
                <Button
                size="lg"
                block
-               className="whatsapp-button" href="https://wa.me/17866673227"
+               className="whatsapp-button" href="https://wa.me/573135581129"
                >
                Contáctenos en {whatsAppIcon()} </Button>
 
